@@ -2,56 +2,63 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Nelson Pro | Login</title>
+    <title>Nelson Pro | Login Cabine</title>
     <style>
-        body { background: #050505; color: white; font-family: sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
-        .card { background: #111; padding: 40px; border-radius: 15px; border-top: 4px solid #e50914; width: 320px; text-align: center; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
-        h2 { color: #e50914; margin-bottom: 20px; font-family: sans-serif; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #e50914; border: none; color: white; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px; transition: 0.3s; }
-        button:hover { background: #ff0d1a; }
-        .link { color: #888; font-size: 13px; margin-top: 15px; cursor: pointer; display: block; }
+        :root { --neon-red: #e50914; --dark: #0a0a0a; }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.03); 
+            padding: 45px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(15px);
+            width: 350px; 
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+        h2 { font-size: 28px; letter-spacing: 2px; color: var(--neon-red); margin-bottom: 30px; text-transform: uppercase; }
+        input { 
+            width: 100%; padding: 14px; margin: 12px 0; 
+            background: rgba(0,0,0,0.5); border: 1px solid #333; 
+            color: white; border-radius: 8px; box-sizing: border-box;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--neon-red); outline: none; box-shadow: 0 0 10px rgba(229, 9, 20, 0.3); }
+        button { 
+            width: 100%; padding: 14px; background: var(--neon-red); 
+            border: none; color: white; font-weight: bold; cursor: pointer; 
+            border-radius: 8px; margin-top: 20px; font-size: 16px;
+            transition: 0.4s;
+        }
+        button:hover { transform: scale(1.02); background: #ff0d1a; box-shadow: 0 0 20px rgba(229, 9, 20, 0.4); }
+        .link { color: #888; font-size: 13px; margin-top: 20px; cursor: pointer; display: block; }
+        .link:hover { color: white; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>LOGIN</h2>
-        <input type="email" id="email" placeholder="Seu E-mail Profissional">
-        <input type="password" id="pass" placeholder="Sua Senha">
-        <button onclick="logar()">ACESSAR CABINE</button>
-        <a class="link" onclick="window.location.href='cadastro.html'">Criar nova conta de aluno</a>
+    <div class="glass-card">
+        <h2>Nelson Pro</h2>
+        <p style="color: #666; font-size: 12px; margin-bottom: 20px;">ACESSO AO SERVIDOR DE PROJEÇÃO</p>
+        <input type="email" id="email" placeholder="E-mail do Operador">
+        <input type="password" id="pass" placeholder="Senha Master">
+        <button onclick="logar()">INICIAR SESSÃO</button>
+        <span class="link" onclick="window.location.href='cadastro.html'">Solicitar Novo Acesso (Cadastro)</span>
     </div>
 
     <script>
         async function logar() {
-            const emailValue = document.getElementById('email').value;
-            const passValue = document.getElementById('pass').value;
-
-            if (!emailValue || !passValue) {
-                alert("Nelson, preencha todos os campos!");
-                return;
-            }
-
-            try {
-                const res = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: emailValue, password: passValue })
-                });
-
-                const data = await res.json();
-
-                if (res.ok && data.success) {
-                    // Salva o "crachá" e manda para o conteúdo
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    window.location.href = 'dashboard.html';
-                } else {
-                    alert("❌ Erro: E-mail ou Senha não encontrados no servidor.");
-                }
-            } catch (err) {
-                console.error(err);
-                alert("🔴 Falha na conexão com o servidor da Render.");
-            }
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('pass').value;
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (data.success) {
+                localStorage.setItem('user', JSON.stringify(data.user));
+                window.location.href = 'dashboard.html';
+            } else { alert('❌ Erro: Credenciais não autorizadas no servidor.'); }
         }
     </script>
 </body>
