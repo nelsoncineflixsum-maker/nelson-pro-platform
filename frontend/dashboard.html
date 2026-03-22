@@ -1088,3 +1088,23 @@
     </script>
 </body>
 </html>
+<script>
+    // 🛡️ TRAVA DE SEGURANÇA DO GERENTE
+    const usuarioLogado = localStorage.getItem('user');
+    
+    if (!usuarioLogado) {
+        // Se não tiver o "crachá" de login, volta para a tela inicial
+        window.location.replace("index.html");
+    } else {
+        // Se estiver logado, coloca o nome do aluno no painel
+        const dados = JSON.parse(usuarioLogado);
+        // Procure o ID onde vai o nome no seu design e use:
+        // document.getElementById('nome-operador').innerText = dados.name;
+        console.log("Operador Autenticado: " + dados.name);
+    }
+
+    function sair() {
+        localStorage.removeItem('user');
+        window.location.replace("index.html");
+    }
+</script>
