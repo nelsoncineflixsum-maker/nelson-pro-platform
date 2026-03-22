@@ -81,6 +81,20 @@ app.get('/cadastro.html', (req, res) => {
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend/login.html'));
 });
+// 📊 ROTA SECRETA: Busca todos os usuários cadastrados
+app.get('/api/admin/users', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT id, name, email FROM users ORDER BY id DESC');
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: "Erro ao buscar alunos" });
+    }
+});
+
+// 📊 ROTA PARA ABRIR O DASHBOARD
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/dashboard.html'));
+});
 
 // 🚀 PORTA DA RENDER (10000)
 const PORT = process.env.PORT || 3000;
