@@ -44,5 +44,38 @@
         </div>
     </div>
     <footer style="text-align: center; padding: 50px; color: #444;">Criado por Nelson Jesus - Gerente Grupo Cine</footer>
+    <script>
+    async function fazerLogin() {
+        // Pega os dados que o usuário digitou
+        const email = prompt("Digite seu E-mail:"); // Você pode trocar por campos de input se preferir
+        const password = prompt("Digite sua Senha:");
+
+        try {
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                // 🎫 ENTREGA O CRACHÁ (TOKEN)
+                localStorage.setItem('user', JSON.stringify(data.user)); 
+                
+                // 🚀 MANDA DIRETO PARA A SALA DE PROJEÇÃO
+                alert("Acesso Autorizado! Carregando Cabine...");
+                window.location.href = 'dashboard.html'; 
+            } else {
+                alert("❌ Erro: KDM Inválido ou Usuário não encontrado!");
+            }
+        } catch (err) {
+            alert("🔴 Erro de conexão com o servidor da Render.");
+        }
+    }
+
+    // Altera o comando do botão do seu HTML para chamar a função acima
+    document.querySelector('.btn-premium').setAttribute('onclick', 'fazerLogin()');
+</script>
 </body>
 </html>
