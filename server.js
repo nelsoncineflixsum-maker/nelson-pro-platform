@@ -1,28 +1,22 @@
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
-
 const app = express();
 
-// Configurações básicas
-app.use(cors());
-app.use(express.json());
-
-// 📂 AVISA O SERVIDOR ONDE ESTÃO OS ARQUIVOS HTML (Pasta frontend)
+// 📂 Configura a pasta dos arquivos estáticos
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// 🎬 ROTA PRINCIPAL: Abre o index.html direto no link do site
+// 🎬 Rota principal (entrega o index.html)
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend/index.html'));
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
-// 🎬 ROTAS DAS OUTRAS PÁGINAS
-app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'frontend/login.html')));
-app.get('/cadastro', (req, res) => res.sendFile(path.join(__dirname, 'frontend/cadastro.html')));
-app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'frontend/dashboard.html')));
+// 🎬 Rota para as outras páginas (caso você as chame pelo link direto)
+app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'frontend', 'login.html')));
+app.get('/cadastro', (req, res) => res.sendFile(path.join(__dirname, 'frontend', 'cadastro.html')));
+app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'frontend', 'dashboard.html')));
 
-// 🚀 PORTA DA RENDER (10000)
+// 🚀 Porta da Render
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Nelson Pro Online na porta ${PORT}`);
+    console.log(`🚀 Sistema Nelson Pro rodando na porta ${PORT}`);
 });
