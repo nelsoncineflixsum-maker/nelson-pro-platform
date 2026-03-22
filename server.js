@@ -16,7 +16,7 @@ app.use(express.json());
 
 // 📂 AJUSTE DE PASTAS PARA A NUVEM
 // Se o seu server.js estiver dentro da pasta 'backend', mantemos o '../frontend'
-app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 // 🧪 TESTE DE CONEXÃO COM O BANCO
 const conectarBanco = async () => {
@@ -57,7 +57,7 @@ app.post('/api/auth/register', async (req, res) => {
 
 // 🌐 ROTA PARA CARREGAR O FRONTEND
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+    res.sendFile(path.join(__dirname, 'frontend/index.html'));
 });
 
 // 🚀 COMANDO ÚNICO PARA LIGAR O SERVIDOR (CORRIGIDO PARA NUVEM)
