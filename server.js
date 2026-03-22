@@ -84,6 +84,6 @@ app.get('*', (req, res) => {
 
 // 🚀 PORTA DA RENDER (10000)
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 NELSON PRO EM ORBITA NA PORTA ${PORT}`);
+app.get('*', (req, res) => {
+    res.status(404).send('<body style="background:#000;color:#e50914;text-align:center;padding:50px;font-family:sans-serif;"><h1>404 - PROJEÇÃO INTERROMPIDA</h1><p>Nelson diz: Este caminho não existe no servidor!</p><a href="/" style="color:#fff;">Voltar ao Início</a></body>');
 });
