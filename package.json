@@ -1,38 +1,14 @@
 {
-  "name": "nelson-pro-platform",
+  "name": "nelson-pro-cinema",
   "version": "1.0.0",
-  "description": "Plataforma completa de membros para educação online - Nelson Pro Cinema Engineering",
   "main": "backend/server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node backend/server.js"
   },
-  "keywords": [
-    "cinema",
-    "education",
-    "platform",
-    "authentication",
-    "dashboard",
-    "members"
-  ],
-  "author": "Nelson Pro",
-  "license": "MIT",
-  "type": "commonjs",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.6",
-    "dotenv": "^16.6.1",
-    "express": "^4.22.1",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.3",
-    "pg": "^8.20.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.9"
-  },
-  "engines": {
-    "node": ">=14.0.0"
+    "express": "^4.18.2",
+    "pg": "^8.11.3",
+    "cors": "^2.8.5",
+    "path": "^0.12.7"
   }
 }
