@@ -5,1591 +5,3305 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cinema Pro Platform — Dashboard Profissional</title>
   <style>
+  <!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Cinema Pro Platform — Dashboard Profissional</title>
+
+  <style>
+
     /* ===== RESET & VARIABLES ===== */
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+
+
     :root {
+
       --gold:    #f5c518;
+
       --gold-dk: #c9a10e;
+
       --dark:    #0a0a0f;
+
       --dark2:   #111118;
+
       --dark3:   #1a1a24;
+
       --card:    #16161f;
+
       --border:  #2a2a3a;
+
       --text:    #e8e8f0;
+
       --muted:   #8888aa;
+
       --red:     #e74c3c;
+
       --green:   #2ecc71;
+
       --cyan:    #1abc9c;
+
       --yellow:  #f39c12;
+
     }
+
+
 
     html, body {
+
       height: 100%;
+
       font-family: 'Segoe UI', system-ui, sans-serif;
+
       background: var(--dark);
+
       color: var(--text);
+
     }
+
+
 
     ::-webkit-scrollbar { width: 8px; }
+
     ::-webkit-scrollbar-track { background: var(--dark2); }
+
     ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
 
+
+
     /* ===== LAYOUT ===== */
+
     body {
+
       display: grid;
+
       grid-template-columns: 280px 1fr;
+
       grid-template-rows: 70px 1fr;
+
       min-height: 100vh;
+
     }
+
+
 
     /* ===== HEADER ===== */
+
     header {
+
       grid-column: 1 / -1;
+
       background: rgba(10,10,15,.95);
+
       border-bottom: 1px solid var(--border);
+
       padding: 0 2rem;
+
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       z-index: 100;
+
       box-shadow: 0 4px 20px rgba(0,0,0,.3);
+
     }
+
+
 
     .header-left {
+
       display: flex;
+
       align-items: center;
+
       gap: 1.5rem;
+
     }
+
+
 
     .logo {
+
       display: flex;
+
       align-items: center;
+
       gap: .6rem;
+
       text-decoration: none;
+
     }
+
+
 
     .logo-icon {
+
       width: 40px; height: 40px;
+
       background: linear-gradient(135deg, var(--gold), #ffd84d);
+
       border-radius: 10px;
+
       display: flex; align-items: center; justify-content: center;
+
       font-size: 1.3rem;
+
       box-shadow: 0 0 20px rgba(245,197,24,.3);
+
     }
+
+
 
     .logo-text { font-size: 1.15rem; font-weight: 800; color: var(--text); }
+
     .logo-text span { color: var(--gold); }
 
+
+
     .header-title {
+
       font-size: .9rem;
+
       color: var(--muted);
+
       font-weight: 600;
+
     }
+
+
 
     .header-right {
+
       display: flex;
+
       align-items: center;
+
       gap: 1.5rem;
+
     }
 
+
+
     .user-menu {
+
       display: flex;
+
       align-items: center;
+
       gap: .8rem;
+
       cursor: pointer;
+
       padding: .5rem 1rem;
+
       border-radius: 10px;
+
       transition: all .2s;
+
     }
+
+
 
     .user-menu:hover { background: rgba(245,197,24,.1); }
 
+
+
     .user-avatar {
+
       width: 36px; height: 36px;
+
       background: linear-gradient(135deg, var(--gold), var(--cyan));
+
       border-radius: 50%;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: 1.2rem;
+
       font-weight: 800;
+
     }
+
+
 
     .user-info {
+
       display: flex;
+
       flex-direction: column;
+
       gap: .1rem;
+
     }
+
+
 
     .user-name {
+
       font-size: .85rem;
+
       font-weight: 700;
+
       color: var(--text);
+
     }
+
+
 
     .user-role {
+
       font-size: .7rem;
+
       color: var(--muted);
+
     }
+
+
 
     /* ===== SIDEBAR ===== */
+
     aside {
+
       background: var(--dark2);
+
       border-right: 1px solid var(--border);
+
       padding: 2rem 0;
+
       overflow-y: auto;
+
       grid-row: 2;
+
     }
+
+
 
     .sidebar-menu {
+
       list-style: none;
+
       display: flex;
+
       flex-direction: column;
+
       gap: .5rem;
+
       padding: 0 1rem;
+
     }
+
+
 
     .sidebar-item {
+
       display: flex;
+
       align-items: center;
+
       gap: 1rem;
+
       padding: .8rem 1.2rem;
+
       border-radius: 10px;
+
       cursor: pointer;
+
       transition: all .2s;
+
       color: var(--muted);
+
       text-decoration: none;
+
       font-size: .9rem;
+
       font-weight: 600;
+
       border: none;
+
       background: none;
+
       width: 100%;
+
       text-align: left;
+
     }
+
+
 
     .sidebar-item:hover {
+
       background: rgba(245,197,24,.1);
+
       color: var(--gold);
+
     }
 
+
+
     .sidebar-item.active {
+
       background: rgba(245,197,24,.15);
+
       color: var(--gold);
+
       border-left: 3px solid var(--gold);
+
     }
+
+
 
     .sidebar-item span { font-size: 1.2rem; }
 
+
+
     /* ===== MAIN CONTENT ===== */
+
     main {
+
       grid-column: 2;
+
       grid-row: 2;
+
       padding: 2rem;
+
       overflow-y: auto;
+
     }
+
+
 
     .container {
+
       max-width: 1200px;
+
       margin: 0 auto;
+
     }
+
+
 
     .page-header {
+
       margin-bottom: 2.5rem;
+
     }
+
+
 
     .page-header h1 {
+
       font-size: 2rem;
+
       font-weight: 900;
+
       margin-bottom: .5rem;
+
       letter-spacing: -.02em;
+
     }
+
+
 
     .page-header p {
+
       color: var(--muted);
+
       font-size: .95rem;
+
     }
+
+
 
     /* ===== CARDS ===== */
+
     .card {
+
       background: linear-gradient(135deg, var(--card) 0%, #1e1e2a 100%);
+
       border: 1px solid var(--border);
+
       border-radius: 14px;
+
       padding: 2rem;
+
       margin-bottom: 2rem;
+
       transition: all .3s;
+
     }
+
+
 
     .card:hover {
+
       border-color: rgba(245,197,24,.3);
+
       box-shadow: 0 15px 40px rgba(0,0,0,.4);
+
     }
+
+
 
     .card h2 {
+
       font-size: 1.4rem;
+
       font-weight: 800;
+
       margin-bottom: 1rem;
+
       color: var(--gold);
+
     }
+
+
 
     .card h3 {
+
       font-size: 1.1rem;
+
       font-weight: 700;
+
       margin-top: 1.5rem;
+
       margin-bottom: .8rem;
+
       color: var(--text);
+
     }
+
+
 
     .card p {
+
       color: var(--muted);
+
       line-height: 1.8;
+
       margin-bottom: 1rem;
+
     }
+
+
 
     .card ul, .card ol {
+
       margin-left: 1.5rem;
+
       margin-bottom: 1rem;
+
     }
+
+
 
     .card li {
+
       color: var(--muted);
+
       margin-bottom: .6rem;
+
       line-height: 1.7;
+
     }
+
+
 
     .card li strong {
+
       color: var(--text);
+
     }
+
+
 
     /* ===== FORM FIELDS ===== */
+
     .form-group {
+
       margin-bottom: 1.5rem;
+
     }
+
+
 
     .form-group label {
+
       display: block;
+
       font-size: .9rem;
+
       font-weight: 700;
+
       color: var(--text);
+
       margin-bottom: .5rem;
+
       text-transform: uppercase;
+
       letter-spacing: .05em;
+
     }
+
+
 
     .form-group input,
+
     .form-group select,
+
     .form-group textarea {
+
       width: 100%;
+
       background: var(--dark3);
+
       border: 1px solid var(--border);
+
       border-radius: 10px;
+
       padding: .8rem 1rem;
+
       color: var(--text);
+
       font-size: .9rem;
+
       font-family: inherit;
+
       transition: all .2s;
+
     }
+
+
 
     .form-group input:focus,
+
     .form-group select:focus,
+
     .form-group textarea:focus {
+
       border-color: var(--gold);
+
       box-shadow: 0 0 0 3px rgba(245,197,24,.1);
+
       outline: none;
+
     }
+
+
 
     .form-row {
+
       display: grid;
+
       grid-template-columns: 1fr 1fr;
+
       gap: 1rem;
+
     }
+
+
 
     /* ===== BUTTONS ===== */
+
     .btn {
+
       display: inline-block;
+
       padding: .8rem 1.8rem;
+
       background: linear-gradient(135deg, var(--gold), var(--gold-dk));
+
       color: #000;
+
       border: none;
+
       border-radius: 10px;
+
       font-size: .9rem;
+
       font-weight: 700;
+
       cursor: pointer;
+
       transition: all .2s;
+
       text-decoration: none;
+
     }
+
+
 
     .btn:hover {
+
       transform: translateY(-2px);
+
       box-shadow: 0 8px 20px rgba(245,197,24,.3);
+
     }
+
+
 
     .btn-secondary {
+
       background: var(--dark3);
+
       color: var(--text);
+
       border: 1px solid var(--border);
+
     }
+
+
 
     .btn-secondary:hover {
+
       border-color: var(--gold);
+
       color: var(--gold);
+
     }
+
+
 
     /* ===== STEP GUIDE ===== */
+
     .step-guide {
+
       background: var(--dark3);
+
       border-left: 4px solid var(--gold);
+
       border-radius: 8px;
+
       padding: 1.5rem;
+
       margin-bottom: 2rem;
+
     }
+
+
 
     .step-guide h4 {
+
       color: var(--gold);
+
       font-size: 1rem;
+
       margin-bottom: .8rem;
+
       text-transform: uppercase;
+
       letter-spacing: .05em;
+
     }
+
+
 
     .step-guide ol {
+
       margin-left: 1.5rem;
+
     }
+
+
 
     .step-guide li {
+
       color: var(--text);
+
       margin-bottom: .6rem;
+
       line-height: 1.6;
+
     }
+
+
 
     /* ===== CONFIG TABLE ===== */
+
     .config-table {
+
       width: 100%;
+
       border-collapse: collapse;
+
       margin-bottom: 1.5rem;
+
     }
+
+
 
     .config-table th {
+
       background: var(--dark3);
+
       color: var(--gold);
+
       padding: 1rem;
+
       text-align: left;
+
       font-weight: 700;
+
       border-bottom: 2px solid var(--border);
+
     }
+
+
 
     .config-table td {
+
       padding: 1rem;
+
       border-bottom: 1px solid var(--border);
+
       color: var(--muted);
+
     }
+
+
 
     .config-table tr:hover {
+
       background: rgba(245,197,24,.05);
+
     }
+
+
 
     .config-value {
+
       color: var(--gold);
+
       font-weight: 600;
+
     }
+
+
 
     /* ===== ALERT ===== */
+
     .alert {
+
       padding: 1rem 1.5rem;
+
       border-radius: 10px;
+
       margin-bottom: 1.5rem;
+
       border-left: 4px solid;
+
     }
+
+
 
     .alert-info {
+
       background: rgba(52,152,219,.1);
+
       border-left-color: #3498db;
+
       color: #3498db;
+
     }
+
+
 
     .alert-success {
+
       background: rgba(46,204,113,.1);
+
       border-left-color: var(--green);
+
       color: var(--green);
+
     }
+
+
 
     .alert-warning {
+
       background: rgba(243,156,18,.1);
+
       border-left-color: var(--yellow);
+
       color: var(--yellow);
+
     }
+
+
 
     .alert-error {
+
       background: rgba(231,76,60,.1);
+
       border-left-color: var(--red);
+
       color: var(--red);
+
     }
+
+
 
     /* ===== CHATBOT ===== */
+
     .chatbot-container {
+
       position: fixed;
+
       bottom: 2rem;
+
       right: 2rem;
+
       z-index: 1000;
+
     }
+
+
 
     .chatbot-button {
+
       width: 60px;
+
       height: 60px;
+
       background: linear-gradient(135deg, var(--gold), var(--gold-dk));
+
       border: none;
+
       border-radius: 50%;
+
       cursor: pointer;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: 1.8rem;
+
       box-shadow: 0 8px 25px rgba(245,197,24,.4);
+
       transition: all .3s;
+
     }
+
+
 
     .chatbot-button:hover {
+
       transform: scale(1.1);
+
       box-shadow: 0 12px 35px rgba(245,197,24,.5);
+
     }
 
+
+
     .chatbot-window {
+
       position: absolute;
+
       bottom: 80px;
+
       right: 0;
+
       width: 380px;
+
       height: 500px;
+
       background: var(--card);
+
       border: 1.5px solid var(--border);
+
       border-radius: 16px;
+
       display: none;
+
       flex-direction: column;
+
       box-shadow: 0 20px 60px rgba(0,0,0,.5);
+
       overflow: hidden;
+
     }
+
+
 
     .chatbot-window.open { display: flex; }
 
+
+
     .chatbot-header {
+
       background: linear-gradient(135deg, var(--gold), var(--gold-dk));
+
       color: #000;
+
       padding: 1.2rem;
+
       font-weight: 800;
+
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       gap: .8rem;
+
     }
+
+
 
     .chatbot-header span:first-child { font-size: 1.2rem; }
 
+
+
     .chatbot-close {
+
       background: none;
+
       border: none;
+
       color: #000;
+
       font-size: 1.5rem;
+
       cursor: pointer;
+
       padding: 0;
+
       width: 30px;
+
       height: 30px;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
     }
+
+
 
     .chatbot-messages {
+
       flex: 1;
+
       overflow-y: auto;
+
       padding: 1.5rem;
+
       display: flex;
+
       flex-direction: column;
+
       gap: 1rem;
+
     }
 
+
+
     .message {
+
       display: flex;
+
       gap: .6rem;
+
       margin-bottom: .8rem;
+
     }
+
+
 
     .message.user { justify-content: flex-end; }
 
+
+
     .message-bubble {
+
       max-width: 75%;
+
       padding: .8rem 1rem;
+
       border-radius: 12px;
+
       font-size: .9rem;
+
       line-height: 1.5;
+
       word-wrap: break-word;
+
     }
+
+
 
     .message.bot .message-bubble {
+
       background: var(--dark3);
+
       color: var(--text);
+
       border: 1px solid var(--border);
+
     }
+
+
 
     .message.user .message-bubble {
+
       background: var(--gold);
+
       color: #000;
+
       font-weight: 600;
+
     }
+
+
 
     .message-avatar {
+
       width: 28px;
+
       height: 28px;
+
       border-radius: 50%;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: .9rem;
+
       flex-shrink: 0;
+
     }
+
+
 
     .message.bot .message-avatar {
+
       background: rgba(245,197,24,.2);
+
       color: var(--gold);
+
     }
+
+
 
     .chatbot-input {
+
       padding: 1rem;
+
       border-top: 1px solid var(--border);
+
       display: flex;
+
       gap: .6rem;
+
     }
+
+
 
     .chatbot-input input {
+
       flex: 1;
+
       background: var(--dark3);
+
       border: 1px solid var(--border);
+
       border-radius: 8px;
+
       padding: .7rem 1rem;
+
       color: var(--text);
+
       font-size: .9rem;
+
       outline: none;
+
     }
+
+
 
     .chatbot-input input:focus {
+
       border-color: var(--gold);
+
       box-shadow: 0 0 0 3px rgba(245,197,24,.1);
+
     }
+
+
 
     .chatbot-input button {
+
       background: var(--gold);
+
       border: none;
+
       border-radius: 8px;
+
       color: #000;
+
       cursor: pointer;
+
       width: 40px;
+
       height: 40px;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-weight: 800;
+
       transition: all .2s;
+
     }
+
+
 
     .chatbot-input button:hover {
+
       background: var(--gold-dk);
+
       transform: scale(1.05);
+
     }
+
+
 
     .page { display: none; }
+
     .page.active { display: block; }
 
+
+
     /* ===== RESPONSIVE ===== */
+
     @media (max-width: 1024px) {
+
       body { grid-template-columns: 200px 1fr; }
+
       .chatbot-window { width: 320px; }
+
     }
+
+
 
     @media (max-width: 768px) {
+
       body { grid-template-columns: 1fr; }
+
       aside { display: none; }
+
       main { grid-column: 1; padding: 1.5rem; }
+
       .form-row { grid-template-columns: 1fr; }
+
       .chatbot-window { width: 100%; bottom: 0; right: 0; border-radius: 16px 16px 0 0; }
+
     }
+
   </style>
+
 </head>
+
 <body>
 
+
+
   <!-- HEADER -->
+
+  <header>
+
+    <div class="header-left">
+
+      <a href="index.html" class="logo">
+
+        <div class="logo-icon">🎬</div>
+
+        <span class="logo-text">Cinema <span>Pro</span></span>
+
+      </a>
+
+      <span class="header-title">Dashboard Profissional</span>
+
+    </div>
+
+
+
+    <div class="header-right">
+
+      <div class="user-menu">
+
+        <div class="user-avatar">N</div>
+
+        <div class="user-info">
+
+          <div class="user-name">Nelson Jesus</div>
+
+          <div class="user-role">Operador Profissional</div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- SIDEBAR -->
+
+  <aside>
+
+    <ul class="sidebar-menu">
+
+      <li><button class="sidebar-item active" data-page="inicio"><span>📊</span> Início</button></li>
+
+      <li><button class="sidebar-item" data-page="shows"><span>🎬</span> Meus Shows</button></li>
+
+      <li><button class="sidebar-item" data-page="schedule"><span>📅</span> Schedule</button></li>
+
+      <li><button class="sidebar-item" data-page="ingest"><span>📥</span> Ingest</button></li>
+
+      <li><button class="sidebar-item" data-page="kdm"><span>🔐</span> KDM Manager</button></li>
+
+      <li><button class="sidebar-item" data-page="automacao"><span>🤖</span> Automação</button></li>
+
+      <li><button class="sidebar-item" data-page="troubleshooting"><span>🔧</span> Troubleshooting</button></li>
+
+      <li><button class="sidebar-item" data-page="configuracoes"><span>⚙️</span> Configurações</button></li>
+
+    </ul>
+
+  </aside>
+
+
+
+  <!-- MAIN CONTENT -->
+
+  <main>
+
+    <div class="container">
+
+
+
+      <!-- PÁGINA: INÍCIO -->
+
+      <div id="page-inicio" class="page active">
+
+        <div class="page-header">
+
+          <h1>Bem-vindo, Nelson! 🎬</h1>
+
+          <p>Painel de controle da sua operação de cinema profissional.</p>
+
+        </div>
+
+
+
+        <div class="alert alert-success">
+
+          ✅ Todas as salas operacionais e prontas para sessão
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Resumo Operacional</h2>
+
+          <table class="config-table">
+
+            <tr>
+
+              <th>Métrica</th>
+
+              <th>Valor</th>
+
+              <th>Status</th>
+
+            </tr>
+
+            <tr>
+
+              <td>Filmes em Ingest</td>
+
+              <td class="config-value">3</td>
+
+              <td>⏳ Processando</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Shows Criados</td>
+
+              <td class="config-value">12</td>
+
+              <td>✅ Pronto</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Sessões Agendadas</td>
+
+              <td class="config-value">28</td>
+
+              <td>✅ Pronto</td>
+
+            </tr>
+
+            <tr>
+
+              <td>KDM Válidos</td>
+
+              <td class="config-value">25</td>
+
+              <td>✅ Válido</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Salas Operacionais</td>
+
+              <td class="config-value">6/6</td>
+
+              <td>✅ Online</td>
+
+            </tr>
+
+          </table>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Próximas Ações</h2>
+
+          <p>Clique em qualquer seção do menu para começar a trabalhar:</p>
+
+          <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+
+            <li><strong>Meus Shows:</strong> Criar ou editar estrutura de sessões</li>
+
+            <li><strong>Schedule:</strong> Agendar horários e salas</li>
+
+            <li><strong>Ingest:</strong> Copiar filmes para o servidor</li>
+
+            <li><strong>KDM Manager:</strong> Gerenciar chaves de segurança</li>
+
+            <li><strong>Automação:</strong> Configurar luz, som e cortina</li>
+
+            <li><strong>Troubleshooting:</strong> Resolver problemas</li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- PÁGINA: MEUS SHOWS -->
+
+      <div id="page-shows" class="page">
+
+        <div class="page-header">
+
+          <h1>Meus Shows 🎬</h1>
+
+          <p>Crie e gerencie a estrutura de suas sessões cinematográficas.</p>
+
+        </div>
+
+
+
+        <div class="alert alert-info">
+
+          💡 Um "Show" é a estrutura completa de uma sessão: blacks, trailers, propaganda e filme.
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Como Criar um Show do Zero</h2>
+
+
+
+          <div class="step-guide">
+
+            <h4>Passo a Passo Profissional</h4>
+
+            <ol>
+
+              <li><strong>Definir Nome do Show:</strong> "SALA 01 - DUNE 2 - 20:30"</li>
+
+              <li><strong>Criar BLACK Inicial (30s):</strong> Prepara a sala antes da sessão</li>
+
+              <li><strong>Adicionar Trailers:</strong> Em ordem, sempre em Flat 2D</li>
+
+              <li><strong>Adicionar Propagandas:</strong> Anúncios da sessão</li>
+
+              <li><strong>Criar BLACK de Transição (5s):</strong> Prepara para o filme</li>
+
+              <li><strong>Adicionar Filme Principal:</strong> Verificar formato (Scope/Flat)</li>
+
+              <li><strong>Criar BLACK Final (30s):</strong> Encerra a sessão</li>
+
+            </ol>
+
+          </div>
+
+
+
+          <h3>Configuração Padrão de um Show Completo</h3>
+
+          <table class="config-table">
+
+            <tr>
+
+              <th>Elemento</th>
+
+              <th>Duração</th>
+
+              <th>Configuração</th>
+
+              <th>Descrição</th>
+
+            </tr>
+
+            <tr>
+
+              <td><strong>BLACK 30s Inicial</strong></td>
+
+              <td>30s</td>
+
+              <td>Lamp ON • Vol 41 • Luz 50%</td>
+
+              <td>Preparação da sala</td>
+
+            </tr>
+
+            <tr>
+
+              <td><strong>Trailers</strong></td>
+
+              <td>Variável</td>
+
+              <td>Flat 2D • Vol 41</td>
+
+              <td>Sempre em Flat</td>
+
+            </tr>
+
+            <tr>
+
+              <td><strong>Propagandas</strong></td>
+
+              <td>Variável</td>
+
+              <td>Flat 2D • Vol 41</td>
+
+              <td>Anúncios</td>
+
+            </tr>
+
+            <tr>
+
+              <td><strong>BLACK 5s Transição</strong></td>
+
+              <td>5s</td>
+
+              <td>Scope/Flat • Vol 6.5</td>
+
+              <td>Ajusta formato do filme</td>
+
+            </tr>
+
+            <tr>
+
+              <td><strong>FILME</strong></td>
+
+              <td>Variável</td>
+
+              <td>Scope ou Flat • Vol 6.5</td>
+
+              <td>Filme principal</td>
+
+            </tr>
+
+            <tr>
+
+              <td><strong>BLACK 30s Final</strong></td>
+
+              <td>30s</td>
+
+              <td>Lamp OFF • Vol 23 • Luz 100%</td>
+
+              <td>Encerramento</td>
+
+            </tr>
+
+          </table>
+
+
+
+          <h3>Formulário de Criação de Show</h3>
+
+          <div class="form-group">
+
+            <label>Nome do Show</label>
+
+            <input type="text" placeholder="Ex: SALA 01 - DUNE 2 - 20:30" />
+
+          </div>
+
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label>Sala</label>
+
+              <select>
+
+                <option>Sala 01</option>
+
+                <option>Sala 02</option>
+
+                <option>Sala 03</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Filme Principal</label>
+
+              <select>
+
+                <option>Selecione um filme...</option>
+
+                <option>Dune: Part Two</option>
+
+                <option>Avatar 3</option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label>Formato do Filme</label>
+
+              <select>
+
+                <option>Scope (2.39:1)</option>
+
+                <option>Flat (1.85:1)</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Volume Filme (0-10)</label>
+
+              <input type="number" min="0" max="10" value="6.5" />
+
+            </div>
+
+          </div>
+
+
+
+          <button class="btn" onclick="handleAction('show_created')">✓ Criar Show</button>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- PÁGINA: SCHEDULE -->
+
+      <div id="page-schedule" class="page">
+
+        <div class="page-header">
+
+          <h1>Schedule 📅</h1>
+
+          <p>Programe horários e salas para suas sessões.</p>
+
+        </div>
+
+
+
+        <div class="alert alert-info">
+
+          💡 Schedule é onde você agenda QUANDO e EM QUAL SALA cada show vai rodar. Com Show + Schedule você já está ~40% pronto!
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Como Criar um Schedule</h2>
+
+
+
+          <div class="step-guide">
+
+            <h4>Passo a Passo</h4>
+
+            <ol>
+
+              <li><strong>Selecione o Show:</strong> Escolha um show já criado</li>
+
+              <li><strong>Selecione a Sala:</strong> Em qual sala vai rodar</li>
+
+              <li><strong>Defina o Horário:</strong> Que horas a sessão começa</li>
+
+              <li><strong>Defina a Data:</strong> Qual dia vai rodar</li>
+
+              <li><strong>Sincronize com TMS:</strong> Envie para o Theatre Management System</li>
+
+              <li><strong>Confirme:</strong> Sessão pronta para rodar</li>
+
+            </ol>
+
+          </div>
+
+
+
+          <h3>Formulário de Agendamento</h3>
+
+          <div class="form-group">
+
+            <label>Show a Agendar</label>
+
+            <select>
+
+              <option>SALA 01 - DUNE 2 - 20:30</option>
+
+              <option>SALA 02 - AVATAR 3 - 18:00</option>
+
+            </select>
+
+          </div>
+
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label>Sala</label>
+
+              <select>
+
+                <option>Sala 01</option>
+
+                <option>Sala 02</option>
+
+                <option>Sala 03</option>
+
+                <option>Sala 04</option>
+
+                <option>Sala 05</option>
+
+                <option>Sala 06</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Data</label>
+
+              <input type="date" />
+
+            </div>
+
+          </div>
+
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label>Horário de Início</label>
+
+              <input type="time" value="20:30" />
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Tipo de Sessão</label>
+
+              <select>
+
+                <option>Sessão Normal</option>
+
+                <option>Sessão VIP</option>
+
+                <option>Sessão Infantil</option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+
+          <button class="btn" onclick="handleAction('schedule_created')">✓ Agendar Sessão</button>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Grade de Horários Atual</h2>
+
+          <table class="config-table">
+
+            <tr>
+
+              <th>Sala</th>
+
+              <th>Filme</th>
+
+              <th>Horário</th>
+
+              <th>Data</th>
+
+              <th>Status</th>
+
+            </tr>
+
+            <tr>
+
+              <td>Sala 01</td>
+
+              <td>Dune: Part Two</td>
+
+              <td>20:30</td>
+
+              <td>22/03/2025</td>
+
+              <td>✅ Confirmado</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Sala 02</td>
+
+              <td>Avatar 3</td>
+
+              <td>18:00</td>
+
+              <td>22/03/2025</td>
+
+              <td>✅ Confirmado</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Sala 03</td>
+
+              <td>Dune: Part Two</td>
+
+              <td>22:45</td>
+
+              <td>22/03/2025</td>
+
+              <td>✅ Confirmado</td>
+
+            </tr>
+
+          </table>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- PÁGINA: INGEST -->
+
+      <div id="page-ingest" class="page">
+
+        <div class="page-header">
+
+          <h1>Ingest 📥</h1>
+
+          <p>Copie filmes para o servidor. Ingest é o pilar de tudo!</p>
+
+        </div>
+
+
+
+        <div class="alert alert-warning">
+
+          ⚠️ SEM INGEST, SEM FILME. SEM FILME, SEM SESSÃO. Ingest é a base de toda a operação!
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Como Fazer Ingest Profissional</h2>
+
+
+
+          <div class="step-guide">
+
+            <h4>Passo a Passo Completo</h4>
+
+            <ol>
+
+              <li><strong>Prepare o Arquivo:</strong> DCP em HD externo ou via rede TMS</li>
+
+              <li><strong>Conecte o Servidor:</strong> GDC, Dolby ou Christie</li>
+
+              <li><strong>Inicie o Ingest:</strong> Clique em "Iniciar Ingest" no painel</li>
+
+              <li><strong>Monitore o Progresso:</strong> Acompanhe em tempo real</li>
+
+              <li><strong>Valide Integridade:</strong> Servidor verifica se tudo está OK</li>
+
+              <li><strong>Confirme Sucesso:</strong> Se tudo OK, filme está pronto para usar</li>
+
+              <li><strong>Se Erro:</strong> Verifique o log e tente novamente ou escale</li>
+
+            </ol>
+
+          </div>
+
+
+
+          <h3>Formulário de Ingest</h3>
+
+          <div class="form-group">
+
+            <label>Servidor Destino</label>
+
+            <select>
+
+              <option>GDC Technology (Sala 01)</option>
+
+              <option>Dolby (Sala 02)</option>
+
+              <option>Christie (Sala 03)</option>
+
+            </select>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label>Arquivo DCP</label>
+
+            <input type="file" accept=".dcp" />
+
+          </div>
+
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label>Nome do Filme</label>
+
+              <input type="text" placeholder="Ex: Dune Part Two" />
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Versão</label>
+
+              <select>
+
+                <option>Dublado PT-BR</option>
+
+                <option>Legendado PT-BR</option>
+
+                <option>Original</option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+
+          <button class="btn" onclick="handleAction('ingest_started')">▶ Iniciar Ingest</button>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Status de Ingest em Progresso</h2>
+
+          <table class="config-table">
+
+            <tr>
+
+              <th>Filme</th>
+
+              <th>Servidor</th>
+
+              <th>Progresso</th>
+
+              <th>Status</th>
+
+            </tr>
+
+            <tr>
+
+              <td>Dune: Part Two</td>
+
+              <td>GDC - Sala 01</td>
+
+              <td>85%</td>
+
+              <td>⏳ Processando</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Avatar 3</td>
+
+              <td>Dolby - Sala 02</td>
+
+              <td>100%</td>
+
+              <td>✅ Completo</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Oppenheimer</td>
+
+              <td>Christie - Sala 03</td>
+
+              <td>45%</td>
+
+              <td>⏳ Processando</td>
+
+            </tr>
+
+          </table>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- PÁGINA: KDM MANAGER -->
+
+      <div id="page-kdm" class="page">
+
+        <div class="page-header">
+
+          <h1>KDM Manager 🔐</h1>
+
+          <p>Gerencie chaves de segurança dos filmes.</p>
+
+        </div>
+
+
+
+        <div class="alert alert-info">
+
+          💡 KDM é a "chave de segurança" do filme. Define QUAL servidor, EM QUAL SALA e POR QUANTO TEMPO o filme pode rodar.
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>O que é KDM?</h2>
+
+          <p><strong>KDM = Key Delivery Message</strong></p>
+
+          <ul>
+
+            <li>É um arquivo de segurança que libera o filme</li>
+
+            <li>Controla qual servidor pode abrir o filme</li>
+
+            <li>Define em qual sala o filme pode rodar</li>
+
+            <li>Tem data de validade (começo e fim)</li>
+
+            <li>Se vencido ou errado: <span style="color: var(--red);">FILME NÃO ABRE</span></li>
+
+          </ul>
+
+
+
+          <h3>Como Importar e Gerenciar KDM</h3>
+
+          <div class="step-guide">
+
+            <h4>Passo a Passo</h4>
+
+            <ol>
+
+              <li><strong>Receba o KDM:</strong> Da distribuidora do filme</li>
+
+              <li><strong>Verifique a Data:</strong> Validade começa e termina quando?</li>
+
+              <li><strong>Verifique o Servidor:</strong> É para qual servidor? (GDC, Dolby, Christie)</li>
+
+              <li><strong>Importe no Sistema:</strong> Clique em "Importar KDM"</li>
+
+              <li><strong>Valide:</strong> Sistema confirma se está OK</li>
+
+              <li><strong>Libere o Filme:</strong> Agora o filme pode rodar</li>
+
+            </ol>
+
+          </div>
+
+
+
+          <h3>Formulário de Importação de KDM</h3>
+
+          <div class="form-group">
+
+            <label>Arquivo KDM</label>
+
+            <input type="file" accept=".xml" />
+
+          </div>
+
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label>Filme</label>
+
+              <select>
+
+                <option>Dune: Part Two</option>
+
+                <option>Avatar 3</option>
+
+                <option>Oppenheimer</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Servidor</label>
+
+              <select>
+
+                <option>GDC - Sala 01</option>
+
+                <option>Dolby - Sala 02</option>
+
+                <option>Christie - Sala 03</option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+
+          <button class="btn" onclick="handleAction('kdm_imported')">✓ Importar KDM</button>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>KDM Válidos e Vencidos</h2>
+
+          <table class="config-table">
+
+            <tr>
+
+              <th>Filme</th>
+
+              <th>Servidor</th>
+
+              <th>Válido De</th>
+
+              <th>Válido Até</th>
+
+              <th>Status</th>
+
+            </tr>
+
+            <tr>
+
+              <td>Dune: Part Two</td>
+
+              <td>GDC - Sala 01</td>
+
+              <td>22/03/2025</td>
+
+              <td>29/03/2025</td>
+
+              <td style="color: var(--green);">✅ Válido</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Avatar 3</td>
+
+              <td>Dolby - Sala 02</td>
+
+              <td>20/03/2025</td>
+
+              <td>27/03/2025</td>
+
+              <td style="color: var(--green);">✅ Válido</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Oppenheimer</td>
+
+              <td>Christie - Sala 03</td>
+
+              <td>15/03/2025</td>
+
+              <td>20/03/2025</td>
+
+              <td style="color: var(--red);">❌ VENCIDO</td>
+
+            </tr>
+
+          </table>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- PÁGINA: AUTOMAÇÃO -->
+
+      <div id="page-automacao" class="page">
+
+        <div class="page-header">
+
+          <h1>Automação 🤖</h1>
+
+          <p>Configure luz, som, cortina e projetor automaticamente.</p>
+
+        </div>
+
+
+
+        <div class="alert alert-info">
+
+          💡 Automação sincroniza tudo com o filme: luz acende/apaga, cortina abre/fecha, som sobe/desce. Tudo automático!
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Configuração de Dimmer (Luz)</h2>
+
+
+
+          <h3>Padrão Profissional</h3>
+
+          <table class="config-table">
+
+            <tr>
+
+              <th>Momento</th>
+
+              <th>Nível de Luz</th>
+
+              <th>Descrição</th>
+
+            </tr>
+
+            <tr>
+
+              <td>Início (Black 30s)</td>
+
+              <td class="config-value">50%</td>
+
+              <td>Meia luz para preparação</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Trailers</td>
+
+              <td class="config-value">50%</td>
+
+              <td>Mantém meia luz</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Filme</td>
+
+              <td class="config-value">0%</td>
+
+              <td>Escuro total para melhor imagem</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Final (Black 30s)</td>
+
+              <td class="config-value">100%</td>
+
+              <td>Luz total para saída</td>
+
+            </tr>
+
+          </table>
+
+
+
+          <h3>Configurar Dimmer</h3>
+
+          <div class="form-group">
+
+            <label>Luz no Início (0-100%)</label>
+
+            <input type="range" min="0" max="100" value="50" />
+
+            <span style="color: var(--gold); font-weight: 700;">50%</span>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label>Luz Durante Filme (0-100%)</label>
+
+            <input type="range" min="0" max="100" value="0" />
+
+            <span style="color: var(--gold); font-weight: 700;">0%</span>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label>Luz no Final (0-100%)</label>
+
+            <input type="range" min="0" max="100" value="100" />
+
+            <span style="color: var(--gold); font-weight: 700;">100%</span>
+
+          </div>
+
+
+
+          <button class="btn" onclick="handleAction('dimmer_saved')">✓ Salvar Configuração</button>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Configuração de Volume</h2>
+
+
+
+          <h3>Padrão Profissional</h3>
+
+          <table class="config-table">
+
+            <tr>
+
+              <th>Momento</th>
+
+              <th>Volume</th>
+
+              <th>Descrição</th>
+
+            </tr>
+
+            <tr>
+
+              <td>Black Inicial</td>
+
+              <td class="config-value">41</td>
+
+              <td>Volume de pré-show</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Trailers</td>
+
+              <td class="config-value">41</td>
+
+              <td>Volume padrão</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Filme</td>
+
+              <td class="config-value">6.5</td>
+
+              <td>Volume do filme (ajustável por sala)</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Final</td>
+
+              <td class="config-value">23</td>
+
+              <td>Som ambiente</td>
+
+            </tr>
+
+          </table>
+
+
+
+          <div class="form-group">
+
+            <label>Volume Pré-Show (0-100)</label>
+
+            <input type="number" min="0" max="100" value="41" />
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label>Volume Filme (0-10)</label>
+
+            <input type="number" min="0" max="10" value="6.5" step="0.5" />
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label>Volume Final (0-100)</label>
+
+            <input type="number" min="0" max="100" value="23" />
+
+          </div>
+
+
+
+          <button class="btn" onclick="handleAction('volume_saved')">✓ Salvar Configuração</button>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Controle de Cortina</h2>
+
+
+
+          <div class="form-group">
+
+            <label>Abrir Cortina Automaticamente?</label>
+
+            <select>
+
+              <option>Sim - Abrir ao iniciar filme</option>
+
+              <option>Não - Controle manual</option>
+
+            </select>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label>Fechar Cortina Automaticamente?</label>
+
+            <select>
+
+              <option>Sim - Fechar ao terminar filme</option>
+
+              <option>Não - Controle manual</option>
+
+            </select>
+
+          </div>
+
+
+
+          <button class="btn" onclick="handleAction('curtain_saved')">✓ Salvar Configuração</button>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- PÁGINA: TROUBLESHOOTING -->
+
+      <div id="page-troubleshooting" class="page">
+
+        <div class="page-header">
+
+          <h1>Troubleshooting 🔧</h1>
+
+          <p>Resolva problemas comuns de operação.</p>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Problemas Comuns e Soluções</h2>
+
+
+
+          <h3>❌ Problema: Filme Não Abre</h3>
+
+          <p><strong>Possíveis Causas:</strong></p>
+
+          <ul>
+
+            <li>KDM vencido ou inválido</li>
+
+            <li>KDM para servidor errado</li>
+
+            <li>Relógio do servidor desincronizado</li>
+
+            <li>Arquivo DCP corrompido</li>
+
+          </ul>
+
+          <p><strong>Solução:</strong></p>
+
+          <ol>
+
+            <li>Verifique data e hora do servidor</li>
+
+            <li>Confirme se KDM é para este servidor</li>
+
+            <li>Verifique validade do KDM</li>
+
+            <li>Se erro persistir, refaça o ingest</li>
+
+          </ol>
+
+
+
+          <h3>❌ Problema: Tela Preta</h3>
+
+          <p><strong>Possíveis Causas:</strong></p>
+
+          <ul>
+
+            <li>Projetor desligado</li>
+
+            <li>Cabo HDMI desconectado</li>
+
+            <li>Macro de automação não executou</li>
+
+            <li>Lâmpada queimada</li>
+
+          </ul>
+
+          <p><strong>Solução:</strong></p>
+
+          <ol>
+
+            <li>Verifique se projetor está ligado</li>
+
+            <li>Confirme conexão dos cabos</li>
+
+            <li>Teste manualmente a lâmpada</li>
+
+            <li>Execute macro manualmente</li>
+
+          </ol>
+
+
+
+          <h3>❌ Problema: Sem Som</h3>
+
+          <p><strong>Possíveis Causas:</strong></p>
+
+          <ul>
+
+            <li>Automação não ativou áudio</li>
+
+            <li>Processador de som desligado</li>
+
+            <li>Canal errado (5.1 vs 7.1)</li>
+
+            <li>Volume zerado</li>
+
+          </ul>
+
+          <p><strong>Solução:</strong></p>
+
+          <ol>
+
+            <li>Verifique volume no servidor</li>
+
+            <li>Confirme processador de som ligado</li>
+
+            <li>Teste canal de áudio correto</li>
+
+            <li>Execute automação manualmente</li>
+
+          </ol>
+
+
+
+          <h3>❌ Problema: Filme Travando</h3>
+
+          <p><strong>Possíveis Causas:</strong></p>
+
+          <ul>
+
+            <li>Erro no arquivo DCP</li>
+
+            <li>HD do servidor com problema</li>
+
+            <li>Ingest incompleto</li>
+
+            <li>Arquivo corrompido</li>
+
+          </ul>
+
+          <p><strong>Solução:</strong></p>
+
+          <ol>
+
+            <li>Verifique integridade do DCP</li>
+
+            <li>Teste outro filme para confirmar</li>
+
+            <li>Se problema persistir, refaça ingest</li>
+
+            <li>Escale para técnico de hardware</li>
+
+          </ol>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Formulário de Diagnóstico</h2>
+
+          <div class="form-group">
+
+            <label>Descreva o Problema</label>
+
+            <textarea rows="4" placeholder="Ex: Filme não abre, tela preta, sem som..."></textarea>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label>Qual Sala?</label>
+
+            <select>
+
+              <option>Sala 01</option>
+
+              <option>Sala 02</option>
+
+              <option>Sala 03</option>
+
+              <option>Sala 04</option>
+
+              <option>Sala 05</option>
+
+              <option>Sala 06</option>
+
+            </select>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label>Qual Filme?</label>
+
+            <input type="text" placeholder="Nome do filme" />
+
+          </div>
+
+
+
+          <button class="btn" onclick="handleAction('diagnostic_sent')">🔍 Diagnosticar</button>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- PÁGINA: CONFIGURAÇÕES -->
+
+      <div id="page-configuracoes" class="page">
+
+        <div class="page-header">
+
+          <h1>Configurações ⚙️</h1>
+
+          <p>Personalize sua experiência e configure padrões.</p>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h2>Configurações Padrão do Cinema</h2>
+
+
+
+          <h3>Dados do Cinema</h3>
+
+          <div class="form-group">
+
+            <label>Nome do Cinema</label>
+
+            <input type="text" value="Cinema Pro - Nelson Jesus" />
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label>Localização</label>
+
+            <input type="text" value="São Paulo, SP" />
+
+          </div>
+
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label>Número de Salas</label>
+
+              <input type="number" value="6" />
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Tipo de Servidor Padrão</label>
+
+              <select>
+
+                <option>GDC Technology</option>
+
+                <option>Dolby Laboratories</option>
+
+                <option>Christie Digital</option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+
+          <h3>Configurações de Automação Padrão</h3>
+
+          <table class="config-table">
+
+            <tr>
+
+              <th>Configuração</th>
+
+              <th>Valor Padrão</th>
+
+            </tr>
+
+            <tr>
+
+              <td>Luz Inicial (%)</td>
+
+              <td class="config-value">50%</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Volume Pré-Show</td>
+
+              <td class="config-value">41</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Volume Filme</td>
+
+              <td class="config-value">6.5</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Volume Final</td>
+
+              <td class="config-value">23</td>
+
+            </tr>
+
+            <tr>
+
+              <td>Formato Padrão</td>
+
+              <td class="config-value">Flat 2D</td>
+
+            </tr>
+
+          </table>
+
+
+
+          <h3>Configurações de Segurança</h3>
+
+          <div class="form-group">
+
+            <label>Alterar Senha</label>
+
+            <input type="password" placeholder="Nova senha" />
+
+          </div>
+
+
+
+          <button class="btn" onclick="handleAction('settings_saved')">✓ Salvar Configurações</button>
+
+          <button class="btn btn-secondary" onclick="window.location.href='index.html'" style="margin-left: .5rem;">🚪 Sair</button>
+
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+  </main>
+
+
+
+  <!-- CHATBOT -->
+
+  <div class="chatbot-container">
+
+    <button class="chatbot-button" onclick="toggleChatbot()">🤖</button>
+
+    
+
+    <div class="chatbot-window" id="chatbotWindow">
+
+      <div class="chatbot-header">
+
+        <span>🤖</span>
+
+        <span>Assistente Cinema Pro</span>
+
+        <button class="chatbot-close" onclick="toggleChatbot()">✕</button>
+
+      </div>
+
+
+
+      <div class="chatbot-messages" id="chatbotMessages">
+
+        <div class="message bot">
+
+          <div class="message-avatar">🤖</div>
+
+          <div class="message-bubble">Olá Nelson! Sou seu assistente. Como posso ajudar? Pergunte sobre Shows, Schedule, Ingest, KDM, Automação ou Troubleshooting!</div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="chatbot-input">
+
+        <input type="text" id="chatbotInput" placeholder="Digite sua pergunta..." onkeypress="if(event.key==='Enter') sendChatMessage()" />
+
+        <button onclick="sendChatMessage()">▶</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <script>
+
+    const botResponses = {
+
+      'show': 'Um Show é a estrutura de uma sessão: BLACK 30s → Trailers → Propaganda → BLACK 5s → FILME → BLACK 30s. Quer criar um?',
+
+      'schedule': 'Schedule é quando você agenda QUANDO e EM QUAL SALA cada show vai rodar. Com Show + Schedule você já está ~40% pronto!',
+
+      'ingest': 'Ingest é copiar o filme para o servidor. SEM INGEST, SEM FILME! É o pilar de tudo. Quer saber como fazer?',
+
+      'kdm': 'KDM é a chave de segurança. Define qual servidor, qual sala e por quanto tempo o filme pode rodar. Se vencido = filme não abre!',
+
+      'automação': 'Automação controla luz (dimmer), som (volume), cortina e projetor. Tudo sincronizado com o filme automaticamente!',
+
+      'troubleshooting': 'Problemas comuns: Filme não abre (KDM vencido), Tela preta (projetor), Sem som (automação), Filme travando (DCP). Qual é seu problema?',
+
+      'luz': 'Padrão: 50% no início, 0% durante filme, 100% no final. Você pode ajustar no menu Automação!',
+
+      'volume': 'Padrão: 41 (pré-show), 6.5 (filme), 23 (final). Ajuste conforme sua sala no menu Automação!',
+
+      'formato': 'Scope (2.39:1) é mais largo. Flat (1.85:1) é mais alto. Sempre use Flat para trailers!',
+
+      'obrigado': 'De nada! Estou aqui para ajudar! 😊',
+
+      'oi': 'Olá! Como posso ajudar com sua operação de cinema?',
+
+      'default': 'Desculpe, não entendi. Pergunte sobre: Shows, Schedule, Ingest, KDM, Automação ou Troubleshooting!'
+
+    };
+
+
+
+    function toggleChatbot() {
+
+      const window = document.getElementById('chatbotWindow');
+
+      window.classList.toggle('open');
+
+      if (window.classList.contains('open')) {
+
+        document.getElementById('chatbotInput').focus();
+
+      }
+
+    }
+
+
+
+    function sendChatMessage() {
+
+      const input = document.getElementById('chatbotInput');
+
+      const message = input.value.trim();
+
+      
+
+      if (!message) return;
+
+
+
+      addChatMessage(message, 'user');
+
+      input.value = '';
+
+
+
+      setTimeout(() => {
+
+        const response = getBotResponse(message);
+
+        addChatMessage(response, 'bot');
+
+      }, 300);
+
+    }
+
+
+
+    function addChatMessage(text, sender) {
+
+      const messagesDiv = document.getElementById('chatbotMessages');
+
+      const messageDiv = document.createElement('div');
+
+      messageDiv.className = `message ${sender}`;
+
+      
+
+      if (sender === 'bot') {
+
+        messageDiv.innerHTML = `
+
+          <div class="message-avatar">🤖</div>
+
+          <div class="message-bubble">${escapeHtml(text)}</div>
+
+        `;
+
+      } else {
+
+        messageDiv.innerHTML = `
+
+          <div class="message-bubble">${escapeHtml(text)}</div>
+
+          <div class="message-avatar">N</div>
+
+        `;
+
+      }
+
+      
+
+      messagesDiv.appendChild(messageDiv);
+
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    }
+
+
+
+    function getBotResponse(message) {
+
+      const lower = message.toLowerCase();
+
+      for (const [key, response] of Object.entries(botResponses)) {
+
+        if (lower.includes(key)) {
+
+          return response;
+
+        }
+
+      }
+
+      return botResponses.default;
+
+    }
+
+
+
+    function escapeHtml(text) {
+
+      const div = document.createElement('div');
+
+      div.textContent = text;
+
+      return div.innerHTML;
+
+    }
+
+
+
+    function handleAction(action) {
+
+      const messages = {
+
+        'show_created': '✅ Show criado com sucesso!',
+
+        'schedule_created': '✅ Schedule criado com sucesso!',
+
+        'ingest_started': '⏳ Ingest iniciado! Monitorando progresso...',
+
+        'kdm_imported': '✅ KDM importado e validado com sucesso!',
+
+        'dimmer_saved': '✅ Dimmer configurado com sucesso!',
+
+        'volume_saved': '✅ Volume configurado com sucesso!',
+
+        'curtain_saved': '✅ Cortina configurada com sucesso!',
+
+        'diagnostic_sent': '✅ Diagnóstico enviado para análise!',
+
+        'settings_saved': '✅ Configurações salvas com sucesso!'
+
+      };
+
+      
+
+      alert(messages[action] || 'Ação realizada com sucesso!');
+
+    }
+
+
+
+    // Inicializar listeners dos botões do sidebar
+
+    document.querySelectorAll('.sidebar-item').forEach(button => {
+
+      button.addEventListener('click', function() {
+
+        const pageName = this.getAttribute('data-page');
+
+        switchPage(pageName, this);
+
+      });
+
+    });
+
+
+
+    function switchPage(pageName, buttonElement) {
+
+      // Remover classe active de todas as páginas
+
+      document.querySelectorAll('.page').forEach(page => {
+
+        page.classList.remove('active');
+
+      });
+
+
+
+      // Adicionar classe active à página selecionada
+
+      const page = document.getElementById(`page-${pageName}`);
+
+      if (page) {
+
+        page.classList.add('active');
+
+      }
+
+
+
+      // Atualizar botão ativo no sidebar
+
+      document.querySelectorAll('.sidebar-item').forEach(item => {
+
+        item.classList.remove('active');
+
+      });
+
+      if (buttonElement) {
+
+        buttonElement.classList.add('active');
+
+      }
+
+    }
+
+  </script>
+
+
+
+</body>
+
+</html>
+
+
+  </style>
+  </head>
+<body>
+
   <header>
     <div class="header-left">
-      <a href="index.html" class="logo">
+      <div class="logo">
         <div class="logo-icon">🎬</div>
         <span class="logo-text">Cinema <span>Pro</span></span>
-      </a>
+      </div>
       <span class="header-title">Dashboard Profissional</span>
     </div>
 
     <div class="header-right">
-      <div class="user-menu">
-        <div class="user-avatar">N</div>
+      <div class="user-menu" onclick="switchPage('configuracoes')">
+        <div class="user-avatar" id="avatar-letra">U</div>
         <div class="user-info">
-          <div class="user-name">Nelson Jesus</div>
+          <div class="user-name" id="display-nome">Carregando...</div>
           <div class="user-role">Operador Profissional</div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- SIDEBAR -->
   <aside>
     <ul class="sidebar-menu">
-      <li><button class="sidebar-item active" data-page="inicio"><span>📊</span> Início</button></li>
-      <li><button class="sidebar-item" data-page="shows"><span>🎬</span> Meus Shows</button></li>
-      <li><button class="sidebar-item" data-page="schedule"><span>📅</span> Schedule</button></li>
-      <li><button class="sidebar-item" data-page="ingest"><span>📥</span> Ingest</button></li>
-      <li><button class="sidebar-item" data-page="kdm"><span>🔐</span> KDM Manager</button></li>
-      <li><button class="sidebar-item" data-page="automacao"><span>🤖</span> Automação</button></li>
-      <li><button class="sidebar-item" data-page="troubleshooting"><span>🔧</span> Troubleshooting</button></li>
-      <li><button class="sidebar-item" data-page="configuracoes"><span>⚙️</span> Configurações</button></li>
+      <li><button class="sidebar-item active" onclick="switchPage('inicio', this)"><span>📊</span> Início</button></li>
+      <li><button class="sidebar-item" onclick="switchPage('shows', this)"><span>🎬</span> Meus Shows</button></li>
+      <li><button class="sidebar-item" onclick="switchPage('schedule', this)"><span>📅</span> Schedule</button></li>
+      <li><button class="sidebar-item" onclick="switchPage('ingest', this)"><span>📥</span> Ingest</button></li>
+      <li><button class="sidebar-item" onclick="switchPage('kdm', this)"><span>🔐</span> KDM Manager</button></li>
+      <li><button class="sidebar-item" onclick="switchPage('automacao', this)"><span>🤖</span> Automação</button></li>
+      <li><button class="sidebar-item" onclick="switchPage('troubleshooting', this)"><span>🔧</span> Troubleshooting</button></li>
+      <li><button class="sidebar-item" onclick="switchPage('configuracoes', this)"><span>⚙️</span> Configurações</button></li>
     </ul>
   </aside>
 
-  <!-- MAIN CONTENT -->
   <main>
     <div class="container">
-
-      <!-- PÁGINA: INÍCIO -->
-      <div id="page-inicio" class="page active">
-        <div class="page-header">
-          <h1>Bem-vindo, Nelson! 🎬</h1>
-          <p>Painel de controle da sua operação de cinema profissional.</p>
-        </div>
-
-        <div class="alert alert-success">
-          ✅ Todas as salas operacionais e prontas para sessão
-        </div>
-
-        <div class="card">
-          <h2>Resumo Operacional</h2>
-          <table class="config-table">
-            <tr>
-              <th>Métrica</th>
-              <th>Valor</th>
-              <th>Status</th>
-            </tr>
-            <tr>
-              <td>Filmes em Ingest</td>
-              <td class="config-value">3</td>
-              <td>⏳ Processando</td>
-            </tr>
-            <tr>
-              <td>Shows Criados</td>
-              <td class="config-value">12</td>
-              <td>✅ Pronto</td>
-            </tr>
-            <tr>
-              <td>Sessões Agendadas</td>
-              <td class="config-value">28</td>
-              <td>✅ Pronto</td>
-            </tr>
-            <tr>
-              <td>KDM Válidos</td>
-              <td class="config-value">25</td>
-              <td>✅ Válido</td>
-            </tr>
-            <tr>
-              <td>Salas Operacionais</td>
-              <td class="config-value">6/6</td>
-              <td>✅ Online</td>
-            </tr>
-          </table>
-        </div>
-
-        <div class="card">
-          <h2>Próximas Ações</h2>
-          <p>Clique em qualquer seção do menu para começar a trabalhar:</p>
-          <ul style="margin-left: 1.5rem; margin-top: 1rem;">
-            <li><strong>Meus Shows:</strong> Criar ou editar estrutura de sessões</li>
-            <li><strong>Schedule:</strong> Agendar horários e salas</li>
-            <li><strong>Ingest:</strong> Copiar filmes para o servidor</li>
-            <li><strong>KDM Manager:</strong> Gerenciar chaves de segurança</li>
-            <li><strong>Automação:</strong> Configurar luz, som e cortina</li>
-            <li><strong>Troubleshooting:</strong> Resolver problemas</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- PÁGINA: MEUS SHOWS -->
-      <div id="page-shows" class="page">
-        <div class="page-header">
-          <h1>Meus Shows 🎬</h1>
-          <p>Crie e gerencie a estrutura de suas sessões cinematográficas.</p>
-        </div>
-
-        <div class="alert alert-info">
-          💡 Um "Show" é a estrutura completa de uma sessão: blacks, trailers, propaganda e filme.
-        </div>
-
-        <div class="card">
-          <h2>Como Criar um Show do Zero</h2>
-
-          <div class="step-guide">
-            <h4>Passo a Passo Profissional</h4>
-            <ol>
-              <li><strong>Definir Nome do Show:</strong> "SALA 01 - DUNE 2 - 20:30"</li>
-              <li><strong>Criar BLACK Inicial (30s):</strong> Prepara a sala antes da sessão</li>
-              <li><strong>Adicionar Trailers:</strong> Em ordem, sempre em Flat 2D</li>
-              <li><strong>Adicionar Propagandas:</strong> Anúncios da sessão</li>
-              <li><strong>Criar BLACK de Transição (5s):</strong> Prepara para o filme</li>
-              <li><strong>Adicionar Filme Principal:</strong> Verificar formato (Scope/Flat)</li>
-              <li><strong>Criar BLACK Final (30s):</strong> Encerra a sessão</li>
-            </ol>
-          </div>
-
-          <h3>Configuração Padrão de um Show Completo</h3>
-          <table class="config-table">
-            <tr>
-              <th>Elemento</th>
-              <th>Duração</th>
-              <th>Configuração</th>
-              <th>Descrição</th>
-            </tr>
-            <tr>
-              <td><strong>BLACK 30s Inicial</strong></td>
-              <td>30s</td>
-              <td>Lamp ON • Vol 41 • Luz 50%</td>
-              <td>Preparação da sala</td>
-            </tr>
-            <tr>
-              <td><strong>Trailers</strong></td>
-              <td>Variável</td>
-              <td>Flat 2D • Vol 41</td>
-              <td>Sempre em Flat</td>
-            </tr>
-            <tr>
-              <td><strong>Propagandas</strong></td>
-              <td>Variável</td>
-              <td>Flat 2D • Vol 41</td>
-              <td>Anúncios</td>
-            </tr>
-            <tr>
-              <td><strong>BLACK 5s Transição</strong></td>
-              <td>5s</td>
-              <td>Scope/Flat • Vol 6.5</td>
-              <td>Ajusta formato do filme</td>
-            </tr>
-            <tr>
-              <td><strong>FILME</strong></td>
-              <td>Variável</td>
-              <td>Scope ou Flat • Vol 6.5</td>
-              <td>Filme principal</td>
-            </tr>
-            <tr>
-              <td><strong>BLACK 30s Final</strong></td>
-              <td>30s</td>
-              <td>Lamp OFF • Vol 23 • Luz 100%</td>
-              <td>Encerramento</td>
-            </tr>
-          </table>
-
-          <h3>Formulário de Criação de Show</h3>
-          <div class="form-group">
-            <label>Nome do Show</label>
-            <input type="text" placeholder="Ex: SALA 01 - DUNE 2 - 20:30" />
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Sala</label>
-              <select>
-                <option>Sala 01</option>
-                <option>Sala 02</option>
-                <option>Sala 03</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Filme Principal</label>
-              <select>
-                <option>Selecione um filme...</option>
-                <option>Dune: Part Two</option>
-                <option>Avatar 3</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Formato do Filme</label>
-              <select>
-                <option>Scope (2.39:1)</option>
-                <option>Flat (1.85:1)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Volume Filme (0-10)</label>
-              <input type="number" min="0" max="10" value="6.5" />
-            </div>
-          </div>
-
-          <button class="btn" onclick="handleAction('show_created')">✓ Criar Show</button>
-        </div>
-      </div>
-
-      <!-- PÁGINA: SCHEDULE -->
-      <div id="page-schedule" class="page">
-        <div class="page-header">
-          <h1>Schedule 📅</h1>
-          <p>Programe horários e salas para suas sessões.</p>
-        </div>
-
-        <div class="alert alert-info">
-          💡 Schedule é onde você agenda QUANDO e EM QUAL SALA cada show vai rodar. Com Show + Schedule você já está ~40% pronto!
-        </div>
-
-        <div class="card">
-          <h2>Como Criar um Schedule</h2>
-
-          <div class="step-guide">
-            <h4>Passo a Passo</h4>
-            <ol>
-              <li><strong>Selecione o Show:</strong> Escolha um show já criado</li>
-              <li><strong>Selecione a Sala:</strong> Em qual sala vai rodar</li>
-              <li><strong>Defina o Horário:</strong> Que horas a sessão começa</li>
-              <li><strong>Defina a Data:</strong> Qual dia vai rodar</li>
-              <li><strong>Sincronize com TMS:</strong> Envie para o Theatre Management System</li>
-              <li><strong>Confirme:</strong> Sessão pronta para rodar</li>
-            </ol>
-          </div>
-
-          <h3>Formulário de Agendamento</h3>
-          <div class="form-group">
-            <label>Show a Agendar</label>
-            <select>
-              <option>SALA 01 - DUNE 2 - 20:30</option>
-              <option>SALA 02 - AVATAR 3 - 18:00</option>
-            </select>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Sala</label>
-              <select>
-                <option>Sala 01</option>
-                <option>Sala 02</option>
-                <option>Sala 03</option>
-                <option>Sala 04</option>
-                <option>Sala 05</option>
-                <option>Sala 06</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Data</label>
-              <input type="date" />
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Horário de Início</label>
-              <input type="time" value="20:30" />
-            </div>
-            <div class="form-group">
-              <label>Tipo de Sessão</label>
-              <select>
-                <option>Sessão Normal</option>
-                <option>Sessão VIP</option>
-                <option>Sessão Infantil</option>
-              </select>
-            </div>
-          </div>
-
-          <button class="btn" onclick="handleAction('schedule_created')">✓ Agendar Sessão</button>
-        </div>
-
-        <div class="card">
-          <h2>Grade de Horários Atual</h2>
-          <table class="config-table">
-            <tr>
-              <th>Sala</th>
-              <th>Filme</th>
-              <th>Horário</th>
-              <th>Data</th>
-              <th>Status</th>
-            </tr>
-            <tr>
-              <td>Sala 01</td>
-              <td>Dune: Part Two</td>
-              <td>20:30</td>
-              <td>22/03/2025</td>
-              <td>✅ Confirmado</td>
-            </tr>
-            <tr>
-              <td>Sala 02</td>
-              <td>Avatar 3</td>
-              <td>18:00</td>
-              <td>22/03/2025</td>
-              <td>✅ Confirmado</td>
-            </tr>
-            <tr>
-              <td>Sala 03</td>
-              <td>Dune: Part Two</td>
-              <td>22:45</td>
-              <td>22/03/2025</td>
-              <td>✅ Confirmado</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- PÁGINA: INGEST -->
-      <div id="page-ingest" class="page">
-        <div class="page-header">
-          <h1>Ingest 📥</h1>
-          <p>Copie filmes para o servidor. Ingest é o pilar de tudo!</p>
-        </div>
-
-        <div class="alert alert-warning">
-          ⚠️ SEM INGEST, SEM FILME. SEM FILME, SEM SESSÃO. Ingest é a base de toda a operação!
-        </div>
-
-        <div class="card">
-          <h2>Como Fazer Ingest Profissional</h2>
-
-          <div class="step-guide">
-            <h4>Passo a Passo Completo</h4>
-            <ol>
-              <li><strong>Prepare o Arquivo:</strong> DCP em HD externo ou via rede TMS</li>
-              <li><strong>Conecte o Servidor:</strong> GDC, Dolby ou Christie</li>
-              <li><strong>Inicie o Ingest:</strong> Clique em "Iniciar Ingest" no painel</li>
-              <li><strong>Monitore o Progresso:</strong> Acompanhe em tempo real</li>
-              <li><strong>Valide Integridade:</strong> Servidor verifica se tudo está OK</li>
-              <li><strong>Confirme Sucesso:</strong> Se tudo OK, filme está pronto para usar</li>
-              <li><strong>Se Erro:</strong> Verifique o log e tente novamente ou escale</li>
-            </ol>
-          </div>
-
-          <h3>Formulário de Ingest</h3>
-          <div class="form-group">
-            <label>Servidor Destino</label>
-            <select>
-              <option>GDC Technology (Sala 01)</option>
-              <option>Dolby (Sala 02)</option>
-              <option>Christie (Sala 03)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Arquivo DCP</label>
-            <input type="file" accept=".dcp" />
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Nome do Filme</label>
-              <input type="text" placeholder="Ex: Dune Part Two" />
-            </div>
-            <div class="form-group">
-              <label>Versão</label>
-              <select>
-                <option>Dublado PT-BR</option>
-                <option>Legendado PT-BR</option>
-                <option>Original</option>
-              </select>
-            </div>
-          </div>
-
-          <button class="btn" onclick="handleAction('ingest_started')">▶ Iniciar Ingest</button>
-        </div>
-
-        <div class="card">
-          <h2>Status de Ingest em Progresso</h2>
-          <table class="config-table">
-            <tr>
-              <th>Filme</th>
-              <th>Servidor</th>
-              <th>Progresso</th>
-              <th>Status</th>
-            </tr>
-            <tr>
-              <td>Dune: Part Two</td>
-              <td>GDC - Sala 01</td>
-              <td>85%</td>
-              <td>⏳ Processando</td>
-            </tr>
-            <tr>
-              <td>Avatar 3</td>
-              <td>Dolby - Sala 02</td>
-              <td>100%</td>
-              <td>✅ Completo</td>
-            </tr>
-            <tr>
-              <td>Oppenheimer</td>
-              <td>Christie - Sala 03</td>
-              <td>45%</td>
-              <td>⏳ Processando</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- PÁGINA: KDM MANAGER -->
-      <div id="page-kdm" class="page">
-        <div class="page-header">
-          <h1>KDM Manager 🔐</h1>
-          <p>Gerencie chaves de segurança dos filmes.</p>
-        </div>
-
-        <div class="alert alert-info">
-          💡 KDM é a "chave de segurança" do filme. Define QUAL servidor, EM QUAL SALA e POR QUANTO TEMPO o filme pode rodar.
-        </div>
-
-        <div class="card">
-          <h2>O que é KDM?</h2>
-          <p><strong>KDM = Key Delivery Message</strong></p>
-          <ul>
-            <li>É um arquivo de segurança que libera o filme</li>
-            <li>Controla qual servidor pode abrir o filme</li>
-            <li>Define em qual sala o filme pode rodar</li>
-            <li>Tem data de validade (começo e fim)</li>
-            <li>Se vencido ou errado: <span style="color: var(--red);">FILME NÃO ABRE</span></li>
-          </ul>
-
-          <h3>Como Importar e Gerenciar KDM</h3>
-          <div class="step-guide">
-            <h4>Passo a Passo</h4>
-            <ol>
-              <li><strong>Receba o KDM:</strong> Da distribuidora do filme</li>
-              <li><strong>Verifique a Data:</strong> Validade começa e termina quando?</li>
-              <li><strong>Verifique o Servidor:</strong> É para qual servidor? (GDC, Dolby, Christie)</li>
-              <li><strong>Importe no Sistema:</strong> Clique em "Importar KDM"</li>
-              <li><strong>Valide:</strong> Sistema confirma se está OK</li>
-              <li><strong>Libere o Filme:</strong> Agora o filme pode rodar</li>
-            </ol>
-          </div>
-
-          <h3>Formulário de Importação de KDM</h3>
-          <div class="form-group">
-            <label>Arquivo KDM</label>
-            <input type="file" accept=".xml" />
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Filme</label>
-              <select>
-                <option>Dune: Part Two</option>
-                <option>Avatar 3</option>
-                <option>Oppenheimer</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Servidor</label>
-              <select>
-                <option>GDC - Sala 01</option>
-                <option>Dolby - Sala 02</option>
-                <option>Christie - Sala 03</option>
-              </select>
-            </div>
-          </div>
-
-          <button class="btn" onclick="handleAction('kdm_imported')">✓ Importar KDM</button>
-        </div>
-
-        <div class="card">
-          <h2>KDM Válidos e Vencidos</h2>
-          <table class="config-table">
-            <tr>
-              <th>Filme</th>
-              <th>Servidor</th>
-              <th>Válido De</th>
-              <th>Válido Até</th>
-              <th>Status</th>
-            </tr>
-            <tr>
-              <td>Dune: Part Two</td>
-              <td>GDC - Sala 01</td>
-              <td>22/03/2025</td>
-              <td>29/03/2025</td>
-              <td style="color: var(--green);">✅ Válido</td>
-            </tr>
-            <tr>
-              <td>Avatar 3</td>
-              <td>Dolby - Sala 02</td>
-              <td>20/03/2025</td>
-              <td>27/03/2025</td>
-              <td style="color: var(--green);">✅ Válido</td>
-            </tr>
-            <tr>
-              <td>Oppenheimer</td>
-              <td>Christie - Sala 03</td>
-              <td>15/03/2025</td>
-              <td>20/03/2025</td>
-              <td style="color: var(--red);">❌ VENCIDO</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- PÁGINA: AUTOMAÇÃO -->
-      <div id="page-automacao" class="page">
-        <div class="page-header">
-          <h1>Automação 🤖</h1>
-          <p>Configure luz, som, cortina e projetor automaticamente.</p>
-        </div>
-
-        <div class="alert alert-info">
-          💡 Automação sincroniza tudo com o filme: luz acende/apaga, cortina abre/fecha, som sobe/desce. Tudo automático!
-        </div>
-
-        <div class="card">
-          <h2>Configuração de Dimmer (Luz)</h2>
-
-          <h3>Padrão Profissional</h3>
-          <table class="config-table">
-            <tr>
-              <th>Momento</th>
-              <th>Nível de Luz</th>
-              <th>Descrição</th>
-            </tr>
-            <tr>
-              <td>Início (Black 30s)</td>
-              <td class="config-value">50%</td>
-              <td>Meia luz para preparação</td>
-            </tr>
-            <tr>
-              <td>Trailers</td>
-              <td class="config-value">50%</td>
-              <td>Mantém meia luz</td>
-            </tr>
-            <tr>
-              <td>Filme</td>
-              <td class="config-value">0%</td>
-              <td>Escuro total para melhor imagem</td>
-            </tr>
-            <tr>
-              <td>Final (Black 30s)</td>
-              <td class="config-value">100%</td>
-              <td>Luz total para saída</td>
-            </tr>
-          </table>
-
-          <h3>Configurar Dimmer</h3>
-          <div class="form-group">
-            <label>Luz no Início (0-100%)</label>
-            <input type="range" min="0" max="100" value="50" />
-            <span style="color: var(--gold); font-weight: 700;">50%</span>
-          </div>
-
-          <div class="form-group">
-            <label>Luz Durante Filme (0-100%)</label>
-            <input type="range" min="0" max="100" value="0" />
-            <span style="color: var(--gold); font-weight: 700;">0%</span>
-          </div>
-
-          <div class="form-group">
-            <label>Luz no Final (0-100%)</label>
-            <input type="range" min="0" max="100" value="100" />
-            <span style="color: var(--gold); font-weight: 700;">100%</span>
-          </div>
-
-          <button class="btn" onclick="handleAction('dimmer_saved')">✓ Salvar Configuração</button>
-        </div>
-
-        <div class="card">
-          <h2>Configuração de Volume</h2>
-
-          <h3>Padrão Profissional</h3>
-          <table class="config-table">
-            <tr>
-              <th>Momento</th>
-              <th>Volume</th>
-              <th>Descrição</th>
-            </tr>
-            <tr>
-              <td>Black Inicial</td>
-              <td class="config-value">41</td>
-              <td>Volume de pré-show</td>
-            </tr>
-            <tr>
-              <td>Trailers</td>
-              <td class="config-value">41</td>
-              <td>Volume padrão</td>
-            </tr>
-            <tr>
-              <td>Filme</td>
-              <td class="config-value">6.5</td>
-              <td>Volume do filme (ajustável por sala)</td>
-            </tr>
-            <tr>
-              <td>Final</td>
-              <td class="config-value">23</td>
-              <td>Som ambiente</td>
-            </tr>
-          </table>
-
-          <div class="form-group">
-            <label>Volume Pré-Show (0-100)</label>
-            <input type="number" min="0" max="100" value="41" />
-          </div>
-
-          <div class="form-group">
-            <label>Volume Filme (0-10)</label>
-            <input type="number" min="0" max="10" value="6.5" step="0.5" />
-          </div>
-
-          <div class="form-group">
-            <label>Volume Final (0-100)</label>
-            <input type="number" min="0" max="100" value="23" />
-          </div>
-
-          <button class="btn" onclick="handleAction('volume_saved')">✓ Salvar Configuração</button>
-        </div>
-
-        <div class="card">
-          <h2>Controle de Cortina</h2>
-
-          <div class="form-group">
-            <label>Abrir Cortina Automaticamente?</label>
-            <select>
-              <option>Sim - Abrir ao iniciar filme</option>
-              <option>Não - Controle manual</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Fechar Cortina Automaticamente?</label>
-            <select>
-              <option>Sim - Fechar ao terminar filme</option>
-              <option>Não - Controle manual</option>
-            </select>
-          </div>
-
-          <button class="btn" onclick="handleAction('curtain_saved')">✓ Salvar Configuração</button>
-        </div>
-      </div>
-
-      <!-- PÁGINA: TROUBLESHOOTING -->
-      <div id="page-troubleshooting" class="page">
-        <div class="page-header">
-          <h1>Troubleshooting 🔧</h1>
-          <p>Resolva problemas comuns de operação.</p>
-        </div>
-
-        <div class="card">
-          <h2>Problemas Comuns e Soluções</h2>
-
-          <h3>❌ Problema: Filme Não Abre</h3>
-          <p><strong>Possíveis Causas:</strong></p>
-          <ul>
-            <li>KDM vencido ou inválido</li>
-            <li>KDM para servidor errado</li>
-            <li>Relógio do servidor desincronizado</li>
-            <li>Arquivo DCP corrompido</li>
-          </ul>
-          <p><strong>Solução:</strong></p>
-          <ol>
-            <li>Verifique data e hora do servidor</li>
-            <li>Confirme se KDM é para este servidor</li>
-            <li>Verifique validade do KDM</li>
-            <li>Se erro persistir, refaça o ingest</li>
-          </ol>
-
-          <h3>❌ Problema: Tela Preta</h3>
-          <p><strong>Possíveis Causas:</strong></p>
-          <ul>
-            <li>Projetor desligado</li>
-            <li>Cabo HDMI desconectado</li>
-            <li>Macro de automação não executou</li>
-            <li>Lâmpada queimada</li>
-          </ul>
-          <p><strong>Solução:</strong></p>
-          <ol>
-            <li>Verifique se projetor está ligado</li>
-            <li>Confirme conexão dos cabos</li>
-            <li>Teste manualmente a lâmpada</li>
-            <li>Execute macro manualmente</li>
-          </ol>
-
-          <h3>❌ Problema: Sem Som</h3>
-          <p><strong>Possíveis Causas:</strong></p>
-          <ul>
-            <li>Automação não ativou áudio</li>
-            <li>Processador de som desligado</li>
-            <li>Canal errado (5.1 vs 7.1)</li>
-            <li>Volume zerado</li>
-          </ul>
-          <p><strong>Solução:</strong></p>
-          <ol>
-            <li>Verifique volume no servidor</li>
-            <li>Confirme processador de som ligado</li>
-            <li>Teste canal de áudio correto</li>
-            <li>Execute automação manualmente</li>
-          </ol>
-
-          <h3>❌ Problema: Filme Travando</h3>
-          <p><strong>Possíveis Causas:</strong></p>
-          <ul>
-            <li>Erro no arquivo DCP</li>
-            <li>HD do servidor com problema</li>
-            <li>Ingest incompleto</li>
-            <li>Arquivo corrompido</li>
-          </ul>
-          <p><strong>Solução:</strong></p>
-          <ol>
-            <li>Verifique integridade do DCP</li>
-            <li>Teste outro filme para confirmar</li>
-            <li>Se problema persistir, refaça ingest</li>
-            <li>Escale para técnico de hardware</li>
-          </ol>
-        </div>
-
-        <div class="card">
-          <h2>Formulário de Diagnóstico</h2>
-          <div class="form-group">
-            <label>Descreva o Problema</label>
-            <textarea rows="4" placeholder="Ex: Filme não abre, tela preta, sem som..."></textarea>
-          </div>
-
-          <div class="form-group">
-            <label>Qual Sala?</label>
-            <select>
-              <option>Sala 01</option>
-              <option>Sala 02</option>
-              <option>Sala 03</option>
-              <option>Sala 04</option>
-              <option>Sala 05</option>
-              <option>Sala 06</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Qual Filme?</label>
-            <input type="text" placeholder="Nome do filme" />
-          </div>
-
-          <button class="btn" onclick="handleAction('diagnostic_sent')">🔍 Diagnosticar</button>
-        </div>
-      </div>
-
-      <!-- PÁGINA: CONFIGURAÇÕES -->
-      <div id="page-configuracoes" class="page">
-        <div class="page-header">
-          <h1>Configurações ⚙️</h1>
-          <p>Personalize sua experiência e configure padrões.</p>
-        </div>
-
-        <div class="card">
-          <h2>Configurações Padrão do Cinema</h2>
-
-          <h3>Dados do Cinema</h3>
-          <div class="form-group">
-            <label>Nome do Cinema</label>
-            <input type="text" value="Cinema Pro - Nelson Jesus" />
-          </div>
-
-          <div class="form-group">
-            <label>Localização</label>
-            <input type="text" value="São Paulo, SP" />
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Número de Salas</label>
-              <input type="number" value="6" />
-            </div>
-            <div class="form-group">
-              <label>Tipo de Servidor Padrão</label>
-              <select>
-                <option>GDC Technology</option>
-                <option>Dolby Laboratories</option>
-                <option>Christie Digital</option>
-              </select>
-            </div>
-          </div>
-
-          <h3>Configurações de Automação Padrão</h3>
-          <table class="config-table">
-            <tr>
-              <th>Configuração</th>
-              <th>Valor Padrão</th>
-            </tr>
-            <tr>
-              <td>Luz Inicial (%)</td>
-              <td class="config-value">50%</td>
-            </tr>
-            <tr>
-              <td>Volume Pré-Show</td>
-              <td class="config-value">41</td>
-            </tr>
-            <tr>
-              <td>Volume Filme</td>
-              <td class="config-value">6.5</td>
-            </tr>
-            <tr>
-              <td>Volume Final</td>
-              <td class="config-value">23</td>
-            </tr>
-            <tr>
-              <td>Formato Padrão</td>
-              <td class="config-value">Flat 2D</td>
-            </tr>
-          </table>
-
-          <h3>Configurações de Segurança</h3>
-          <div class="form-group">
-            <label>Alterar Senha</label>
-            <input type="password" placeholder="Nova senha" />
-          </div>
-
-          <button class="btn" onclick="handleAction('settings_saved')">✓ Salvar Configurações</button>
-          <button class="btn btn-secondary" onclick="window.location.href='index.html'" style="margin-left: .5rem;">🚪 Sair</button>
-        </div>
-      </div>
-
-    </div>
+       </div>
   </main>
 
-  <!-- CHATBOT -->
-  <div class="chatbot-container">
-    <button class="chatbot-button" onclick="toggleChatbot()">🤖</button>
-    
-    <div class="chatbot-window" id="chatbotWindow">
-      <div class="chatbot-header">
-        <span>🤖</span>
-        <span>Assistente Cinema Pro</span>
-        <button class="chatbot-close" onclick="toggleChatbot()">✕</button>
-      </div>
-
-      <div class="chatbot-messages" id="chatbotMessages">
-        <div class="message bot">
-          <div class="message-avatar">🤖</div>
-          <div class="message-bubble">Olá Nelson! Sou seu assistente. Como posso ajudar? Pergunte sobre Shows, Schedule, Ingest, KDM, Automação ou Troubleshooting!</div>
-        </div>
-      </div>
-
-      <div class="chatbot-input">
-        <input type="text" id="chatbotInput" placeholder="Digite sua pergunta..." onkeypress="if(event.key==='Enter') sendChatMessage()" />
-        <button onclick="sendChatMessage()">▶</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    const botResponses = {
-      'show': 'Um Show é a estrutura de uma sessão: BLACK 30s → Trailers → Propaganda → BLACK 5s → FILME → BLACK 30s. Quer criar um?',
-      'schedule': 'Schedule é quando você agenda QUANDO e EM QUAL SALA cada show vai rodar. Com Show + Schedule você já está ~40% pronto!',
-      'ingest': 'Ingest é copiar o filme para o servidor. SEM INGEST, SEM FILME! É o pilar de tudo. Quer saber como fazer?',
-      'kdm': 'KDM é a chave de segurança. Define qual servidor, qual sala e por quanto tempo o filme pode rodar. Se vencido = filme não abre!',
-      'automação': 'Automação controla luz (dimmer), som (volume), cortina e projetor. Tudo sincronizado com o filme automaticamente!',
-      'troubleshooting': 'Problemas comuns: Filme não abre (KDM vencido), Tela preta (projetor), Sem som (automação), Filme travando (DCP). Qual é seu problema?',
-      'luz': 'Padrão: 50% no início, 0% durante filme, 100% no final. Você pode ajustar no menu Automação!',
-      'volume': 'Padrão: 41 (pré-show), 6.5 (filme), 23 (final). Ajuste conforme sua sala no menu Automação!',
-      'formato': 'Scope (2.39:1) é mais largo. Flat (1.85:1) é mais alto. Sempre use Flat para trailers!',
-      'obrigado': 'De nada! Estou aqui para ajudar! 😊',
-      'oi': 'Olá! Como posso ajudar com sua operação de cinema?',
-      'default': 'Desculpe, não entendi. Pergunte sobre: Shows, Schedule, Ingest, KDM, Automação ou Troubleshooting!'
-    };
-
-    function toggleChatbot() {
-      const window = document.getElementById('chatbotWindow');
-      window.classList.toggle('open');
-      if (window.classList.contains('open')) {
-        document.getElementById('chatbotInput').focus();
-      }
-    }
-
-    function sendChatMessage() {
-      const input = document.getElementById('chatbotInput');
-      const message = input.value.trim();
-      
-      if (!message) return;
-
-      addChatMessage(message, 'user');
-      input.value = '';
-
-      setTimeout(() => {
-        const response = getBotResponse(message);
-        addChatMessage(response, 'bot');
-      }, 300);
-    }
-
-    function addChatMessage(text, sender) {
-      const messagesDiv = document.getElementById('chatbotMessages');
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${sender}`;
-      
-      if (sender === 'bot') {
-        messageDiv.innerHTML = `
-          <div class="message-avatar">🤖</div>
-          <div class="message-bubble">${escapeHtml(text)}</div>
-        `;
-      } else {
-        messageDiv.innerHTML = `
-          <div class="message-bubble">${escapeHtml(text)}</div>
-          <div class="message-avatar">N</div>
-        `;
-      }
-      
-      messagesDiv.appendChild(messageDiv);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    function getBotResponse(message) {
-      const lower = message.toLowerCase();
-      for (const [key, response] of Object.entries(botResponses)) {
-        if (lower.includes(key)) {
-          return response;
+    /* ===== LÓGICA DE SEGURANÇA E CONEXÃO ===== */
+    
+    // 1. Verificar se o usuário está logado ao carregar a página
+    window.addEventListener('DOMContentLoaded', () => {
+        const userData = localStorage.getItem('user');
+        if (!userData) {
+            // Se não tiver crachá, expulsa para o login
+            window.location.replace("index.html");
+            return;
         }
-      }
-      return botResponses.default;
-    }
 
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    function handleAction(action) {
-      const messages = {
-        'show_created': '✅ Show criado com sucesso!',
-        'schedule_created': '✅ Schedule criado com sucesso!',
-        'ingest_started': '⏳ Ingest iniciado! Monitorando progresso...',
-        'kdm_imported': '✅ KDM importado e validado com sucesso!',
-        'dimmer_saved': '✅ Dimmer configurado com sucesso!',
-        'volume_saved': '✅ Volume configurado com sucesso!',
-        'curtain_saved': '✅ Cortina configurada com sucesso!',
-        'diagnostic_sent': '✅ Diagnóstico enviado para análise!',
-        'settings_saved': '✅ Configurações salvas com sucesso!'
-      };
-      
-      alert(messages[action] || 'Ação realizada com sucesso!');
-    }
-
-    // Inicializar listeners dos botões do sidebar
-    document.querySelectorAll('.sidebar-item').forEach(button => {
-      button.addEventListener('click', function() {
-        const pageName = this.getAttribute('data-page');
-        switchPage(pageName, this);
-      });
+        const user = JSON.parse(userData);
+        // Atualiza o nome no painel
+        document.getElementById('display-nome').innerText = user.name;
+        document.getElementById('avatar-letra').innerText = user.name.charAt(0).toUpperCase();
+        
+        // Inicializa o relógio
+        setInterval(updateClock, 1000);
     });
 
-    function switchPage(pageName, buttonElement) {
-      // Remover classe active de todas as páginas
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-      });
-
-      // Adicionar classe active à página selecionada
-      const page = document.getElementById(`page-${pageName}`);
-      if (page) {
-        page.classList.add('active');
-      }
-
-      // Atualizar botão ativo no sidebar
-      document.querySelectorAll('.sidebar-item').forEach(item => {
-        item.classList.remove('active');
-      });
-      if (buttonElement) {
-        buttonElement.classList.add('active');
-      }
+    function updateClock() {
+        const clockEl = document.getElementById('clock');
+        if (clockEl) clockEl.innerText = new Date().toLocaleTimeString();
     }
-  </script>
 
+    // 2. Navegação entre páginas (Corrigida)
+    function switchPage(pageId, button) {
+        // Esconde todas as páginas
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        // Mostra a selecionada
+        const target = document.getElementById('page-' + pageId);
+        if (target) target.classList.add('active');
+
+        // Atualiza o botão ativo no menu
+        if (button) {
+            document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+            button.classList.add('active');
+        }
+    }
+
+    // 3. Função de Logout (Sair)
+    function handleLogout() {
+        if(confirm("Deseja realmente encerrar a sessão na cabine?")) {
+            localStorage.removeItem('user');
+            window.location.replace("index.html");
+        }
+    }
+
+    // 4. Lógica do Chatbot (Igual à sua, mas integrada)
+    // ... (Mantenha sua lógica de botResponses e sendChatMessage aqui) ...
+
+    // 5. Handlers de Ação (Ingest, Schedule, etc)
+    function handleAction(type) {
+        const feedback = {
+            'show_created': 'Show configurado no servidor GDC!',
+            'schedule_created': 'Grade de horários atualizada no TMS.',
+            'ingest_started': 'Ingest de DCP iniciado. Verifique o Storage.',
+            'kdm_imported': 'Chave KDM validada para esta sala.',
+            'dimmer_saved': 'Automação de Dimmers sincronizada.',
+            'volume_saved': 'Níveis de áudio calibrados.',
+            'settings_saved': 'Parâmetros do sistema salvos.'
+        };
+        alert("✅ " + (feedback[type] || "Operação realizada!"));
+    }
+
+  </script>
 </body>
 </html>
