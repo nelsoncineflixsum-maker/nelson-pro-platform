@@ -1115,6 +1115,10 @@ function sair() {
     localStorage.removeItem('user');
     window.location.href = 'login.html';
 } 
+        const userData = JSON.parse(localStorage.getItem('user'));
+if (userData) {
+    document.getElementById('nome-usuario').innerText = userData.name;
+}
         // DADOS DOS 8 PILARES
         const PILARES = [
             {
