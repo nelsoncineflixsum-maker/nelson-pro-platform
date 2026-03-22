@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Nelson Pro | Master Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #050505; color: white; padding: 40px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e50914; padding-bottom: 20px; margin-bottom: 30px; }
+        h1 { color: #e50914; letter-spacing: 2px; }
+        .stats-card { background: #111; padding: 20px; border-radius: 10px; border-left: 5px solid #e50914; margin-bottom: 30px; display: inline-block; min-width: 200px; }
+        table { width: 100%; border-collapse: collapse; background: #111; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        th { background: #e50914; color: white; padding: 15px; text-align: left; text-transform: uppercase; font-size: 13px; }
+        td { padding: 15px; border-bottom: 1px solid #222; color: #ccc; }
+        tr:hover { background: #1a1a1a; }
+        .btn-refresh { background: #fff; color: #000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-refresh:hover { background: #e50914; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NELSON PRO <span style="font-weight: 100; color: #fff;">| CONTROLE DE ALUNOS</span></h1>
+        <button class="btn-refresh" onclick="carregarAlunos()">Atualizar Dados</button>
+    </div>
+
+    <div class="stats-card">
+        <p style="color: #888; font-size: 12px;">TOTAL DE ALUNOS</p>
+        <h2 id="total-alunos">Carregando...</h2>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NOME DO ALUNO</th>
+                <th>E-MAIL</th>
+                <th>DATA DE CADASTRO</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-corpo">
+            </tbody>
+    </table>
+
+    <script>
+        async function carregarAlunos() {
+            try {
+                const response = await fetch('/api/admin/users');
+                const alunos = await response.json();
+                
+                const corpo = document.getElementById('tabela-corpo');
+                const total = document.getElementById('total-alunos');
+                corpo.innerHTML = '';
+                total.innerText = alunos.length;
+
+                alunos.forEach(aluno => {
+                    const dataFormatada = new Date(aluno.created_at || Date.now()).toLocaleDateString('pt-BR');
+                    corpo.innerHTML += `
+                        <tr>
+                            <td>${aluno.id}</td>
+                            <td style="color: #fff; font-weight: bold;">${aluno.name}</td>
+                            <td>${aluno.email}</td>
+                            <td>${dataFormatada}</td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error('Erro ao carregar alunos:', err);
+            }
+        }
+        // Carrega ao abrir a página
+        carregarAlunos();
+    </script>
+</body>
+</html>
