@@ -1,362 +1,39 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cinema Pro Platform — Login</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --gold: #f5c518;
-      --gold-dk: #c9a10e;
-      --dark: #0a0a0f;
-      --dark2: #111118;
-      --dark3: #1a1a24;
-      --card: #16161f;
-      --border: #2a2a3a;
-      --text: #e8e8f0;
-      --muted: #8888aa;
-      --red: #e74c3c;
-      --green: #2ecc71;
-    }
-
-    html, body {
-      height: 100%;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: linear-gradient(135deg, var(--dark) 0%, #1a0f2e 100%);
-      color: var(--text);
-    }
-
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 1rem;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 420px;
-    }
-
-    .card {
-      background: linear-gradient(135deg, var(--card) 0%, #1e1e2a 100%);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 3rem 2rem;
-      box-shadow: 0 20px 60px rgba(0,0,0,.5);
-    }
-
-    .logo-section {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .logo-icon {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, var(--gold), #ffd84d);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin: 0 auto 1rem;
-      box-shadow: 0 0 20px rgba(245,197,24,.3);
-    }
-
-    .logo-text {
-      font-size: 1.5rem;
-      font-weight: 900;
-      margin-bottom: .5rem;
-    }
-
-    .logo-text span {
-      color: var(--gold);
-    }
-
-    .subtitle {
-      color: var(--muted);
-      font-size: .95rem;
-      margin-bottom: 2rem;
-    }
-
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: .9rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: .5rem;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-    }
-
-    .form-group input {
-      width: 100%;
-      background: var(--dark3);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: .9rem 1rem;
-      color: var(--text);
-      font-size: .95rem;
-      font-family: inherit;
-      transition: all .2s;
-    }
-
-    .form-group input:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(245,197,24,.1);
-      outline: none;
-    }
-
-    .form-group input.error {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(231,76,60,.1);
-    }
-
-    .error-message {
-      color: var(--red);
-      font-size: .85rem;
-      margin-top: .4rem;
-      display: none;
-    }
-
-    .error-message.show {
-      display: block;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 1rem;
-      background: linear-gradient(135deg, var(--gold), var(--gold-dk));
-      color: #000;
-      border: none;
-      border-radius: 10px;
-      font-size: .95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all .2s;
-      margin-bottom: 1rem;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(245,197,24,.3);
-    }
-
-    .btn:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
-
-    .btn-secondary {
-      background: var(--dark3);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    .links {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 1.5rem;
-      font-size: .9rem;
-    }
-
-    .links a {
-      color: var(--gold);
-      text-decoration: none;
-      transition: all .2s;
-    }
-
-    .links a:hover {
-      color: #ffd84d;
-    }
-
-    .alert {
-      padding: 1rem;
-      border-radius: 10px;
-      margin-bottom: 1.5rem;
-      display: none;
-      border-left: 4px solid;
-    }
-
-    .alert.show {
-      display: block;
-    }
-
-    .alert-success {
-      background: rgba(46,204,113,.1);
-      border-left-color: var(--green);
-      color: var(--green);
-    }
-
-    .alert-error {
-      background: rgba(231,76,60,.1);
-      border-left-color: var(--red);
-      color: var(--red);
-    }
-
-    .footer {
-      text-align: center;
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      font-size: .85rem;
-      color: var(--muted);
-    }
-
-    .footer strong {
-      color: var(--gold);
-    }
-
-    @media (max-width: 480px) {
-      .card {
-        padding: 2rem 1.5rem;
-      }
-
-      .logo-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-      }
-
-      .logo-text {
-        font-size: 1.2rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Nelson Pro | Login</title>
+    <style>
+        body { background: #050505; color: white; font-family: sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
+        .card { background: #111; padding: 40px; border-radius: 15px; border-top: 4px solid #e50914; width: 320px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #e50914; border: none; color: white; font-weight: bold; cursor: pointer; border-radius: 5px; width: 100%; margin-top: 10px; }
+        .link { color: #888; font-size: 13px; margin-top: 15px; cursor: pointer; }
+    </style>
 </head>
 <body>
-
-  <div class="container">
     <div class="card">
-      <div class="logo-section">
-        <div class="logo-icon">🎬</div>
-        <div class="logo-text">Cinema <span>Pro</span></div>
-        <p class="subtitle">Bem-vindo de volta</p>
-      </div>
-
-      <div class="alert alert-error" id="errorAlert"></div>
-      <div class="alert alert-success" id="successAlert"></div>
-
-      <form id="loginForm">
-        <div class="form-group">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" placeholder="seu@email.com" required />
-          <div class="error-message" id="emailError"></div>
-        </div>
-
-        <div class="form-group">
-          <label for="password">Senha</label>
-          <input type="password" id="password" placeholder="••••••••" required />
-          <div class="error-message" id="passwordError"></div>
-        </div>
-
-        <button type="submit" class="btn" id="loginBtn">▶ Entrar na Cabine</button>
-      </form>
-
-      <div class="links">
-        <a href="cadastro-real.html">Criar conta</a>
-        <a href="index.html">Voltar</a>
-      </div>
-
-      <div class="footer">
-        <strong>Criado por Nelson Jesus</strong><br>
-        Gerente da Plataforma Cinema Pro
-      </div>
+        <h2 style="color:#e50914">LOGIN</h2>
+        <input type="email" id="email" placeholder="Seu E-mail">
+        <input type="password" id="pass" placeholder="Sua Senha">
+        <button onclick="logar()">ACESSAR CABINE</button>
+        <div class="link" onclick="window.location.href='cadastro.html'">Criar nova conta de aluno</div>
     </div>
-  </div>
-
-  <script>
-    const API_URL = window.location.origin;
-
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const loginBtn = document.getElementById('loginBtn');
-
-      // Validação básica
-      if (!email || !password) {
-        showError('Email e senha são obrigatórios');
-        return;
-      }
-
-      if (!email.includes('@')) {
-        showError('Por favor, insira um e-mail válido');
-        return;
-      }
-
-      loginBtn.disabled = true;
-      loginBtn.textContent = '⏳ Entrando...';
-
-      try {
-        const response = await fetch(`${API_URL}/api/login`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email, password })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || 'Erro ao fazer login');
+    <script>
+        async function logar() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('pass').value;
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (data.success) {
+                localStorage.setItem('user', JSON.stringify(data.user));
+                window.location.href = 'dashboard.html';
+            } else { alert('Erro: Verifique seus dados.'); }
         }
-
-        // Salvar token
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-
-        showSuccess(`✅ Bem-vindo, ${data.user.name}!`);
-        
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1500);
-
-      } catch (error) {
-        showError(error.message);
-        loginBtn.disabled = false;
-        loginBtn.textContent = '▶ Entrar na Cabine';
-      }
-    });
-
-    function showError(message) {
-      const errorAlert = document.getElementById('errorAlert');
-      errorAlert.textContent = message;
-      errorAlert.classList.add('show');
-      document.getElementById('successAlert').classList.remove('show');
-    }
-
-    function showSuccess(message) {
-      const successAlert = document.getElementById('successAlert');
-      successAlert.textContent = message;
-      successAlert.classList.add('show');
-      document.getElementById('errorAlert').classList.remove('show');
-    }
-
-    // Verificar se já está logado
-    window.addEventListener('load', () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        window.location.href = 'dashboard.html';
-      }
-    });
-  </script>
-
+    </script>
 </body>
 </html>
