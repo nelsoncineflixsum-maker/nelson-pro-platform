@@ -5,7 +5,7 @@ const path = require('path');
 
 const app = express();
 
-// 🛠️ CONEXÃO COM O BANCO NEON (Sua "Central de Dados")
+// 🛠️ CONEXÃO MESTRE COM O NEON (Banco de Dados Nelson Pro)
 const pool = new Pool({ 
     connectionString: "postgresql://neondb_owner:npg_jlPcXqU9F6td@ep-summer-firefly-amnrn3rr-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require", 
     ssl: { rejectUnauthorized: false } 
@@ -14,25 +14,25 @@ const pool = new Pool({
 app.use(cors());
 app.use(express.json());
 
-// ✅ CONFIGURAÇÃO DE PASTAS (Onde estão seus arquivos de site)
+// ✅ APONTA PARA A PASTA FRONTEND ONDE ESTÃO OS SEUS HTMLs
 app.use(express.static(path.join(__dirname, 'frontend')));
 
 // 🧪 TESTE DE CONEXÃO AO BANCO
 const conectarBanco = async () => {
     try {
         await pool.query('SELECT NOW()');
-        console.log('✅ Banco de dados Neon pronto e conectado!');
+        console.log('✅ NELSON PRO: Banco Neon Conectado com Sucesso!');
     } catch (err) {
-        console.error('❌ Erro ao conectar no Neon:', err.message);
+        console.error('❌ ERRO AO CONECTAR NO NEON:', err.message);
     }
 };
 conectarBanco();
 
 // ---------------------------------------------------------
-// 🔑 ROTAS DE AUTENTICAÇÃO (O "Porteiro" do Nelson Pro)
+// 🔑 ROTAS DE AUTENTICAÇÃO (Login e Cadastro)
 // ---------------------------------------------------------
 
-// ROTA DE LOGIN: Confere se o aluno existe no Neon
+// LOGIN: Verifica se o aluno existe
 app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -47,7 +47,7 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-// ROTA DE CADASTRO: Salva novo aluno no Neon
+// CADASTRO: Salva novo aluno
 app.post('/api/auth/register', async (req, res) => {
     const { name, email, password } = req.body;
     try {
@@ -59,31 +59,12 @@ app.post('/api/auth/register', async (req, res) => {
 });
 
 // ---------------------------------------------------------
-// 🎬 ROTAS DE NAVEGAÇÃO (As telas do sistema)
+// 📊 ROTA DO DASHBOARD (Acesso aos dados dos alunos)
 // ---------------------------------------------------------
 
-// 1. QUEM ENTRAR NO LINK PRINCIPAL CAI NO LOGIN
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend/login.html'));
-});
-
-// 2. ROTA PARA O SIMULADOR (INDEX)
-app.get('/index.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend/index.html'));
-});
-
-// 3. ROTA PARA O CADASTRO
-app.get('/cadastro.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend/cadastro.html'));
-});
-
-// 4. ROTA DE SEGURANÇA (Se o aluno digitar qualquer coisa errada, volta pro Login)
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend/login.html'));
-});
-// 📊 ROTA SECRETA: Busca todos os usuários cadastrados
 app.get('/api/admin/users', async (req, res) => {
     try {
+        // Busca todos os alunos cadastrados
         const result = await pool.query('SELECT id, name, email FROM users ORDER BY id DESC');
         res.json(result.rows);
     } catch (err) {
@@ -91,13 +72,37 @@ app.get('/api/admin/users', async (req, res) => {
     }
 });
 
-// 📊 ROTA PARA ABRIR O DASHBOARD
+// ---------------------------------------------------------
+// 🎬 ROTAS DE NAVEGAÇÃO (As telas do Nelson Pro)
+// ---------------------------------------------------------
+
+// 1. Link Principal: Abre o Login 4K primeiro
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/login.html'));
+});
+
+// 2. Rota para o Simulador
+app.get('/index.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/index.html'));
+});
+
+// 3. Rota para o Cadastro
+app.get('/cadastro.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/cadastro.html'));
+});
+
+// 4. Rota para o Dashboard Secreto
 app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend/dashboard.html'));
 });
 
+// 5. Segurança: Se errar o link, volta pro Login
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/login.html'));
+});
+
 // 🚀 PORTA DA RENDER (10000)
 const PORT = process.env.PORT || 3000;
-app.get('*', (req, res) => {
-    res.status(404).send('<body style="background:#000;color:#e50914;text-align:center;padding:50px;font-family:sans-serif;"><h1>404 - PROJEÇÃO INTERROMPIDA</h1><p>Nelson diz: Este caminho não existe no servidor!</p><a href="/" style="color:#fff;">Voltar ao Início</a></body>');
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 SERVIDOR NELSON PRO ONLINE NA PORTA ${PORT}`);
 });
