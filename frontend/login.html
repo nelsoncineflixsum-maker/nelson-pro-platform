@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Nelson Pro | Login</title>
+    <title>Nelson Pro | Acesso Cabine</title>
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: #111; padding: 40px; border-radius: 10px; border-top: 5px solid #e50914; text-align: center; width: 300px; }
-        input { width: 100%; padding: 10px; margin: 10px 0; background: #222; border: 1px solid #444; color: #fff; }
-        button { width: 100%; padding: 10px; background: #e50914; border: none; color: #fff; cursor: pointer; font-weight: bold; }
+        .login-card { background: #111; padding: 40px; border-radius: 15px; border-top: 4px solid #e50914; width: 350px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #222; border: 1px solid #333; color: #fff; border-radius: 5px; }
+        button { width: 100%; padding: 12px; background: #e50914; border: none; color: #fff; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2 style="color:#e50914">NELSON PRO</h2>
+    <div class="login-card">
+        <h1 style="color:#e50914">CINEMA PRO</h1>
+        <p>Acesse a Cabine Profissional</p>
         <input type="email" id="email" placeholder="E-mail">
         <input type="password" id="pass" placeholder="Senha">
-        <button onclick="logar()">ENTRAR</button>
-        <p style="font-size:12px; margin-top:15px; cursor:pointer; color:#888" onclick="window.location.href='cadastro.html'">Criar conta</p>
+        <button onclick="logar()">ENTRAR NA CABINE</button>
+        <p style="font-size: 12px; margin-top: 15px; color: #888; cursor: pointer;" onclick="alert('Funcionalidade de cadastro em breve ou use o link direto!')">Novo por aqui? Cadastre-se</p>
     </div>
+
     <script>
         async function logar() {
             const email = document.getElementById('email').value;
@@ -30,8 +32,10 @@
             const data = await res.json();
             if (data.success) {
                 localStorage.setItem('user', JSON.stringify(data.user));
-                window.location.href = 'index.html';
-            } else { alert('Erro no login!'); }
+                window.location.href = 'index.html'; // Vai para o simulador bonitão
+            } else {
+                alert('Acesso negado: Verifique seus dados!');
+            }
         }
     </script>
 </body>
