@@ -2,160 +2,35 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nelson Pro | Recrutamento de Operadores</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <title>Nelson Pro | Cadastro</title>
     <style>
-        :root { --neon-red: #e50914; --neon-blue: #00d4ff; --dark-bg: #050505; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', sans-serif; }
-        
-        body { 
-            background: var(--dark-bg); 
-            color: white; 
-            height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            overflow: hidden;
-        }
-
-        /* Background com efeito de feixe de luz de projetor */
-        .projector-beam {
-            position: fixed;
-            top: 0; left: 50%;
-            width: 200%; height: 100%;
-            background: conic-gradient(from 180deg at 50% 0%, #1a1a1a 0%, #050505 20%, #050505 80%, #1a1a1a 100%);
-            transform: translateX(-50%);
-            z-index: -1;
-            opacity: 0.5;
-        }
-
-        .auth-card {
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(20px);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(0,0,0,1);
-        }
-
-        .logo { font-family: 'Orbitron'; color: var(--neon-red); font-size: 26px; margin-bottom: 10px; text-shadow: 0 0 15px rgba(229, 9, 20, 0.6); }
-        h2 { font-family: 'Orbitron'; font-size: 14px; letter-spacing: 3px; color: #888; margin-bottom: 30px; }
-
-        .input-group { text-align: left; margin-bottom: 20px; }
-        label { display: block; font-size: 12px; color: var(--neon-blue); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        
-        input {
-            width: 100%;
-            padding: 15px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid #333;
-            border-radius: 8px;
-            color: white;
-            transition: 0.3s;
-        }
-
-        input:focus {
-            border-color: var(--neon-red);
-            box-shadow: 0 0 15px rgba(229, 9, 20, 0.2);
-            outline: none;
-        }
-
-        .btn-register {
-            width: 100%;
-            padding: 16px;
-            background: var(--neon-red);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 900;
-            font-family: 'Orbitron';
-            cursor: pointer;
-            transition: 0.4s;
-            margin-top: 10px;
-        }
-
-        .btn-register:hover {
-            background: #ff0d1a;
-            transform: scale(1.02);
-            box-shadow: 0 0 25px rgba(229, 9, 20, 0.5);
-        }
-
-        .footer-text { margin-top: 25px; font-size: 14px; color: #555; }
-        .footer-text span { color: var(--neon-blue); cursor: pointer; text-decoration: underline; }
-
-        /* Status de Progresso */
-        .step-bar { display: flex; gap: 5px; margin-bottom: 30px; }
-        .step { flex: 1; height: 3px; background: #222; border-radius: 2px; }
-        .step.active { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); }
+        body { background: #000; color: white; font-family: sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
+        .card { background: #111; padding: 40px; border-radius: 15px; border: 1px solid #222; width: 350px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #fff; color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; }
     </style>
 </head>
 <body>
-
-    <div class="projector-beam"></div>
-
-    <div class="auth-card">
-        <div class="logo">NELSON PRO</div>
-        <h2>SISTEMA DE CADASTRO</h2>
-
-        <div class="step-bar">
-            <div class="step active"></div>
-            <div class="step active"></div>
-            <div class="step"></div>
-        </div>
-
-        <div class="input-group">
-            <label>Identificação do Operador</label>
-            <input type="text" id="reg-nome" placeholder="Nome Completo">
-        </div>
-
-        <div class="input-group">
-            <label>Canal de Comunicação (E-mail)</label>
-            <input type="email" id="reg-email" placeholder="exemplo@grupocine.com">
-        </div>
-
-        <div class="input-group">
-            <label>Chave de Acesso (Senha)</label>
-            <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres">
-        </div>
-
-        <button class="btn-register" onclick="fazerCadastro()">EFETUAR INGEST DE PERFIL</button>
-
-        <div class="footer-text">
-            Já possui credenciais? <span onclick="window.location.href='index.html'">Acessar Cabine</span>
-        </div>
+    <div class="card">
+        <h2 style="color:#e50914">NOVO OPERADOR</h2>
+        <input type="text" id="nome" placeholder="Nome Completo">
+        <input type="email" id="email" placeholder="E-mail">
+        <input type="password" id="pass" placeholder="Senha">
+        <button onclick="cadastrar()">EFETUAR INGEST</button>
+        <p style="color:#555; font-size:12px; margin-top:15px; cursor:pointer;" onclick="window.location.href='index.html'">Voltar ao Login</p>
     </div>
-
     <script>
-        async function fazerCadastro() {
-            const name = document.getElementById('reg-nome').value;
-            const email = document.getElementById('reg-email').value;
-            const password = document.getElementById('reg-pass').value;
-
-            if (!name || !email || !password) {
-                alert("🔴 ALERTA: Todos os campos são obrigatórios para o Ingest!");
-                return;
-            }
-
-            try {
-                const res = await fetch('/api/auth/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password })
-                });
-
-                if (res.ok) {
-                    alert("✅ INGEST DE PERFIL CONCLUÍDO! Redirecionando para o Login...");
-                    window.location.href = 'index.html';
-                } else {
-                    alert("❌ ERRO NO PROCESSO: Este e-mail já está em uso no servidor.");
-                }
-            } catch (err) {
-                alert("🔴 FALHA CRÍTICA: Servidor fora do ar.");
-            }
+        async function cadastrar() {
+            const name = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('pass').value;
+            const res = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            });
+            if (res.ok) { alert('Sucesso! Operador cadastrado no Neon.'); window.location.href='index.html'; }
+            else { alert('Erro ao cadastrar.'); }
         }
     </script>
 </body>
