@@ -1,1423 +1,1373 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nelson Pro - Cinema Control System V3.0</title>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nelson Pro Cinema Engineering - Plataforma Completa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --neon-green: #00ff88;
+            --bg-dark: #050505;
+            --bg-card: #0f0f0f;
+            --bg-sidebar: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #999999;
+            --border-color: rgba(212, 175, 55, 0.2);
+            --success: #00ff88;
+            --warning: #ff8800;
+            --error: #ff4444;
+            --info: #4488ff;
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
-body{background:#050505;color:#fff;display:flex;overflow:hidden}
+        body {
+            background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #050505 100%);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
 
-/* SIDEBAR */
-.sidebar{
-width:280px;
-background:#0a0a0a;
-height:100vh;
-padding:25px 15px;
-border-right:1px solid #333;
-overflow-y:auto;
-}
+        /* LAYOUT PRINCIPAL */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
 
-.logo{
-text-align:center;
-margin-bottom:30px;
-padding-bottom:20px;
-border-bottom:2px solid gold;
-}
-.logo h1{
-font-size:1.4rem;
-color:gold;
-text-shadow:0 0 20px rgba(212,175,55,0.5);
-}
-.logo-sub{
-font-size:0.7rem;
-color:#666;
-margin-top:5px;
-}
+        /* SIDEBAR */
+        .sidebar {
+            width: 320px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 30px 20px;
+        }
 
-.menu-section{margin-bottom:25px}
-.menu-title{
-font-size:0.65rem;
-color:gold;
-text-transform:uppercase;
-letter-spacing:1.5px;
-margin-bottom:12px;
-opacity:0.7;
-}
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid var(--gold);
+        }
 
-.menu-item{
-padding:12px 14px;
-margin-bottom:5px;
-cursor:pointer;
-border-radius:8px;
-transition:.3s;
-font-size:0.9rem;
-color:#999;
-display:flex;
-align-items:center;
-gap:10px;
-}
-.menu-item:hover{background:#1a1a1a;color:#fff}
-.menu-item.active{
-background:rgba(212,175,55,0.15);
-border-left:4px solid gold;
-color:gold;
-font-weight:700;
-}
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--gold);
+            margin-bottom: 5px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
 
-/* MAIN */
-.main{
-flex:1;
-padding:30px 40px;
-overflow-y:auto;
-height:100vh;
-}
+        .logo p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
 
-.page{display:none;animation:fadeIn 0.4s}
-.page.active{display:block}
+        /* MENU */
+        .menu-section {
+            margin-bottom: 30px;
+        }
 
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(10px)}
-to{opacity:1;transform:translateY(0)}
-}
+        .menu-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+            padding: 0 15px;
+        }
 
-.page-header{
-margin-bottom:30px;
-padding-bottom:20px;
-border-bottom:1px solid #222;
-}
-.page-title{
-font-size:2rem;
-color:gold;
-font-weight:900;
-}
-.page-subtitle{
-font-size:0.9rem;
-color:#666;
-margin-top:8px;
-}
+        .menu-item {
+            padding: 14px 15px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
 
-/* CARDS */
-.card{
-background:#0f0f0f;
-padding:25px;
-border-radius:12px;
-margin-bottom:20px;
-border:1px solid #222;
-border-left:4px solid gold;
-transition:.3s;
-}
-.card:hover{
-background:#151515;
-transform:translateX(3px);
-}
+        .menu-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+            padding-left: 20px;
+            color: var(--text-primary);
+        }
 
-.card-title{
-font-size:1.2rem;
-color:gold;
-margin-bottom:15px;
-font-weight:700;
-}
+        .menu-item.active {
+            background: rgba(212, 175, 55, 0.15);
+            border-left-color: var(--gold);
+            color: var(--gold);
+            font-weight: 700;
+        }
 
-/* STATUS BADGES */
-.status{
-display:inline-block;
-padding:6px 12px;
-border-radius:6px;
-font-size:0.7rem;
-font-weight:800;
-text-transform:uppercase;
-}
-.st-playing{background:rgba(0,255,136,0.2);color:#00ff88}
-.st-paused{background:rgba(255,136,0,0.2);color:#ff8800}
-.st-error{background:rgba(255,68,68,0.2);color:#ff4444;animation:blink 1s infinite}
-.st-ready{background:rgba(0,212,255,0.2);color:#00d4ff}
+        .menu-icon {
+            font-size: 1.2rem;
+        }
 
-@keyframes blink{
-0%,100%{opacity:1}
-50%{opacity:0.3}
-}
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            max-width: 1400px;
+        }
 
-/* BUTTONS */
-.btn{
-padding:12px 24px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-margin-right:10px;
-margin-bottom:10px;
-font-weight:700;
-font-size:0.9rem;
-transition:.3s;
-}
-.btn:hover{transform:translateY(-2px)}
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
 
-.btn-play{background:#00cc44;color:#000}
-.btn-pause{background:#ff8800;color:#000}
-.btn-stop{background:#ff4444;color:#fff}
-.btn-default{background:#222;color:#fff;border:1px solid #444}
-.btn-gold{background:gold;color:#000}
+        .page.active {
+            display: block;
+        }
 
-/* PROGRESS BAR */
-.progress{
-height:12px;
-background:#222;
-border-radius:10px;
-overflow:hidden;
-margin:20px 0;
-box-shadow:inset 0 2px 5px rgba(0,0,0,0.5);
-}
-.bar{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,gold,#00ff88);
-transition:width 0.3s;
-box-shadow:0 0 10px gold;
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* TIME DISPLAY */
-.time-display{
-font-family:'JetBrains Mono',monospace;
-font-size:2rem;
-color:gold;
-margin:15px 0;
-text-shadow:0 0 15px rgba(212,175,55,0.5);
-}
+        /* HEADER */
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+        }
 
-.time-label{
-font-size:0.8rem;
-color:#666;
-margin-top:5px;
-}
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--gold);
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+        }
 
-/* LOG TERMINAL */
-.log{
-background:#000;
-padding:15px;
-max-height:300px;
-overflow-y:auto;
-font-family:'JetBrains Mono',monospace;
-font-size:0.8rem;
-margin-top:15px;
-border:1px solid gold;
-border-radius:8px;
-}
-.log::-webkit-scrollbar{width:8px}
-.log::-webkit-scrollbar-track{background:#111}
-.log::-webkit-scrollbar-thumb{background:gold;border-radius:4px}
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
 
-.log-entry{
-margin-bottom:8px;
-color:#00ff88;
-}
-.log-error{color:#ff4444}
-.log-warn{color:#ff8800}
-.log-info{color:#00d4ff}
+        /* CARDS */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
 
-/* SCREEN SELECTOR */
-.screens{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:15px;
-margin-bottom:25px;
-}
+        .card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #1a1a1a 100%);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--gold);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
 
-.screen-card{
-background:#111;
-padding:20px;
-border-radius:10px;
-cursor:pointer;
-border:2px solid #222;
-transition:.3s;
-text-align:center;
-}
-.screen-card:hover{border-color:#444}
-.screen-card.active{
-border-color:gold;
-background:rgba(212,175,55,0.1);
-}
+        .card:hover {
+            transform: translateX(5px);
+            border-color: var(--neon-green);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.15);
+        }
 
-.screen-number{
-font-size:1.5rem;
-font-weight:900;
-color:gold;
-}
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
 
-.screen-film{
-font-size:0.85rem;
-margin-top:8px;
-color:#999;
-}
+        .card-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
 
-.screen-status{
-margin-top:10px;
-font-size:0.7rem;
-}
+        /* SIMULADOR GDC */
+        .gdc-simulator {
+            background: var(--bg-card);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+        }
 
-/* GRID LAYOUTS */
-.grid-2{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:20px;
-}
+        .gdc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
 
-.grid-3{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:20px;
-}
+        .gdc-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-/* INGEST PROGRESS */
-.ingest-item{
-background:#111;
-padding:15px;
-border-radius:8px;
-margin-bottom:12px;
-border-left:3px solid #00ff88;
-}
+        .gdc-tab {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-.ingest-name{
-font-weight:700;
-margin-bottom:8px;
-}
+        .gdc-tab:hover {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--text-primary);
+        }
 
-.ingest-progress{
-display:flex;
-justify-content:space-between;
-font-size:0.8rem;
-color:#666;
-margin-top:5px;
-}
+        .gdc-tab.active {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: #000;
+            border-color: var(--gold);
+        }
 
-/* KDM SYSTEM */
-.kdm-item{
-background:#111;
-padding:15px;
-border-radius:8px;
-margin-bottom:12px;
-border-left:3px solid gold;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
+        .screen-selector {
+            display: flex;
+            gap: 8px;
+        }
 
-.kdm-valid{border-left-color:#00ff88}
-.kdm-expired{border-left-color:#ff4444}
-.kdm-expiring{border-left-color:#ff8800}
+        .screen-btn {
+            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-.kdm-info{flex:1}
-.kdm-film{font-weight:700;margin-bottom:5px}
-.kdm-date{font-size:0.75rem;color:#666}
+        .screen-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+        }
 
-.kdm-badge{
-padding:6px 12px;
-border-radius:6px;
-font-size:0.7rem;
-font-weight:800;
-}
+        .screen-btn.active {
+            background: linear-gradient(135deg, var(--neon-green) 0%, #00cc6f 100%);
+            color: #000;
+            border-color: var(--neon-green);
+        }
 
-/* SCHEDULE TABLE */
-.schedule-table{
-width:100%;
-border-collapse:collapse;
-margin-top:15px;
-}
+        .gdc-content {
+            margin-top: 25px;
+        }
 
-.schedule-table th{
-background:#1a1a1a;
-padding:12px;
-text-align:left;
-font-size:0.8rem;
-color:gold;
-border-bottom:2px solid gold;
-}
+        /* PLAYBACK CONTROLS */
+        .playback-panel {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
 
-.schedule-table td{
-padding:12px;
-border-bottom:1px solid #222;
-font-size:0.85rem;
-}
+        .playback-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
 
-.schedule-table tr:hover{background:#111}
+        .status-info h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
 
-.conflict{background:rgba(255,68,68,0.1) !important}
+        .status-playing { color: var(--success); animation: pulse 2s infinite; }
+        .status-paused { color: var(--warning); }
+        .status-error { color: var(--error); animation: blink 1s infinite; }
 
-/* BOT */
-.bot-trigger{
-position:fixed;
-bottom:30px;
-right:30px;
-width:65px;
-height:65px;
-background:linear-gradient(135deg,gold,#f4d03f);
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:2rem;
-cursor:pointer;
-box-shadow:0 10px 30px rgba(212,175,55,0.6);
-z-index:1000;
-animation:float 3s ease-in-out infinite;
-}
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
 
-@keyframes float{
-0%,100%{transform:translateY(0)}
-50%{transform:translateY(-10px)}
-}
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
 
-.bot-window{
-position:fixed;
-bottom:110px;
-right:30px;
-width:400px;
-height:550px;
-background:#0f0f0f;
-border:2px solid gold;
-border-radius:15px;
-display:none;
-flex-direction:column;
-z-index:1001;
-box-shadow:0 20px 60px rgba(0,0,0,0.8);
-}
-.bot-window.active{display:flex}
+        .movie-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
 
-.bot-header{
-background:linear-gradient(135deg,gold,#f4d03f);
-color:#000;
-padding:18px;
-font-weight:800;
-border-radius:13px 13px 0 0;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
+        .time-display {
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
 
-.bot-status-dot{
-width:10px;
-height:10px;
-background:#00ff88;
-border-radius:50%;
-animation:pulse 2s infinite;
-}
+        .format-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-@keyframes pulse{
-0%,100%{opacity:1;transform:scale(1)}
-50%{opacity:0.5;transform:scale(1.2)}
-}
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
 
-.bot-messages{
-flex:1;
-padding:20px;
-overflow-y:auto;
-display:flex;
-flex-direction:column;
-gap:12px;
-}
+        .badge-4k { background: #4488ff; color: #fff; }
+        .badge-cc { background: #9b59b6; color: #fff; }
+        .badge-sub { background: #00ff88; color: #000; }
 
-.bot-msg{
-padding:12px 16px;
-border-radius:10px;
-max-width:85%;
-animation:msgIn 0.3s;
-}
+        .playback-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
 
-@keyframes msgIn{
-from{opacity:0;transform:translateY(10px)}
-to{opacity:1;transform:translateY(0)}
-}
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-.bot-msg.bot{
-background:rgba(212,175,55,0.15);
-border-left:3px solid gold;
-align-self:flex-start;
-}
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
 
-.bot-msg.user{
-background:rgba(0,212,255,0.15);
-border-left:3px solid #00d4ff;
-align-self:flex-end;
-text-align:right;
-}
+        .btn-play { background: #00cc44; color: #fff; }
+        .btn-pause { background: #ff8800; color: #fff; }
+        .btn-stop { background: #ff4444; color: #fff; }
 
-.bot-input{
-padding:15px;
-border-top:1px solid #222;
-display:flex;
-gap:10px;
-}
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
 
-.bot-input input{
-flex:1;
-background:#000;
-border:1px solid #444;
-color:#fff;
-padding:12px 15px;
-border-radius:8px;
-font-size:0.9rem;
-}
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--neon-green) 100%);
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
 
-.bot-input input:focus{
-outline:none;
-border-color:gold;
-box-shadow:0 0 10px rgba(212,175,55,0.3);
-}
+        /* PILARES */
+        .pilares-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
 
-.bot-input button{
-background:gold;
-border:none;
-padding:12px 25px;
-border-radius:8px;
-font-weight:700;
-cursor:pointer;
-color:#000;
-}
+        .pilar-card {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0.03) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-/* STAT CARDS */
-.stat-card{
-background:#111;
-padding:20px;
-border-radius:10px;
-text-align:center;
-border:1px solid #222;
-}
+        .pilar-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--neon-green);
+            box-shadow: 0 12px 40px rgba(0, 255, 136, 0.2);
+        }
 
-.stat-value{
-font-size:2.5rem;
-font-weight:900;
-color:gold;
-}
+        .pilar-number {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
 
-.stat-label{
-font-size:0.8rem;
-color:#666;
-margin-top:8px;
-}
+        .pilar-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
 
-/* AUTOMATION COMMANDS */
-.cmd-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
-}
+        .pilar-desc {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
 
-.cmd-btn{
-background:#1a1a1a;
-border:1px solid #333;
-padding:15px;
-border-radius:8px;
-cursor:pointer;
-transition:.3s;
-text-align:center;
-font-weight:700;
-}
+        .pilar-steps {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
 
-.cmd-btn:hover{
-background:#222;
-border-color:gold;
-color:gold;
-}
+        .pilar-card.expanded .pilar-steps {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
 
-.cmd-icon{
-font-size:1.5rem;
-margin-bottom:8px;
-}
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* RESPONSIVE */
-@media(max-width:1200px){
-.screens{grid-template-columns:repeat(2,1fr)}
-.grid-2,.grid-3{grid-template-columns:1fr}
-}
-</style>
+        .pilar-steps h4 {
+            color: var(--neon-green);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .pilar-steps ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .pilar-steps li {
+            color: var(--text-secondary);
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .pilar-steps li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        /* LOGS */
+        .log-panel {
+            background: #000;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            color: var(--neon-green);
+            padding: 6px 0;
+            border-left: 3px solid var(--gold);
+            padding-left: 12px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* BOT ASSISTANT */
+        .bot-trigger {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .bot-trigger:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.6);
+        }
+
+        .bot-window {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 420px;
+            max-height: 600px;
+            background: var(--bg-card);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .bot-window.active {
+            display: flex;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bot-header {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: #000;
+            padding: 20px;
+            border-radius: 14px 14px 0 0;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .bot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .bot-message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            line-height: 1.5;
+        }
+
+        .bot-message.user {
+            background: rgba(212, 175, 55, 0.2);
+            border-left: 3px solid var(--gold);
+            margin-left: 40px;
+        }
+
+        .bot-message.bot {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 3px solid var(--neon-green);
+            margin-right: 40px;
+        }
+
+        .bot-input-container {
+            padding: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .bot-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .bot-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 280px;
+            }
+            .main-content {
+                padding: 30px 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 20px;
+            }
+            .main-content {
+                padding: 25px 20px;
+            }
+            .page-title {
+                font-size: 1.8rem;
+            }
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .gdc-header {
+                flex-direction: column;
+            }
+            .bot-window {
+                width: 90%;
+                right: 5%;
+            }
+        }
+
+        /* ALERT BOXES */
+        .alert {
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: rgba(0, 255, 136, 0.15);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .alert-warning {
+            background: rgba(255, 136, 0, 0.15);
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        .alert-error {
+            background: rgba(255, 68, 68, 0.15);
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .alert-info {
+            background: rgba(68, 136, 255, 0.15);
+            border-color: var(--info);
+            color: var(--info);
+        }
+    </style>
 </head>
-
 <body>
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-<div class="logo">
-<h1>🎬 NELSON PRO</h1>
-<div class="logo-sub">Cinema Control System V3.0</div>
-<div style="margin-top:15px;font-size:0.75rem;color:gold">
-<div style="opacity:0.6">OPERADOR:</div>
-<div id="operatorName" style="font-weight:700;margin-top:5px">ADMIN</div>
-</div>
-</div>
-
-<div class="menu-section">
-<div class="menu-title">Principal</div>
-<div class="menu-item active" onclick="nav('dashboard',this)">📊 Dashboard</div>
-<div class="menu-item" onclick="nav('playback',this)">▶️ Playback</div>
-<div class="menu-item" onclick="nav('schedule',this)">📅 Programação</div>
-</div>
-
-<div class="menu-section">
-<div class="menu-title">Conteúdo</div>
-<div class="menu-item" onclick="nav('ingest',this)">📂 Ingest DCP</div>
-<div class="menu-item" onclick="nav('kdm',this)">🔐 KDM Manager</div>
-</div>
-
-<div class="menu-section">
-<div class="menu-title">Controle</div>
-<div class="menu-item" onclick="nav('automation',this)">🤖 Automação</div>
-<div class="menu-item" onclick="nav('logs',this)">📋 Logs Sistema</div>
-</div>
-
-<div class="menu-section">
-<div class="menu-title">Aprendizado</div>
-<div class="menu-item" onclick="nav('pilares',this)">🎓 8 Pilares</div>
-<div class="menu-item" onclick="nav('troubleshoot',this)">🔧 Troubleshooting</div>
-</div>
-</div>
-
-<!-- MAIN CONTENT -->
-<div class="main">
-
-<!-- DASHBOARD -->
-<div id="dashboard" class="page active">
-<div class="page-header">
-<h1 class="page-title">Dashboard Geral</h1>
-<div class="page-subtitle">Visão completa de todas as salas</div>
-</div>
-
-<div class="grid-3">
-<div class="stat-card">
-<div class="stat-value">4</div>
-<div class="stat-label">Salas Ativas</div>
-</div>
-<div class="stat-card">
-<div class="stat-value">12</div>
-<div class="stat-label">Sessões Hoje</div>
-</div>
-<div class="stat-card">
-<div class="stat-value">98%</div>
-<div class="stat-label">Uptime</div>
-</div>
-</div>
-
-<div class="card" style="margin-top:25px">
-<div class="card-title">Status das Salas</div>
-<div class="screens" id="dashboardScreens"></div>
-</div>
-
-<div class="grid-2">
-<div class="card">
-<div class="card-title">🚨 Alertas Recentes</div>
-<div id="recentAlerts"></div>
-</div>
-<div class="card">
-<div class="card-title">📊 Próximas Sessões</div>
-<div id="nextSessions"></div>
-</div>
-</div>
-</div>
-
-<!-- PLAYBACK -->
-<div id="playback" class="page">
-<div class="page-header">
-<h1 class="page-title">Controle de Playback</h1>
-<div class="page-subtitle">Sistema multi-sala com controle independente</div>
-</div>
-
-<div class="screens" id="screenSelector"></div>
-
-<div class="card">
-<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
-<div>
-<span id="playbackStatus" class="status st-playing">▶️ Playing</span>
-<h2 id="currentFilm" style="font-size:2rem;margin:10px 0;color:gold">PÂNICO 7 - 4K SCOPE</h2>
-<div style="font-family:JetBrains Mono;font-size:0.8rem;color:#666" id="cplCode">CPL: Scream7_FTR-1_S_PT-BR_51_4K_20260312</div>
-</div>
-<div style="text-align:right">
-<div class="time-display" id="currentTime">00:10:32</div>
-<div class="time-label">Restante: <span id="remainingTime">01:34:28</span></div>
-</div>
-</div>
-
-<div class="progress">
-<div class="bar" id="progressBar"></div>
-</div>
-
-<div style="margin-top:25px">
-<button class="btn btn-play" onclick="playerControl('play')">▶️ PLAY</button>
-<button class="btn btn-pause" onclick="playerControl('pause')">⏸️ PAUSE</button>
-<button class="btn btn-stop" onclick="playerControl('stop')">⏹️ STOP</button>
-<button class="btn btn-default" onclick="simulateError()">⚠️ Simular Erro</button>
-<button class="btn btn-gold" onclick="openDimmer()">💡 Dimmer Control</button>
-</div>
-</div>
-
-<div class="grid-2" style="margin-top:25px">
-<div class="card">
-<div class="card-title">🎬 Playlist Atual</div>
-<div id="playlist"></div>
-</div>
-<div class="card">
-<div class="card-title">⚙️ Configurações de Projeção</div>
-<div style="line-height:2">
-<div>🔊 Áudio: <strong style="color:gold">7.1 Surround</strong></div>
-<div>📐 Aspect: <strong style="color:gold">2.39:1 (SCOPE)</strong></div>
-<div>💡 Lâmpada: <strong style="color:#00ff88">14 FL</strong></div>
-<div>🎚️ Volume: <strong style="color:gold">7.0</strong></div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- SCHEDULE -->
-<div id="schedule" class="page">
-<div class="page-header">
-<h1 class="page-title">Programação de Sessões</h1>
-<div class="page-subtitle">Grade de horários - Sistema anti-conflito ativo</div>
-</div>
-
-<div class="card">
-<div class="card-title">📅 Quinta-feira, 21 de Março de 2026</div>
-<table class="schedule-table">
-<thead>
-<tr>
-<th>Sala</th>
-<th>Horário</th>
-<th>Filme</th>
-<th>Formato</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody id="scheduleBody"></tbody>
-</table>
-</div>
-
-<div class="card">
-<button class="btn btn-gold">➕ Adicionar Sessão</button>
-<button class="btn btn-default">🔄 Auto Schedule</button>
-</div>
-</div>
-
-<!-- INGEST -->
-<div id="ingest" class="page">
-<div class="page-header">
-<h1 class="page-title">Ingest de DCP</h1>
-<div class="page-subtitle">Gerenciamento de conteúdo digital</div>
-</div>
-
-<div class="card">
-<div class="card-title">📊 Storage Disponível</div>
-<div class="progress" style="height:20px">
-<div class="bar" style="width:73%;background:linear-gradient(90deg,#00ff88,gold)"></div>
-</div>
-<div style="display:flex;justify-content:space-between;margin-top:10px;font-size:0.85rem;color:#666">
-<span>3.2 TB usados</span>
-<span>4.4 TB disponíveis</span>
-<span>Total: 7.6 TB</span>
-</div>
-</div>
-
-<div class="card">
-<div class="card-title">📥 Downloads em Andamento</div>
-<div id="ingestList"></div>
-</div>
-
-<div class="card">
-<button class="btn btn-gold">➕ Novo Ingest</button>
-<button class="btn btn-default">🌐 Ingest via Satélite</button>
-<button class="btn btn-default">💾 Ingest via CRU</button>
-</div>
-</div>
-
-<!-- KDM MANAGER -->
-<div id="kdm" class="page">
-<div class="page-header">
-<h1 class="page-title">KDM Manager</h1>
-<div class="page-subtitle">Gerenciamento de chaves de segurança</div>
-</div>
-
-<div class="grid-3" style="margin-bottom:25px">
-<div class="stat-card">
-<div class="stat-value" style="color:#00ff88">8</div>
-<div class="stat-label">KDMs Válidos</div>
-</div>
-<div class="stat-card">
-<div class="stat-value" style="color:#ff8800">2</div>
-<div class="stat-label">Expirando (7 dias)</div>
-</div>
-<div class="stat-card">
-<div class="stat-value" style="color:#ff4444">1</div>
-<div class="stat-label">Expirados</div>
-</div>
-</div>
-
-<div class="card">
-<div class="card-title">🔐 Status dos KDMs</div>
-<div id="kdmList"></div>
-</div>
-
-<div class="card">
-<button class="btn btn-gold">➕ Importar KDM (.xml)</button>
-<button class="btn btn-default">🔄 Verificar Validade</button>
-</div>
-</div>
-
-<!-- AUTOMATION -->
-<div id="automation" class="page">
-<div class="page-header">
-<h1 class="page-title">Central de Automação</h1>
-<div class="page-subtitle">Macros e comandos de cabine</div>
-</div>
-
-<div class="card">
-<div class="card-title">⚡ Comandos Rápidos</div>
-<div class="cmd-grid">
-<div class="cmd-btn" onclick="sendCmd('DIMMER','💡 Dimmer 13%')">
-<div class="cmd-icon">💡</div>
-DIMMER 13%
-</div>
-<div class="cmd-btn" onclick="sendCmd('LIGHT_OFF','🌑 Luz Apagada')">
-<div class="cmd-icon">🌑</div>
-LIGHT OFF
-</div>
-<div class="cmd-btn" onclick="sendCmd('VOLUME_7','🔊 Volume 7.0')">
-<div class="cmd-icon">🔊</div>
-VOLUME 7.0
-</div>
-<div class="cmd-btn" onclick="sendCmd('LENS_FLAT','📐 Lente FLAT')">
-<div class="cmd-icon">📐</div>
-LENS FLAT
-</div>
-<div class="cmd-btn" onclick="sendCmd('LENS_SCOPE','📐 Lente SCOPE')">
-<div class="cmd-icon">📐</div>
-LENS SCOPE
-</div>
-<div class="cmd-btn" onclick="sendCmd('DOUSER_OPEN','🔓 Douser Aberto')">
-<div class="cmd-icon">🔓</div>
-DOUSER OPEN
-</div>
-</div>
-</div>
-
-<div class="card">
-<div class="card-title">🤖 Macros Programadas</div>
-<div style="line-height:2.5">
-<div>
-<span class="status st-ready">✓ ATIVO</span>
-<strong style="margin-left:15px">BLACK 30s + DIMMER 13%</strong>
-<span style="color:#666;margin-left:15px">Início de sessão</span>
-</div>
-<div>
-<span class="status st-ready">✓ ATIVO</span>
-<strong style="margin-left:15px">VOLUME 4.0 → 7.0</strong>
-<span style="color:#666;margin-left:15px">Trailer → Filme</span>
-</div>
-<div>
-<span class="status st-ready">✓ ATIVO</span>
-<strong style="margin-left:15px">AUTO LENS SWITCH</strong>
-<span style="color:#666;margin-left:15px">Black 5s detectado</span>
-</div>
-</div>
-</div>
-
-<div class="card">
-<div class="card-title">📋 Log de Comandos</div>
-<div class="log" id="automationLog"></div>
-</div>
-</div>
-
-<!-- LOGS -->
-<div id="logs" class="page">
-<div class="page-header">
-<h1 class="page-title">Logs do Sistema</h1>
-<div class="page-subtitle">Monitoramento em tempo real</div>
-</div>
-
-<div class="card">
-<div style="display:flex;gap:10px;margin-bottom:15px">
-<button class="btn btn-default" onclick="filterLogs('all')">Todos</button>
-<button class="btn btn-default" onclick="filterLogs('error')">🔴 Erros</button>
-<button class="btn btn-default" onclick="filterLogs('warn')">🟡 Avisos</button>
-<button class="btn btn-default" onclick="filterLogs('info')">🔵 Info</button>
-</div>
-<div class="log" id="systemLog" style="max-height:500px"></div>
-</div>
-</div>
-
-<!-- 8 PILARES -->
-<div id="pilares" class="page">
-<div class="page-header">
-<h1 class="page-title">📚 Os 8 Pilares da Projeção</h1>
-<div class="page-subtitle">Metodologia Nelson Pro para zero erros</div>
-</div>
-
-<div class="grid-2" id="pilaresGrid"></div>
-</div>
-
-<!-- TROUBLESHOOTING -->
-<div id="troubleshoot" class="page">
-<div class="page-header">
-<h1 class="page-title">🔧 Troubleshooting</h1>
-<div class="page-subtitle">Soluções para problemas comuns</div>
-</div>
-
-<div class="card">
-<div class="card-title">🔴 KDM Inválido</div>
-<p style="line-height:1.8;color:#999">
-<strong style="color:gold">Sintoma:</strong> Filme não abre, mensagem "Invalid KDM"<br>
-<strong style="color:gold">Solução:</strong> Verificar UUID do servidor, validade do KDM, e certificado correto. Reingeste o .xml se necessário.
-</p>
-</div>
-
-<div class="card">
-<div class="card-title">🌑 Tela Preta (Douser não abre)</div>
-<p style="line-height:1.8;color:#999">
-<strong style="color:gold">Sintoma:</strong> Áudio funcionando mas sem imagem<br>
-<strong style="color:gold">Solução:</strong> Verificar comando Douser Open na automação. Se persistir, checar erro "Ignition Fail" no projetor.
-</p>
-</div>
-
-<div class="card">
-<div class="card-title">🔊 Sem Áudio ou Áudio Desbalanceado</div>
-<p style="line-height:1.8;color:#999">
-<strong style="color:gold">Sintoma:</strong> Canais faltando ou volume incorreto<br>
-<strong style="color:gold">Solução:</strong> Verificar CPL (5.1 vs 7.1), testar cada canal individualmente, recalibrar AES.
-</p>
-</div>
-
-<div class="card">
-<div class="card-title">⏱️ Lente não Troca (Flat/Scope)</div>
-<p style="line-height:1.8;color:#999">
-<strong style="color:gold">Sintoma:</strong> Imagem distorcida após Black 5s<br>
-<strong style="color:gold">Solução:</strong> Aumentar Black para 7s se motor estiver lento. Verificar macro de troca automática.
-</p>
-</div>
-</div>
-
-</div>
-
-<!-- BOT -->
-<div class="bot-trigger" onclick="toggleBot()">🤖</div>
-
-<div class="bot-window" id="botWindow">
-<div class="bot-header">
-<div style="display:flex;align-items:center;gap:10px">
-<div class="bot-status-dot"></div>
-<span>NEXUS AI - Assistente Técnico</span>
-</div>
-<button style="background:rgba(0,0,0,0.2);border:none;color:#000;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:700" onclick="alert('Bot em modo expert. Todas as respostas são baseadas em conhecimento técnico real de cinema.')">⚙️</button>
-</div>
-
-<div class="bot-messages" id="botMessages">
-<div class="bot-msg bot">
-<strong>Sistema NEXUS Online</strong><br><br>
-Olá! Sou especialista em:<br>
-• Troubleshooting de GDC<br>
-• Resolução de erros de KDM<br>
-• Otimização de automação<br>
-• Calibragem de projeção<br><br>
-Como posso ajudar?
-</div>
-</div>
-
-<div class="bot-input">
-<input type="text" id="botInput" placeholder="Ex: Por que o KDM está inválido?" onkeypress="if(event.key==='Enter') sendBotMsg()">
-<button onclick="sendBotMsg()">Enviar</button>
-</div>
-</div>
-// Verifica se o usuário está logado ao carregar a página
-window.onload = function() {
-    const user = localStorage.getItem('user');
-    if (!user) {
-        window.location.href = 'login.html'; // Manda para o login se não houver dados
-    }
-};
-<script>
-// ============================================
-// DATA STRUCTURES
-// ============================================
-
-let screens = [
-{id:1, film:"PÂNICO 7", format:"4K SCOPE", status:"playing", progress:10, time:"00:10:32", remaining:"01:34:28", cpl:"Scream7_FTR-1_S_PT-BR_51_4K_20260312"},
-{id:2, film:"MOANA 2", format:"4K FLAT", status:"paused", progress:45, time:"00:52:10", remaining:"00:48:50", cpl:"Moana2_FTR-1_F_PT-BR_71_4K_20260115"},
-{id:3, film:"MARIO BROS", format:"2K FLAT", status:"ready", progress:0, time:"00:00:00", remaining:"01:32:00", cpl:"Mario_FTR-1_F_PT-BR_51_2K_20260220"},
-{id:4, film:"VINGADORES 5", format:"4K SCOPE", status:"playing", progress:78, time:"02:15:40", remaining:"00:34:20", cpl:"Avengers5_FTR-1_S_PT-BR_ATMOS_4K_20260301"}
-];
-
-let currentScreen = 0;
-
-let pilares = [
-{n:1, t:"INGEST", d:"Entrada do DCP via satélite ou CRU. Sempre manter 25% de storage livre no GDC para evitar corrupção."},
-{n:2, t:"PRÉ-MONTAGEM", d:"Criar esqueleto da playlist: Black 30s inicial + Trailers + Black 5s + Filme. Nunca montar sem o DCP completo."},
-{n:3, t:"SCHEDULE", d:"Programação de grade com margem de 5min entre sessões. Sistema anti-conflito detecta overlaps automaticamente."},
-{n:4, t:"CURADORIA", d:"Seleção estratégica de trailers relevantes ao público-alvo do filme principal. Máximo 6 trailers."},
-{n:5, t:"AUTOMAÇÃO", d:"Macros de Lente (Flat/Scope), Dimmer (13% para 2D), Volume (4.0→7.0). Tudo sincronizado via GDC."},
-{n:6, t:"KDM", d:"Key Delivery Message - chave criptográfica com validade temporal. UUID do servidor DEVE bater 100%."},
-{n:7, t:"CALIBRAGEM", d:"Ajuste de Foot-lamberts (14 FL padrão), calibração de cor, e volume AES por canal. Padrão DCI."},
-{n:8, t:"CHECKLIST", d:"Ronda final: testar todos canais 7.1, verificar foco da lente, confirmar dimmer, validar playlist completa."}
-];
-
-let schedule = [
-{screen:1, time:"14:00", film:"PÂNICO 7", format:"SCOPE", status:"ready"},
-{screen:1, time:"16:30", film:"PÂNICO 7", format:"SCOPE", status:"ready"},
-{screen:2, time:"14:15", film:"MOANA 2", format:"FLAT", status:"ready"},
-{screen:2, time:"16:20", film:"MOANA 2", format:"FLAT", status:"ready"},
-{screen:3, time:"15:00", film:"MARIO BROS", format:"FLAT", status:"ready"},
-{screen:3, time:"17:10", film:"MARIO BROS", format:"FLAT", status:"conflict"},
-{screen:4, time:"13:30", film:"VINGADORES 5", format:"SCOPE", status:"ready"},
-{screen:4, time:"16:45", film:"VINGADORES 5", format:"SCOPE", status:"ready"}
-];
-
-let ingestQueue = [
-{name:"DEADPOOL 3 - 4K SCOPE", progress:67, size:"287 GB", eta:"12 min"},
-{name:"TERRIFIER 3 - 4K FLAT", progress:34, size:"201 GB", eta:"28 min"},
-{name:"JOKER 2 - 4K SCOPE", progress:89, size:"312 GB", eta:"5 min"}
-];
-
-let kdmList = [
-{film:"PÂNICO 7", valid:"2026-03-28", status:"valid"},
-{film:"MOANA 2", valid:"2026-04-15", status:"valid"},
-{film:"MARIO BROS", valid:"2026-03-25", status:"expiring"},
-{film:"VINGADORES 5", valid:"2026-05-10", status:"valid"},
-{film:"DEADPOOL 3", valid:"2026-03-22", status:"expiring"},
-{film:"BATMAN 2", valid:"2026-03-10", status:"expired"}
-];
-
-// ============================================
-// NAVIGATION
-// ============================================
-
-function nav(pageId, el) {
-document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-el.classList.add('active');
-document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-document.getElementById(pageId).classList.add('active');
-}
-
-// ============================================
-// SCREEN MANAGEMENT
-// ============================================
-
-function renderScreens() {
-const sel = document.getElementById('screenSelector');
-const dash = document.getElementById('dashboardScreens');
-
-let html = '';
-screens.forEach((s, i) => {
-let statusClass = s.status === 'playing' ? 'st-playing' : s.status === 'paused' ? 'st-paused' : 'st-ready';
-let statusIcon = s.status === 'playing' ? '▶️' : s.status === 'paused' ? '⏸️' : '✓';
-html += `
-<div class="screen-card ${i === currentScreen ? 'active' : ''}" onclick="selectScreen(${i})">
-<div class="screen-number">SALA ${s.id}</div>
-<div class="screen-film">${s.film}</div>
-<div class="screen-status">
-<span class="status ${statusClass}">${statusIcon} ${s.status.toUpperCase()}</span>
-</div>
-</div>
-`;
-});
-
-sel.innerHTML = html;
-dash.innerHTML = html;
-}
-
-function selectScreen(index) {
-currentScreen = index;
-renderScreens();
-updatePlaybackUI();
-}
-
-function updatePlaybackUI() {
-const s = screens[currentScreen];
-document.getElementById('currentFilm').textContent = s.film + ' - ' + s.format;
-document.getElementById('cplCode').textContent = 'CPL: ' + s.cpl;
-document.getElementById('currentTime').textContent = s.time;
-document.getElementById('remainingTime').textContent = s.remaining;
-document.getElementById('progressBar').style.width = s.progress + '%';
-
-let statusClass = s.status === 'playing' ? 'st-playing' : s.status === 'paused' ? 'st-paused' : s.status === 'error' ? 'st-error' : 'st-ready';
-let statusText = s.status === 'playing' ? '▶️ PLAYING' : s.status === 'paused' ? '⏸️ PAUSED' : s.status === 'error' ? '🚨 ERROR' : '✓ READY';
-document.getElementById('playbackStatus').className = 'status ' + statusClass;
-document.getElementById('playbackStatus').textContent = statusText;
-
-// Update playlist
-const playlist = [
-{name: "BLACK 30s", duration: "00:30"},
-{name: "Trailer - DEADPOOL 3", duration: "02:30"},
-{name: "Trailer - TERRIFIER 3", duration: "02:15"},
-{name: "BLACK 5s", duration: "00:05"},
-{name: s.film + " (FEATURE)", duration: s.remaining}
-];
-
-let playlistHTML = '';
-playlist.forEach((item, i) => {
-playlistHTML += `<div style="padding:10px;border-bottom:1px solid #222;display:flex;justify-content:space-between">
-<span>${i === 4 ? '🎬' : i === 3 ? '⏱️' : '📹'} ${item.name}</span>
-<span style="color:#666">${item.duration}</span>
-</div>`;
-});
-document.getElementById('playlist').innerHTML = playlistHTML;
-}
-
-// ============================================
-// PLAYER CONTROLS
-// ============================================
-
-function playerControl(action) {
-const s = screens[currentScreen];
-if(action === 'play') {
-s.status = 'playing';
-logSystem('▶️ PLAY - Sala ' + s.id + ' - ' + s.film, 'info');
-} else if(action === 'pause') {
-s.status = 'paused';
-logSystem('⏸️ PAUSE - Sala ' + s.id, 'warn');
-} else if(action === 'stop') {
-s.status = 'ready';
-s.progress = 0;
-s.time = '00:00:00';
-logSystem('⏹️ STOP - Sala ' + s.id, 'warn');
-}
-updatePlaybackUI();
-renderScreens();
-}
-
-function simulateError() {
-const s = screens[currentScreen];
-s.status = 'error';
-updatePlaybackUI();
-renderScreens();
-logSystem('🚨 ERRO CRÍTICO - Sala ' + s.id + ': Falha de KDM ou Ignition Fail', 'error');
-setTimeout(() => {
-if(confirm('Erro detectado na Sala ' + s.id + '!\n\nPossível causa: KDM inválido ou Douser não abriu.\n\nTentar reiniciar?')) {
-s.status = 'ready';
-updatePlaybackUI();
-renderScreens();
-logSystem('🔄 Sistema reiniciado - Sala ' + s.id, 'info');
-}
-}, 500);
-}
-
-function openDimmer() {
-const dimmerVal = prompt('Digite a intensidade do Dimmer (0-100):', '13');
-if(dimmerVal) {
-sendCmd('DIMMER', '💡 Dimmer ajustado para ' + dimmerVal + '%');
-}
-}
-
-// ============================================
-// SCHEDULE
-// ============================================
-
-function renderSchedule() {
-let html = '';
-schedule.forEach(s => {
-const rowClass = s.status === 'conflict' ? 'conflict' : '';
-const statusBadge = s.status === 'conflict' 
-? '<span class="status st-error">⚠️ CONFLITO</span>' 
-: '<span class="status st-ready">✓ OK</span>';
-html += `
-<tr class="${rowClass}">
-<td>Sala ${s.screen}</td>
-<td><strong>${s.time}</strong></td>
-<td>${s.film}</td>
-<td>${s.format}</td>
-<td>${statusBadge}</td>
-</tr>
-`;
-});
-document.getElementById('scheduleBody').innerHTML = html;
-}
-
-// ============================================
-// INGEST
-// ============================================
-
-function renderIngest() {
-let html = '';
-ingestQueue.forEach(item => {
-html += `
-<div class="ingest-item">
-<div class="ingest-name">${item.name}</div>
-<div class="progress" style="height:8px;margin:10px 0">
-<div class="bar" style="width:${item.progress}%"></div>
-</div>
-<div class="ingest-progress">
-<span>${item.progress}% completo</span>
-<span>${item.size}</span>
-<span>ETA: ${item.eta}</span>
-</div>
-</div>
-`;
-});
-document.getElementById('ingestList').innerHTML = html;
-}
-
-// ============================================
-// KDM MANAGER
-// ============================================
-
-function renderKDM() {
-let html = '';
-kdmList.forEach(kdm => {
-const statusClass = kdm.status === 'valid' ? 'kdm-valid' : kdm.status === 'expired' ? 'kdm-expired' : 'kdm-expiring';
-const badgeClass = kdm.status === 'valid' ? 'st-playing' : kdm.status === 'expired' ? 'st-error' : 'st-paused';
-const badgeText = kdm.status === 'valid' ? '✓ VÁLIDO' : kdm.status === 'expired' ? '✗ EXPIRADO' : '⚠️ EXPIRANDO';
-
-html += `
-<div class="kdm-item ${statusClass}">
-<div class="kdm-info">
-<div class="kdm-film">${kdm.film}</div>
-<div class="kdm-date">Válido até: ${kdm.valid}</div>
-</div>
-<span class="kdm-badge status ${badgeClass}">${badgeText}</span>
-</div>
-`;
-});
-document.getElementById('kdmList').innerHTML = html;
-}
-
-// ============================================
-// AUTOMATION
-// ============================================
-
-function sendCmd(cmd, description) {
-const timestamp = new Date().toLocaleTimeString();
-const logHTML = `<div class="log-entry">[${timestamp}] ${description}</div>`;
-document.getElementById('automationLog').innerHTML = logHTML + document.getElementById('automationLog').innerHTML;
-logSystem('🤖 AUTOMAÇÃO: ' + description, 'info');
-}
-
-// ============================================
-// SYSTEM LOGS
-// ============================================
-
-let systemLogs = [];
-
-function logSystem(message, type = 'info') {
-const timestamp = new Date().toLocaleTimeString();
-const logClass = type === 'error' ? 'log-error' : type === 'warn' ? 'log-warn' : 'log-info';
-const logEntry = {time: timestamp, msg: message, type: type};
-systemLogs.unshift(logEntry);
-if(systemLogs.length > 100) systemLogs.pop();
-renderLogs();
-}
-
-function renderLogs() {
-let html = '';
-systemLogs.forEach(log => {
-const logClass = log.type === 'error' ? 'log-error' : log.type === 'warn' ? 'log-warn' : 'log-info';
-html += `<div class="log-entry ${logClass}">[${log.time}] ${log.msg}</div>`;
-});
-document.getElementById('systemLog').innerHTML = html;
-}
-
-function filterLogs(type) {
-// Implementation for filtering logs
-}
-
-// ============================================
-// 8 PILARES
-// ============================================
-
-function renderPilares() {
-let html = '';
-pilares.forEach(p => {
-html += `
-<div class="card">
-<div class="card-title">${p.n}. ${p.t}</div>
-<p style="line-height:1.8;color:#999">${p.d}</p>
-</div>
-`;
-});
-document.getElementById('pilaresGrid').innerHTML = html;
-}
-
-// ============================================
-// DASHBOARD
-// ============================================
-
-function renderDashboard() {
-// Recent alerts
-const alerts = [
-{msg: "KDM de MARIO BROS expira em 4 dias", type: "warn"},
-{msg: "Storage atingiu 73% de uso", type: "info"},
-{msg: "Sala 3 - Conflito de horário detectado", type: "error"}
-];
-
-let alertsHTML = '';
-alerts.forEach(alert => {
-const icon = alert.type === 'error' ? '🔴' : alert.type === 'warn' ? '🟡' : '🔵';
-alertsHTML += `<div style="padding:10px;border-bottom:1px solid #222">${icon} ${alert.msg}</div>`;
-});
-document.getElementById('recentAlerts').innerHTML = alertsHTML;
-
-// Next sessions
-const nextSessions = [
-{time: "14:00", screen: 1, film: "PÂNICO 7"},
-{time: "14:15", screen: 2, film: "MOANA 2"},
-{time: "15:00", screen: 3, film: "MARIO BROS"}
-];
-
-let sessionsHTML = '';
-nextSessions.forEach(s => {
-sessionsHTML += `<div style="padding:10px;border-bottom:1px solid #222">
-<strong>${s.time}</strong> - Sala ${s.screen} - ${s.film}
-</div>`;
-});
-document.getElementById('nextSessions').innerHTML = sessionsHTML;
-}
-
-// ============================================
-// BOT SYSTEM
-// ============================================
-
-function toggleBot() {
-document.getElementById('botWindow').classList.toggle('active');
-}
-
-function sendBotMsg() {
-const input = document.getElementById('botInput');
-const msg = input.value.trim().toLowerCase();
-if(!msg) return;
-
-const box = document.getElementById('botMessages');
-box.innerHTML += `<div class="bot-msg user">${input.value}</div>`;
-input.value = '';
-box.scrollTop = box.scrollHeight;
-
-setTimeout(() => {
-let reply = generateBotResponse(msg);
-box.innerHTML += `<div class="bot-msg bot">${reply}</div>`;
-box.scrollTop = box.scrollHeight;
-}, 800);
-}
-
-function generateBotResponse(msg) {
-// KDM issues
-if(msg.includes('kdm') || msg.includes('inválido') || msg.includes('chave')) {
-return `<strong>🔐 Diagnóstico KDM</strong><br><br>
-Principais causas de KDM inválido:<br><br>
-1️⃣ <strong>UUID incompatível:</strong> O UUID do servidor no certificado não bate com o KDM<br>
-2️⃣ <strong>Validade expirada:</strong> KDM fora do período válido<br>
-3️⃣ <strong>Arquivo corrompido:</strong> Download incompleto do .xml<br><br>
-<strong>Solução:</strong> Acesse KDM Manager → Verificar validade → Reingeste se necessário`;
-}
-
-// Black screens
-if(msg.includes('black') || msg.includes('tela preta') || msg.includes('sem imagem')) {
-return `<strong>🌑 Troubleshooting - Tela Preta</strong><br><br>
-<strong>Diagnóstico por etapas:</strong><br><br>
-1. Áudio funcionando? → Problema no Douser<br>
-2. Verificar comando "Douser Open" na automação<br>
-3. Se persistir: Checar erro "Ignition Fail" no projetor<br>
-4. Última opção: Reiniciar lâmpada (warmup 3min)<br><br>
-90% dos casos é Douser não abrindo por falha de macro.`;
-}
-
-// Audio problems
-if(msg.includes('audio') || msg.includes('áudio') || msg.includes('som')) {
-return `<strong>🔊 Diagnóstico de Áudio</strong><br><br>
-<strong>Checklist sistemático:</strong><br><br>
-✓ Verificar CPL: 5.1 vs 7.1 Surround<br>
-✓ Testar cada canal individualmente<br>
-✓ Volume AES configurado (padrão 7.0)<br>
-✓ Macro de transição (4.0 trailers → 7.0 filme)<br><br>
-<strong>Canais específicos falhando?</strong> Problema no processador de áudio.`;
-}
-
-// Lens issues
-if(msg.includes('lente') || msg.includes('flat') || msg.includes('scope') || msg.includes('distorç')) {
-return `<strong>📐 Sistema de Lente</strong><br><br>
-<strong>Troca Flat ↔ Scope:</strong><br><br>
-• <strong>Black 5s:</strong> Tempo padrão para motor completar movimento<br>
-• Motor lento? Aumente para 7s<br>
-• Verificar macro de auto-switch na automação<br>
-• Testar movimento manual antes de sessão<br><br>
-Distorção = lente errada para o aspect ratio do filme.`;
-}
-
-// Dimmer
-if(msg.includes('dimmer') || msg.includes('luz')) {
-return `<strong>💡 Controle de Dimmer</strong><br><br>
-<strong>Padrões Nelson Pro:</strong><br><br>
-• 2D: 13-14%<br>
-• 3D: Ajustar conforme polarização<br>
-• Warmup: 30s antes de dimmer 0%<br><br>
-Dimmer incorreto degrada experiência mesmo com projeção perfeita.`;
-}
-
-// Storage
-if(msg.includes('storage') || msg.includes('espaço') || msg.includes('disco')) {
-return `<strong>💾 Gestão de Storage</strong><br><br>
-<strong>Regra de Ouro:</strong> Manter sempre 25% livre<br><br>
-✓ Storage cheio = risco de corrupção de DCP<br>
-✓ Remover DCPs antigos regularmente<br>
-✓ Priorizar conteúdo ativo vs arquivo<br><br>
-Seu storage atual: 73% usado → <strong style="color:#00ff88">OK</strong>`;
-}
-
-// Default
-return `<strong>NEXUS - Análise</strong><br><br>
-Recebi sua consulta. Para diagnóstico preciso, detalhe:<br><br>
-• Qual sala?<br>
-• Qual filme/sessão?<br>
-• Sintoma exato observado?<br><br>
-Posso ajudar com: KDM, Douser, Áudio, Lentes, Dimmer, Ingest, Automação.`;
-}
-
-// ============================================
-// AUTO PROGRESS SIMULATION
-// ============================================
-
-setInterval(() => {
-screens.forEach(s => {
-if(s.status === 'playing' && s.progress < 100) {
-s.progress += 0.2;
-if(s.progress > 100) s.progress = 100;
-}
-});
-if(currentScreen >= 0) {
-updatePlaybackUI();
-}
-}, 3000);
-
-// Auto-update ingest progress
-setInterval(() => {
-ingestQueue.forEach(item => {
-if(item.progress < 100) {
-item.progress += Math.random() * 2;
-if(item.progress > 100) item.progress = 100;
-}
-});
-renderIngest();
-}, 5000);
-
-// ============================================
-// INIT
-// ============================================
-
-renderScreens();
-updatePlaybackUI();
-renderSchedule();
-renderIngest();
-renderKDM();
-renderPilares();
-renderDashboard();
-
-// Auto-generate system logs
-logSystem('🟢 Sistema iniciado - Todas as salas online', 'info');
-logSystem('📊 Storage: 73% usado (3.2TB / 4.4TB)', 'info');
-logSystem('⚠️ KDM de MARIO BROS expira em 4 dias', 'warn');
-
-// Check for user
-const user = JSON.parse(localStorage.getItem('user'));
-if(user) {
-document.getElementById('operatorName').textContent = user.name.toUpperCase();
-}
-
-</script>
-
+    <div class="container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>🎬 NELSON PRO</h1>
+                <p>Cinema Engineering Platform</p>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">📚 Conteúdo</div>
+                <div class="menu-item active" data-page="intro">
+                    <span class="menu-icon">🏠</span>
+                    <span>Introdução</span>
+                </div>
+                <div class="menu-item" data-page="pilares">
+                    <span class="menu-icon">📋</span>
+                    <span>Os 8 Pilares</span>
+                </div>
+                <div class="menu-item" data-page="anatomia">
+                    <span class="menu-icon">🎭</span>
+                    <span>Anatomia do Show</span>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">⚙️ Simulador</div>
+                <div class="menu-item" data-page="gdc">
+                    <span class="menu-icon">🖥️</span>
+                    <span>GDC Simulator</span>
+                </div>
+                <div class="menu-item" data-page="automation">
+                    <span class="menu-icon">🤖</span>
+                    <span>Automação</span>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">🎓 Avançado</div>
+                <div class="menu-item" data-page="servers">
+                    <span class="menu-icon">💾</span>
+                    <span>Servidores</span>
+                </div>
+                <div class="menu-item" data-page="kdm">
+                    <span class="menu-icon">🔑</span>
+                    <span>KDM & Segurança</span>
+                </div>
+                <div class="menu-item" data-page="troubleshoot">
+                    <span class="menu-icon">🔧</span>
+                    <span>Troubleshooting</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- PÁGINA: INTRODUÇÃO -->
+            <div class="page active" id="intro">
+                <div class="page-header">
+                    <h1 class="page-title">🎬 Bem-vindo ao Nelson Pro</h1>
+                    <p class="page-subtitle">Sistema completo de treinamento profissional em projeção cinematográfica digital</p>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>✓ Sistema Completo:</strong> Simulador GDC real + 8 Pilares interativos + Assistente AI
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">📋 Os 8 Pilares</div>
+                        <p class="card-text">Aprenda a metodologia completa de programação cinematográfica, desde o ingest até o checklist final.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🖥️ Simulador GDC</div>
+                        <p class="card-text">Interface idêntica ao sistema GDC SX-4000 usado em cinemas profissionais. Pratique sem riscos!</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🤖 Assistente AI</div>
+                        <p class="card-text">Tire dúvidas em tempo real sobre KDM, troubleshooting, automação e muito mais.</p>
+                    </div>
+                </div>
+
+                <h2 style="color: var(--gold); margin: 40px 0 20px 0; font-size: 1.8rem;">🚀 Por onde começar?</h2>
+
+                <div class="cards-grid">
+                    <div class="card" onclick="navigateTo('pilares')">
+                        <div class="card-title">1️⃣ Primeiro Passo</div>
+                        <p class="card-text">Comece pelos 8 Pilares para entender a filosofia Nelson Pro de operação de cabine.</p>
+                    </div>
+
+                    <div class="card" onclick="navigateTo('gdc')">
+                        <div class="card-title">2️⃣ Pratique</div>
+                        <p class="card-text">Use o simulador GDC para praticar playback, automação e gerenciamento de salas.</p>
+                    </div>
+
+                    <div class="card" onclick="navigateTo('troubleshoot')">
+                        <div class="card-title">3️⃣ Domine</div>
+                        <p class="card-text">Aprenda troubleshooting avançado e esteja pronto para qualquer situação real.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PÁGINA: OS 8 PILARES -->
+            <div class="page" id="pilares">
+                <div class="page-header">
+                    <h1 class="page-title">📋 Os 8 Pilares da Programação Cinematográfica</h1>
+                    <p class="page-subtitle">🎯 Guia Maestro do Gerente Nelson</p>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>💡 Filosofia Nelson Pro:</strong> "Para uma cabine eficiente, o segredo não é apenas saber operar, mas sim <strong>ANTECIPAR</strong>. Siga este fluxo para garantir uma quinta-feira sem erros e uma operação automatizada."
+                </div>
+
+                <div class="pilares-grid" id="pilaresGrid"></div>
+            </div>
+
+            <!-- PÁGINA: ANATOMIA DO SHOW -->
+            <div class="page" id="anatomia">
+                <div class="page-header">
+                    <h1 class="page-title">🎭 Anatomia de um Show Básico</h1>
+                    <p class="page-subtitle">Entenda o ciclo automático do sistema Nelson Pro</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">⏱️ BLACK 30s INICIAL</div>
+                        <p class="card-text"><strong>Por quê:</strong> A lâmpada precisa de 15-20s para aquecer (warmup) e atingir brilho ideal. Durante este tempo, as luzes da sala apagam suavemente.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">⚡ BLACK 5s - A Alma</div>
+                        <p class="card-text"><strong>Por quê:</strong> Tempo EXATO para o motor trocar a lente (FLAT ↔ SCOPE). Menos de 5s força o motor. Mais de 5s, o público percebe.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🎥 FILME PRINCIPAL</div>
+                        <p class="card-text"><strong>Ajuste fino:</strong> Dimmer 13-14%, lente posicionada, áudio sincronizado, temperatura ideal. A magia do cinema!</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-success" style="margin-top: 30px;">
+                    <strong>✓ Resultado:</strong> Uma experiência cinematográfica impecável do início ao fim, onde cada detalhe técnico trabalha em harmonia.
+                </div>
+            </div>
+
+            <!-- PÁGINA: SIMULADOR GDC -->
+            <div class="page" id="gdc">
+                <div class="page-header">
+                    <h1 class="page-title">🖥️ Simulador GDC SX-4000</h1>
+                    <p class="page-subtitle">Interface profissional idêntica ao sistema real</p>
+                </div>
+
+                <div class="gdc-simulator">
+                    <div class="gdc-header">
+                        <div class="gdc-tabs">
+                            <div class="gdc-tab active" data-tab="playback">Playback</div>
+                            <div class="gdc-tab" data-tab="dashboard">Dashboard</div>
+                            <div class="gdc-tab" data-tab="content">Content</div>
+                        </div>
+                        <div class="screen-selector">
+                            <div class="screen-btn active" data-screen="1">Screen 1</div>
+                            <div class="screen-btn" data-screen="2">Screen 2</div>
+                            <div class="screen-btn" data-screen="3">Screen 3</div>
+                            <div class="screen-btn" data-screen="4">Screen 4</div>
+                        </div>
+                    </div>
+
+                    <div class="gdc-content">
+                        <!-- PLAYBACK TAB -->
+                        <div class="gdc-tab-content active" id="playback-tab">
+                            <div class="playback-panel">
+                                <div class="playback-status">
+                                    <div class="status-info">
+                                        <h3 id="playStatus" class="status-playing">▶️ PLAYING</h3>
+                                        <div class="movie-title">PANICO 7 - 2D</div>
+                                        <div class="time-display" id="timeDisplay">00:10:00 / 01:54:10</div>
+                                        <div class="format-badges">
+                                            <span class="badge badge-4k">4K</span>
+                                            <span class="badge badge-cc">CC</span>
+                                            <span class="badge badge-sub">SUB</span>
+                                        </div>
+                                    </div>
+                                    <div class="playback-controls">
+                                        <button class="btn btn-play" onclick="playMovie()">▶️ Play</button>
+                                        <button class="btn btn-pause" onclick="pauseMovie()">⏸️ Pause</button>
+                                        <button class="btn btn-stop" onclick="stopMovie()">⏹️ Stop</button>
+                                    </div>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="progressBar" style="width: 8.7%"></div>
+                                </div>
+                            </div>
+
+                            <div class="cards-grid">
+                                <div class="card">
+                                    <div class="card-title">📋 Playlist</div>
+                                    <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                                        <li style="padding: 8px 0; color: var(--text-secondary);">1. Black 30s</li>
+                                        <li style="padding: 8px 0; color: var(--text-secondary);">2. Trailer MK</li>
+                                        <li style="padding: 8px 0; color: var(--text-secondary);">3. Trailer Moana</li>
+                                        <li style="padding: 8px 0; color: var(--text-secondary);">4. Ads Block</li>
+                                        <li style="padding: 8px 0; color: var(--neon-green); font-weight: 700;">▶️ 5. PANICO 7 - Feature</li>
+                                        <li style="padding: 8px 0; color: var(--text-secondary);">6. Black Final 30s</li>
+                                    </ul>
+                                </div>
+                                <div class="card">
+                                    <div class="card-title">⚙️ Automation Log</div>
+                                    <div class="log-panel" id="logPanel" style="max-height: 200px; margin-top: 15px;">
+                                        <div class="log-entry">[19:00:15] DIGITAL 1</div>
+                                        <div class="log-entry">[19:00:20] DIMMER 50%</div>
+                                        <div class="log-entry">[19:06:37] DIMMER 0%</div>
+                                        <div class="log-entry">[19:06:37] VOLUME 4.0</div>
+                                        <div class="log-entry">[19:06:37] FLAT 2D</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DASHBOARD TAB -->
+                        <div class="gdc-tab-content" id="dashboard-tab">
+                            <div class="cards-grid">
+                                <div class="card">
+                                    <div class="card-title">CPU Temperature</div>
+                                    <h2 style="color: var(--success); font-size: 2.5rem; margin-top: 15px;">36°C</h2>
+                                </div>
+                                <div class="card">
+                                    <div class="card-title">Media Block</div>
+                                    <h2 style="color: var(--success); font-size: 2.5rem; margin-top: 15px;">39°C</h2>
+                                </div>
+                                <div class="card">
+                                    <div class="card-title">Storage</div>
+                                    <h2 style="color: var(--gold); font-size: 1.8rem; margin-top: 15px;">1.47TB / 2.05TB</h2>
+                                    <div class="progress-bar-container" style="margin-top: 15px;">
+                                        <div class="progress-bar" style="width: 71%"></div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-title">Uptime</div>
+                                    <h2 style="color: var(--success); font-size: 2.5rem; margin-top: 15px;">5h 23m</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CONTENT TAB -->
+                        <div class="gdc-tab-content" id="content-tab">
+                            <div class="card">
+                                <div class="card-title">📂 Content Library</div>
+                                <ul style="list-style: none; padding: 0; margin-top: 20px;">
+                                    <li style="padding: 12px; margin: 8px 0; background: rgba(255,255,255,0.03); border-radius: 6px;">🎬 Scream-7-4K-FLAT-5.1.dcp</li>
+                                    <li style="padding: 12px; margin: 8px 0; background: rgba(255,255,255,0.03); border-radius: 6px;">🎬 Moana-Trailer-2K-SCOPE-7.1.dcp</li>
+                                    <li style="padding: 12px; margin: 8px 0; background: rgba(255,255,255,0.03); border-radius: 6px;">📺 School-Ad-2K-FLAT-Stereo.dcp</li>
+                                    <li style="padding: 12px; margin: 8px 0; background: rgba(255,255,255,0.03); border-radius: 6px;">🎬 MK-Trailer-4K-FLAT-Atmos.dcp</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PÁGINA: AUTOMAÇÃO -->
+            <div class="page" id="automation">
+                <div class="page-header">
+                    <h1 class="page-title">🤖 Sistema de Automação</h1>
+                    <p class="page-subtitle">Envie comandos e veja logs em tempo real</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card" onclick="sendCommand('DIMMER 50%')">
+                        <div class="card-title">💡 DIMMER 50%</div>
+                        <p class="card-text">Reduzir brilho das luzes da sala para 50%</p>
+                    </div>
+                    <div class="card" onclick="sendCommand('LIGHTS OFF')">
+                        <div class="card-title">🌑 LIGHTS OFF</div>
+                        <p class="card-text">Apagar completamente as luzes da sala</p>
+                    </div>
+                    <div class="card" onclick="sendCommand('VOLUME 5.0')">
+                        <div class="card-title">🔊 VOLUME UP</div>
+                        <p class="card-text">Aumentar volume para nível 5.0</p>
+                    </div>
+                    <div class="card" onclick="sendCommand('FLAT 2D')">
+                        <div class="card-title">📐 FLAT MODE</div>
+                        <p class="card-text">Trocar lente para formato FLAT 2D</p>
+                    </div>
+                    <div class="card" onclick="sendCommand('SCOPE 2D')">
+                        <div class="card-title">📐 SCOPE MODE</div>
+                        <p class="card-text">Trocar lente para formato SCOPE (widescreen)</p>
+                    </div>
+                    <div class="card" onclick="sendCommand('CURTAIN CLOSE')">
+                        <div class="card-title">🎭 CURTAIN</div>
+                        <p class="card-text">Abrir/fechar cortina da tela</p>
+                    </div>
+                </div>
+
+                <div class="log-panel" id="automationLog" style="margin-top: 30px;">
+                    <div class="log-entry">[SYSTEM] Aguardando comandos...</div>
+                </div>
+            </div>
+
+            <!-- PÁGINA: SERVIDORES -->
+            <div class="page" id="servers">
+                <div class="page-header">
+                    <h1 class="page-title">💾 Servidores de Cinema</h1>
+                    <p class="page-subtitle">Principais fabricantes e suas características</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">GDC (Gold Standard)</div>
+                        <p class="card-text">Líder de mercado. Modelos: SX-4000, SR-1000. Interface intuitiva, suporte excelente, usado em 60%+ dos cinemas brasileiros.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Dolby (Premium)</div>
+                        <p class="card-text">IMS3000, CAT862. Integração com Dolby Atmos. Interface mais complexa, mas extremamente confiável.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Barco (Integrado)</div>
+                        <p class="card-text">Alchemy, Communicator. Frequentemente integrado aos projetores Barco. Ótimo para automação avançada.</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning" style="margin-top: 30px;">
+                    <strong>⚠️ Importante:</strong> Cada servidor tem interface própria, mas os conceitos dos 8 Pilares se aplicam a TODOS!
+                </div>
+            </div>
+
+            <!-- PÁGINA: KDM -->
+            <div class="page" id="kdm">
+                <div class="page-header">
+                    <h1 class="page-title">🔑 KDM & Segurança Digital</h1>
+                    <p class="page-subtitle">Entenda o sistema de criptografia do cinema digital</p>
+                </div>
+
+                <div class="alert alert-error">
+                    <strong>⚠️ CRÍTICO:</strong> Sem KDM válido, o filme NÃO RODA. É a chave de descriptografia do DCP.
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">O que é KDM?</div>
+                        <p class="card-text">Key Delivery Message: arquivo XML com chave criptográfica que libera o DCP para reprodução em um servidor específico, por período determinado.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">UUID do Servidor</div>
+                        <p class="card-text">Cada servidor tem UUID único (ex: 12345678-1234-1234-1234-123456789abc). KDM DEVE ser gerado para este UUID específico.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Validade</div>
+                        <p class="card-text">KDM tem data/hora início e fim. Fora deste período, DCP fica bloqueado. Sempre verifique validade ANTES da sessão!</p>
+                    </div>
+                </div>
+
+                <h2 style="color: var(--gold); margin: 40px 0 20px 0; font-size: 1.6rem;">✅ Checklist KDM</h2>
+                <div class="card">
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid var(--border-color);">✓ UUID correto (confira no servidor)</li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid var(--border-color);">✓ Data/hora início anterior à sessão</li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid var(--border-color);">✓ Data/hora fim posterior ao fim da última sessão</li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid var(--border-color);">✓ Nome do filme corresponde ao DCP</li>
+                        <li style="padding: 10px 0;">✓ Importar KDM ANTES de montar playlist</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- PÁGINA: TROUBLESHOOTING -->
+            <div class="page" id="troubleshoot">
+                <div class="page-header">
+                    <h1 class="page-title">🔧 Troubleshooting</h1>
+                    <p class="page-subtitle">Soluções para problemas comuns de cabine</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">🖥️ Tela Preta</div>
+                        <p class="card-text"><strong>Causas:</strong> KDM inválido/expirado, DCP corrompido, cabo projetor desconectado.<br><strong>Solução:</strong> Verificar KDM, testar outro DCP, checar conexões.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🔇 Sem Áudio</div>
+                        <p class="card-text"><strong>Causas:</strong> Processador desligado, cabo AES desconectado, canal errado.<br><strong>Solução:</strong> Ligar processador, verificar cabos, conferir mapeamento de canais.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⏸️ Travamento</div>
+                        <p class="card-text"><strong>Causas:</strong> Buffer insuficiente, DCP com erro de hash, servidor sobrecarregado.<br><strong>Solução:</strong> Pausar 30s, verificar integridade DCP, reiniciar servidor se necessário.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🎨 Cor Errada</div>
+                        <p class="card-text"><strong>Causas:</strong> Lâmpada fria, dimmer incorreto, calibração perdida.<br><strong>Solução:</strong> Aguardar warmup completo, ajustar dimmer, recalibrar projetor.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📐 Formato Errado</div>
+                        <p class="card-text"><strong>Causas:</strong> Black 5s removido, macro incorreta, lente travada.<br><strong>Solução:</strong> Adicionar Black 5s, verificar macros, checar motor de lente.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">💾 Storage Cheio</div>
+                        <p class="card-text"><strong>Causas:</strong> Trailers antigos, DCPs temporários não deletados.<br><strong>Solução:</strong> Limpar trailers fora de cartaz, manter 25%+ livre sempre.</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-success" style="margin-top: 30px;">
+                    <strong>💡 Regra de Ouro:</strong> 90% dos problemas são resolvidos com: 1) Verificar KDM, 2) Verificar cabos, 3) Reiniciar servidor.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- BOT ASSISTANT -->
+    <div class="bot-trigger" onclick="toggleBot()">💬</div>
+    <div class="bot-window" id="botWindow">
+        <div class="bot-header">
+            🤖 Assistente Nelson Pro
+        </div>
+        <div class="bot-messages" id="botMessages">
+            <div class="bot-message bot">
+                Olá! Sou o assistente Nelson Pro. Pergunte sobre KDM, automação, troubleshooting ou qualquer dúvida de cabine!
+            </div>
+        </div>
+        <div class="bot-input-container">
+            <input type="text" class="bot-input" id="botInput" placeholder="Digite sua dúvida..." onkeypress="if(event.key==='Enter') sendBotMessage()">
+        </div>
+    </div>
+
+    <script>
+        // DADOS DOS 8 PILARES
+        const PILARES = [
+            {
+                numero: 1,
+                titulo: "INGEST",
+                emoji: "📥",
+                desc: "Entrada do arquivo digital (DCP) no servidor. Pode ser via satélite ou drive físico (CRU).",
+                passos: [
+                    "Verificar DIARIAMENTE o status do storage no GDC",
+                    "Garantir espaço livre (mínimo 25%)",
+                    "Acompanhar progresso do ingest via satélite",
+                    "Marcar como 'Ready' quando completo"
+                ]
+            },
+            {
+                numero: 2,
+                titulo: "PRÉ-MONTAGEM",
+                emoji: "🎬",
+                desc: "Criar a estrutura da playlist ANTES do filme chegar.",
+                passos: [
+                    "Montar 'esqueleto': Black 30s + trailers + propagandas",
+                    "Reservar espaço para o filme principal",
+                    "Adicionar Black 5s + Black 30s final",
+                    "Inserir filme quando disponível"
+                ]
+            },
+            {
+                numero: 3,
+                titulo: "SCHEDULE",
+                emoji: "📅",
+                desc: "Definir QUANDO cada show vai rodar na grade de horários.",
+                passos: [
+                    "Acessar Schedule no servidor GDC",
+                    "Criar slots de horário (14:00, 17:00, 19:30)",
+                    "Associar cada slot a uma playlist",
+                    "Verificar conflitos de tempo"
+                ]
+            },
+            {
+                numero: 4,
+                titulo: "CURADORIA",
+                emoji: "🎞️",
+                desc: "Escolher e organizar os trailers certos para cada filme.",
+                passos: [
+                    "Verificar trailers disponíveis no storage",
+                    "Escolher 2-3 trailers relevantes",
+                    "Conferir mesmo formato (FLAT/SCOPE)",
+                    "Editar bloco de trailers na playlist"
+                ]
+            },
+            {
+                numero: 5,
+                titulo: "AUTOMAÇÃO",
+                emoji: "⚙️",
+                desc: "Inserir o filme e configurar comandos automáticos.",
+                passos: [
+                    "Inserir DCP no espaço reservado",
+                    "Configurar Dimmer Macros (13% 2D, 14% Atmos)",
+                    "Definir comandos de luz (fade 0% → 100%)",
+                    "Testar playlist completa"
+                ]
+            },
+            {
+                numero: 6,
+                titulo: "KDM",
+                emoji: "🔑",
+                desc: "A chave que descriptografa o DCP. Sem ela, o filme NÃO roda.",
+                passos: [
+                    "Receber arquivo .xml por email",
+                    "Acessar GDC → Library → Import KDM",
+                    "Selecionar arquivo .xml",
+                    "Testar reprodução do filme"
+                ]
+            },
+            {
+                numero: 7,
+                titulo: "CALIBRAGEM",
+                emoji: "🎛️",
+                desc: "Ajustar o brilho (dimmer) de cada filme novo.",
+                passos: [
+                    "Usar quinta-feira para fine-tuning",
+                    "Rodar filme de teste (5 minutos)",
+                    "Verificar Foot-lamberts (14 fL 2D, 16 fL 3D)",
+                    "Ajustar comandos de automação"
+                ]
+            },
+            {
+                numero: 8,
+                titulo: "CHECKLIST",
+                emoji: "✅",
+                desc: "Revisão final antes da primeira sessão pública.",
+                passos: [
+                    "Dar Play em cada playlist nova",
+                    "Verificar áudio em TODOS os canais",
+                    "Verificar automação de luz e som",
+                    "Marcar como 'Ready for Showtime'"
+                ]
+            }
+        ];
+
+        // RENDERIZAR PILARES
+        function renderPilares() {
+            const grid = document.getElementById('pilaresGrid');
+            grid.innerHTML = PILARES.map(p => `
+                <div class="pilar-card" onclick="togglePilar(this)">
+                    <div class="pilar-number">${p.numero}</div>
+                    <div class="pilar-title">${p.emoji} ${p.titulo}</div>
+                    <div class="pilar-desc">${p.desc}</div>
+                    <div class="pilar-steps">
+                        <h4>✅ COMO FAZER:</h4>
+                        <ul>
+                            ${p.passos.map(passo => `<li>${passo}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function togglePilar(card) {
+            card.classList.toggle('expanded');
+        }
+
+        // NAVEGAÇÃO
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+
+            document.getElementById(pageId).classList.add('active');
+            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+        }
+
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.getAttribute('data-page');
+                navigateTo(page);
+            });
+        });
+
+        // GDC TABS
+        document.querySelectorAll('.gdc-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.gdc-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.gdc-tab-content').forEach(c => c.classList.remove('active'));
+
+                tab.classList.add('active');
+                const tabName = tab.getAttribute('data-tab');
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            });
+        });
+
+        // SCREEN SELECTOR
+        document.querySelectorAll('.screen-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.screen-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // PLAYBACK SIMULATOR
+        let isPlaying = false;
+        let currentTime = 600; // 10 minutes
+        const duration = 6850; // 1:54:10
+        let playInterval;
+
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+            const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function updatePlayback() {
+            document.getElementById('timeDisplay').textContent =
+                `${formatTime(currentTime)} / ${formatTime(duration)}`;
+            document.getElementById('progressBar').style.width =
+                `${(currentTime / duration) * 100}%`;
+        }
+
+        function playMovie() {
+            isPlaying = true;
+            document.getElementById('playStatus').className = 'status-playing';
+            document.getElementById('playStatus').textContent = '▶️ PLAYING';
+
+            playInterval = setInterval(() => {
+                if (currentTime < duration) {
+                    currentTime++;
+                    updatePlayback();
+                }
+            }, 1000);
+        }
+
+        function pauseMovie() {
+            isPlaying = false;
+            clearInterval(playInterval);
+            document.getElementById('playStatus').className = 'status-paused';
+            document.getElementById('playStatus').textContent = '⏸️ PAUSED';
+        }
+
+        function stopMovie() {
+            isPlaying = false;
+            clearInterval(playInterval);
+            currentTime = 0;
+            updatePlayback();
+            document.getElementById('playStatus').className = 'status-paused';
+            document.getElementById('playStatus').textContent = '⏹️ STOPPED';
+        }
+
+        // AUTOMATION
+        function sendCommand(cmd) {
+            const log = document.getElementById('automationLog');
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = `[${time}] ${cmd}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // BOT ASSISTANT
+        function toggleBot() {
+            document.getElementById('botWindow').classList.toggle('active');
+        }
+
+        function sendBotMessage() {
+            const input = document.getElementById('botInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messages = document.getElementById('botMessages');
+
+            // User message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'bot-message user';
+            userMsg.textContent = message;
+            messages.appendChild(userMsg);
+
+            // Bot response
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'bot-message bot';
+                botMsg.textContent = getBotResponse(message);
+                messages.appendChild(botMsg);
+                messages.scrollTop = messages.scrollHeight;
+            }, 500);
+
+            input.value = '';
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function getBotResponse(msg) {
+            msg = msg.toLowerCase();
+
+            if (msg.includes('kdm')) return '🔑 KDM é a chave XML que descriptografa o DCP. Sem KDM válido, o filme não roda! Sempre verifique UUID do servidor e validade.';
+            if (msg.includes('black')) return '⏱️ Black 5s é crucial para troca de lente! Menos de 5s força o motor, mais de 5s o público percebe.';
+            if (msg.includes('dimmer')) return '💡 Dimmer ideal: 13-14% para 2D, 14% para Atmos. Ajuste fino na quinta-feira!';
+            if (msg.includes('tela preta') || msg.includes('sem imagem')) return '🖥️ Tela preta? Verifique: 1) KDM válido, 2) DCP não corrompido, 3) Cabo projetor conectado.';
+            if (msg.includes('sem áudio') || msg.includes('sem som')) return '🔇 Sem áudio? Verifique: 1) Processador ligado, 2) Cabos AES conectados, 3) Mapeamento de canais correto.';
+            if (msg.includes('storage') || msg.includes('espaço')) return '💾 Mantenha SEMPRE 25%+ de storage livre! Delete trailers antigos e DCPs temporários.';
+            if (msg.includes('pilares')) return '📋 Os 8 Pilares são: 1-Ingest, 2-Pré-Montagem, 3-Schedule, 4-Curadoria, 5-Automação, 6-KDM, 7-Calibragem, 8-Checklist. Siga esta ordem!';
+
+            return '🤖 Pergunta interessante! Tente perguntar sobre:VOCE AMA SEU GERENTE?, KDM, pilares, dimmer, troubleshooting, storage, black, áudio...';
+        }
+
+        // INICIALIZAR
+        renderPilares();
+        updatePlayback();
+    </script>
 </body>
 </html>
-function sair() {
-    localStorage.removeItem('user'); // Apaga os dados salvos no navegador
-    window.location.href = 'login.html'; // Volta para o login
-}
