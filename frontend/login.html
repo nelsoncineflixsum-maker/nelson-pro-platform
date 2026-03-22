@@ -5,34 +5,53 @@
     <title>Nelson Pro | Login</title>
     <style>
         body { background: #050505; color: white; font-family: sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
-        .card { background: #111; padding: 40px; border-radius: 15px; border-top: 4px solid #e50914; width: 320px; text-align: center; }
+        .card { background: #111; padding: 40px; border-radius: 15px; border-top: 4px solid #e50914; width: 320px; text-align: center; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
+        h2 { color: #e50914; margin-bottom: 20px; font-family: sans-serif; }
         input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #e50914; border: none; color: white; font-weight: bold; cursor: pointer; border-radius: 5px; width: 100%; margin-top: 10px; }
-        .link { color: #888; font-size: 13px; margin-top: 15px; cursor: pointer; }
+        button { width: 100%; padding: 12px; background: #e50914; border: none; color: white; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px; transition: 0.3s; }
+        button:hover { background: #ff0d1a; }
+        .link { color: #888; font-size: 13px; margin-top: 15px; cursor: pointer; display: block; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h2 style="color:#e50914">LOGIN</h2>
-        <input type="email" id="email" placeholder="Seu E-mail">
+        <h2>LOGIN</h2>
+        <input type="email" id="email" placeholder="Seu E-mail Profissional">
         <input type="password" id="pass" placeholder="Sua Senha">
         <button onclick="logar()">ACESSAR CABINE</button>
-        <div class="link" onclick="window.location.href='cadastro.html'">Criar nova conta de aluno</div>
+        <a class="link" onclick="window.location.href='cadastro.html'">Criar nova conta de aluno</a>
     </div>
+
     <script>
         async function logar() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('pass').value;
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
-            const data = await res.json();
-            if (data.success) {
-                localStorage.setItem('user', JSON.stringify(data.user));
-                window.location.href = 'dashboard.html';
-            } else { alert('Erro: Verifique seus dados.'); }
+            const emailValue = document.getElementById('email').value;
+            const passValue = document.getElementById('pass').value;
+
+            if (!emailValue || !passValue) {
+                alert("Nelson, preencha todos os campos!");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailValue, password: passValue })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    // Salva o "crachá" e manda para o conteúdo
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert("❌ Erro: E-mail ou Senha não encontrados no servidor.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("🔴 Falha na conexão com o servidor da Render.");
+            }
         }
     </script>
 </body>
