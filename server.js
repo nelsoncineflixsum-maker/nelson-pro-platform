@@ -5,7 +5,7 @@ const path = require('path');
 
 const app = express();
 
-// 🛠️ CONEXÃO MESTRE COM O NEON
+// 🛠️ CONEXÃO COM O BANCO NEON (Sua "Central de Dados")
 const pool = new Pool({ 
     connectionString: "postgresql://neondb_owner:npg_jlPcXqU9F6td@ep-summer-firefly-amnrn3rr-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require", 
     ssl: { rejectUnauthorized: false } 
@@ -14,10 +14,10 @@ const pool = new Pool({
 app.use(cors());
 app.use(express.json());
 
-// ✅ CORREÇÃO DE CAMINHO: Agora ele acha a pasta frontend ao lado do server.js
+// ✅ CONFIGURAÇÃO DE PASTAS (Onde estão seus arquivos de site)
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// 🧪 TESTE DE CONEXÃO
+// 🧪 TESTE DE CONEXÃO AO BANCO
 const conectarBanco = async () => {
     try {
         await pool.query('SELECT NOW()');
@@ -28,7 +28,11 @@ const conectarBanco = async () => {
 };
 conectarBanco();
 
-// 🔑 ROTA DE LOGIN
+// ---------------------------------------------------------
+// 🔑 ROTAS DE AUTENTICAÇÃO (O "Porteiro" do Nelson Pro)
+// ---------------------------------------------------------
+
+// ROTA DE LOGIN: Confere se o aluno existe no Neon
 app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -43,21 +47,43 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-// 🔑 ROTA DE CADASTRO
-// ✅ Rota que abre o Login primeiro
+// ROTA DE CADASTRO: Salva novo aluno no Neon
+app.post('/api/auth/register', async (req, res) => {
+    const { name, email, password } = req.body;
+    try {
+        await pool.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, password]);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(400).json({ success: false, message: 'Erro ou email já existe.' });
+    }
+});
+
+// ---------------------------------------------------------
+// 🎬 ROTAS DE NAVEGAÇÃO (As telas do sistema)
+// ---------------------------------------------------------
+
+// 1. QUEM ENTRAR NO LINK PRINCIPAL CAI NO LOGIN
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend/login.html'));
 });
 
-// ✅ Rota que permite abrir o simulador (index.html)
+// 2. ROTA PARA O SIMULADOR (INDEX)
 app.get('/index.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend/index.html'));
 });
 
-// ✅ Rota para o cadastro
+// 3. ROTA PARA O CADASTRO
 app.get('/cadastro.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend/cadastro.html'));
 });
+
+// 4. ROTA DE SEGURANÇA (Se o aluno digitar qualquer coisa errada, volta pro Login)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/login.html'));
+});
+
+// 🚀 PORTA DA RENDER (10000)
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 NELSON PRO EM ORBITA NA PORTA ${PORT}`);
 });
