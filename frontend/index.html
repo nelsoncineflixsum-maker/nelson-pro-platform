@@ -981,6 +981,11 @@
     </footer>
 
     <script>
+    // Coloque isso bem no começo do seu script no index.html
+const logado = localStorage.getItem('user');
+if (!logado) {
+    window.location.replace("login.html");
+}
         // FORM TOGGLE
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
