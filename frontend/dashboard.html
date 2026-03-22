@@ -2,112 +2,60 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nelson Pro | Dashboard de Operação</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <title>Nelson Pro | Painel de Operação</title>
     <style>
-        :root { --gdc-blue: #00d4ff; --danger: #e50914; --success: #28a745; --dark: #0a0a0a; --panel: #161616; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', sans-serif; }
-        body { background: var(--dark); color: white; display: flex; height: 100vh; overflow: hidden; }
-
-        /* Sidebar de Navegação */
-        .sidebar { width: 260px; background: #000; border-right: 1px solid #333; padding: 20px; display: flex; flex-direction: column; }
-        .logo { font-family: 'Orbitron'; color: var(--danger); font-size: 20px; margin-bottom: 40px; text-align: center; }
-        .nav-item { padding: 15px; border-radius: 8px; cursor: pointer; margin-bottom: 10px; transition: 0.3s; display: flex; align-items: center; gap: 10px; color: #888; }
-        .nav-item:hover, .nav-item.active { background: var(--panel); color: white; border-left: 4px solid var(--danger); }
-
-        /* Área Principal */
-        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
-        .header-status { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: var(--panel); padding: 15px; border-radius: 10px; }
-        
-        /* Grid de Operação */
-        .grid-operacao { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-        
-        /* Painel do Servidor (Playlist) */
-        .playlist-card { background: var(--panel); padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        .item-playlist { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #222; font-size: 14px; }
-        .status-ready { color: var(--success); font-weight: bold; }
-        .status-error { color: var(--danger); font-weight: bold; animation: pulse 1s infinite; }
-
-        /* Troubleshooting & Info */
-        .info-card { background: #1a1a1a; padding: 20px; border-radius: 15px; border-top: 4px solid var(--gdc-blue); margin-bottom: 20px; }
-        .info-card h4 { color: var(--gdc-blue); margin-bottom: 10px; font-family: 'Orbitron'; font-size: 14px; }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        
-        .btn-control { padding: 10px 20px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; margin-right: 10px; }
-        .play { background: var(--success); color: white; }
-        .stop { background: var(--danger); color: white; }
+        body { background: #0a0a0a; color: white; font-family: sans-serif; margin: 0; padding: 20px; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e50914; padding-bottom: 15px; }
+        .status-bar { background: #1a1a1a; padding: 10px; margin: 20px 0; display: flex; justify-content: space-between; border-radius: 5px; font-size: 13px; }
+        .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .pilar { background: #111; padding: 20px; border-radius: 10px; border-left: 5px solid #e50914; margin-bottom: 10px; }
+        .error { color: #e50914; font-weight: bold; animation: flash 1s infinite; }
+        @keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .btn-sair { background: #e50914; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; }
     </style>
 </head>
 <body>
+    <header>
+        <h1>NELSON PRO | <span style="font-weight:100">TMS SIMULATOR</span></h1>
+        <button class="btn-sair" onclick="sair()">SAIR</button>
+    </header>
 
-    <div class="sidebar">
-        <div class="logo">NELSON PRO 4K</div>
-        <div class="nav-item active">📥 Ingest & Storage</div>
-        <div class="nav-item">🎬 Shows (Playlists)</div>
-        <div class="nav-item">🗓️ Schedule</div>
-        <div class="nav-item">⚙️ Automação</div>
-        <div class="nav-item" style="margin-top: auto; color: #e50914;" onclick="sair()">🚪 Encerrar Sessão</div>
+    <div class="status-bar">
+        <span>SISTEMA: GDC SX-4000</span>
+        <span>OPERADOR: <b id="op-name" style="color:#e50914">---</b></span>
+        <span id="relogio">00:00:00</span>
     </div>
 
-    <div class="main-content">
-        <div class="header-status">
-            <div>OPERADOR: <span id="op-name" style="color:var(--gdc-blue); font-weight: bold;">---</span></div>
-            <div>STATUS DO SERVIDOR: <span style="color:var(--success)">● ONLINE (GDC SX-4000)</span></div>
-            <div id="relogio">00:00:00</div>
+    <div class="grid">
+        <div>
+            <h3>SHOW PLAYLIST (SPL)</h3>
+            <div class="pilar">🎬 1. BLACK 30s - Lamp ON | Vol 41 | Luz 50% | Flat</div>
+            <div class="pilar">🎞️ 2. TRAILERS / PROPAGANDAS</div>
+            <div class="pilar">⚫ 3. BLACK 5s - Ajuste Scope | Vol 7.0</div>
+            <div class="pilar" style="border-color: yellow;">🎬 4. FILME: DUNA 2 <span class="error">| KDM EXPIRANDO EM 24H</span></div>
+            <div class="pilar">🎬 5. BLACK 30s - Lamp OFF | Vol 23 | Luz 100%</div>
         </div>
-
-        <div class="grid-operacao">
-            <div class="playlist-card">
-                <h3 style="margin-bottom: 20px; font-family: 'Orbitron';">SALA 01 - SHOW PLAYLIST (SPL)</h3>
-                <div class="item-playlist"><span>⚫ BLACK 30s (Lamp ON, Vol 41, Luz 50%, Flat)</span> <span class="status-ready">PRONTO</span></div>
-                <div class="item-playlist"><span>🎞️ TRAILERS (Ordem da Grade)</span> <span class="status-ready">PRONTO</span></div>
-                <div class="item-playlist"><span>📺 PROPAGANDAS</span> <span class="status-ready">PRONTO</span></div>
-                <div class="item-playlist"><span>⚫ BLACK 5s (Transição: Scope, Vol 7.0)</span> <span class="status-ready">PRONTO</span></div>
-                <div class="item-playlist"><span>🎬 FILME: DUNA - PARTE 2 (CPL Scope)</span> <span class="status-error">KDM INVÁLIDO</span></div>
-                <div class="item-playlist"><span>⚫ BLACK 30s (Lamp OFF, Vol 23, Luz 100%)</span> <span class="status-ready">PRONTO</span></div>
-                
-                <div style="margin-top: 30px;">
-                    <button class="btn-control play" onclick="alert('Iniciando Projeção...')">▶ PLAY</button>
-                    <button class="btn-control" style="background:#555; color:white;">⏸ PAUSE</button>
-                    <button class="btn-control stop" onclick="alert('Interrupção de Emergência!')">⏹ STOP</button>
-                </div>
-            </div>
-
-            <div>
-                <div class="info-card">
-                    <h4>🔧 TROUBLESHOOTING</h4>
-                    <p style="font-size: 13px; color: #aaa;">ALERTA: Filme em vermelho? Verifique a data do KDM ou se o servidor está com o relógio sincronizado.</p>
-                </div>
-                <div class="info-card" style="border-top-color: var(--success);">
-                    <h4>📊 STATUS DO INGEST</h4>
-                    <p style="font-size: 13px;">Storage: 74% Livre</p>
-                    <p style="font-size: 13px;">DCP Duna 2: 100% (Verificado)</p>
-                </div>
-                <div class="info-card" style="border-top-color: #f1c40f;">
-                    <h4>💡 AUTOMAÇÃO (DIMMER)</h4>
-                    <p style="font-size: 13px;">Luz Atual: 50% (Meia luz)</p>
-                    <p style="font-size: 13px;">Formato: Flat 2D (Ajustando p/ Scope em 05:40)</p>
-                </div>
-            </div>
+        <div>
+            <h3>INGEST / STATUS</h3>
+            <div class="pilar">📊 Storage: 78% Livre</div>
+            <div class="pilar">🌡️ Temperatura: 42°C (OK)</div>
+            <div class="pilar">🔑 KDM: Validado para Sala 01</div>
         </div>
     </div>
 
     <script>
-        // Carrega dados do operador
-        const user = JSON.parse(localStorage.getItem('user'));
-        if(!user) { window.location.href = 'index.html'; }
-        else { document.getElementById('op-name').innerText = user.name.toUpperCase(); }
+        const logado = localStorage.getItem('user');
+        if (!logado) { window.location.replace("index.html"); } 
+        else {
+            const user = JSON.parse(logado);
+            document.getElementById('op-name').innerText = user.name.toUpperCase();
+        }
 
-        // Relógio do Servidor
-        setInterval(() => {
-            document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
-        }, 1000);
+        setInterval(() => { document.getElementById('relogio').innerText = new Date().toLocaleTimeString(); }, 1000);
 
         function sair() {
             localStorage.removeItem('user');
-            window.location.href = 'index.html';
+            window.location.replace("index.html");
         }
     </script>
 </body>
