@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// ROTAS DE API
+// API LOGIN
 app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -24,6 +24,7 @@ app.post('/api/auth/login', async (req, res) => {
     } catch (err) { res.status(500).json({ success: false }); }
 });
 
+// API CADASTRO
 app.post('/api/auth/register', async (req, res) => {
     const { name, email, password } = req.body;
     try {
@@ -32,10 +33,9 @@ app.post('/api/auth/register', async (req, res) => {
     } catch (err) { res.status(400).json({ success: false }); }
 });
 
-// ROTAS DE PÁGINAS
-app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'frontend/login.html')); });
-app.get('/index.html', (req, res) => { res.sendFile(path.join(__dirname, 'frontend/index.html')); });
-app.get('/cadastro.html', (req, res) => { res.sendFile(path.join(__dirname, 'frontend/cadastro.html')); });
+// ROTAS
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'frontend/login.html')));
+app.get('/simulador', (req, res) => res.sendFile(path.join(__dirname, 'frontend/index.html')));
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => { console.log(`🚀 Online na porta ${PORT}`); });
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Nelson Pro Online`));
