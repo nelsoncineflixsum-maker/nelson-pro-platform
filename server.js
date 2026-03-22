@@ -5,7 +5,7 @@ const path = require('path');
 
 const app = express();
 
-// 🛠️ CONEXÃO MESTRE COM O NEON (MANTIDA)
+// 🛠️ CONEXÃO MESTRE COM O NEON
 const pool = new Pool({ 
     connectionString: "postgresql://neondb_owner:npg_jlPcXqU9F6td@ep-summer-firefly-amnrn3rr-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require", 
     ssl: { rejectUnauthorized: false } 
@@ -14,11 +14,10 @@ const pool = new Pool({
 app.use(cors());
 app.use(express.json());
 
-// 📂 AJUSTE DE PASTAS PARA A NUVEM
-// Se o seu server.js estiver dentro da pasta 'backend', mantemos o '../frontend'
+// ✅ CORREÇÃO DE CAMINHO: Agora ele acha a pasta frontend ao lado do server.js
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// 🧪 TESTE DE CONEXÃO COM O BANCO
+// 🧪 TESTE DE CONEXÃO
 const conectarBanco = async () => {
     try {
         await pool.query('SELECT NOW()');
@@ -55,12 +54,12 @@ app.post('/api/auth/register', async (req, res) => {
     }
 });
 
-// 🌐 ROTA PARA CARREGAR O FRONTEND
+// ✅ CORREÇÃO DE CAMINHO: Abre o index.html corretamente
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend/index.html'));
 });
 
-// 🚀 COMANDO ÚNICO PARA LIGAR O SERVIDOR (CORRIGIDO PARA NUVEM)
+// 🚀 PORTA DA RENDER (10000) OU LOCAL (3000)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 NELSON PRO EM ORBITA NA PORTA ${PORT}`);
