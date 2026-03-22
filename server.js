@@ -5,6 +5,7 @@ const path = require('path');
 
 const app = express();
 
+// 🛠️ CONEXÃO BANCO NEON
 const pool = new Pool({ 
     connectionString: "postgresql://neondb_owner:npg_jlPcXqU9F6td@ep-summer-firefly-amnrn3rr-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require", 
     ssl: { rejectUnauthorized: false } 
@@ -14,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// API LOGIN
+// 🔑 API LOGIN
 app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -24,7 +25,7 @@ app.post('/api/auth/login', async (req, res) => {
     } catch (err) { res.status(500).json({ success: false }); }
 });
 
-// API CADASTRO
+// 🔑 API CADASTRO
 app.post('/api/auth/register', async (req, res) => {
     const { name, email, password } = req.body;
     try {
@@ -33,9 +34,10 @@ app.post('/api/auth/register', async (req, res) => {
     } catch (err) { res.status(400).json({ success: false }); }
 });
 
-// ROTAS
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'frontend/login.html')));
-app.get('/simulador', (req, res) => res.sendFile(path.join(__dirname, 'frontend/index.html')));
+// 🎬 ROTAS DE NAVEGAÇÃO
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'frontend/index.html')));
+app.get('/cadastro', (req, res) => res.sendFile(path.join(__dirname, 'frontend/cadastro.html')));
+app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'frontend/dashboard.html')));
 
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Nelson Pro Online`));
+app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Nelson Pro Online: ${PORT}`));
