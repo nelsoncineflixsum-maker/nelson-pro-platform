@@ -1,13 +1,18 @@
 {
   "name": "nelson-pro-platform",
   "version": "1.0.0",
+  "description": "Plataforma Cinema Pro",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
+    "pg": "^8.11.3",
     "cors": "^2.8.5",
-    "path": "^0.12.7"
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
