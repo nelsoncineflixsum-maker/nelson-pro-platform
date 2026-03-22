@@ -1,0 +1,126 @@
+═══════════════════════════════════════════════════════════════
+🎬 NELSON PRO PLATFORM - INSTALAÇÃO RÁPIDA
+   Versão 2.0.0 - TODAS AS CORREÇÕES APLICADAS
+═══════════════════════════════════════════════════════════════
+
+✅ PROBLEMAS CORRIGIDOS NESTA VERSÃO:
+   ✓ Erro de redirecionamento após login/cadastro
+   ✓ Cadastro não funcionava
+   ✓ Página de aula faltando
+   ✓ Backend sem dados dinâmicos
+   ✓ Sistema de alertas e storage implementado
+
+═══════════════════════════════════════════════════════════════
+
+📋 OPÇÃO 1: INSTALAÇÃO COMPLETA (COM MONGODB)
+
+1. Abra o terminal na pasta do projeto
+
+2. Instale as dependências:
+   npm install
+
+3. Crie o arquivo .env:
+   cp .env.example .env
+
+4. Certifique-se que o MongoDB está rodando:
+   mongod
+
+5. Inicie o servidor:
+   npm run dev
+
+6. Acesse no navegador:
+   http://localhost:3000
+
+═══════════════════════════════════════════════════════════════
+
+🚀 OPÇÃO 2: INÍCIO RÁPIDO (SEM MONGODB)
+
+A plataforma funciona MESMO SEM MongoDB instalado!
+
+1. Instale as dependências:
+   npm install
+
+2. Inicie:
+   npm run dev
+
+3. Acesse:
+   http://localhost:3000
+
+(Os dados ficarão em memória temporariamente)
+
+═══════════════════════════════════════════════════════════════
+
+🎓 COMO USAR:
+
+1. PRIMEIRO ACESSO:
+   - Clique em "Criar Conta"
+   - Preencha: Nome, Email, Senha (mín. 6 caracteres)
+   - Aceite os termos
+   - Clique em "Criar Conta"
+   - Você será redirecionado ao Dashboard ✅
+
+2. ACESSAR AS AULAS:
+   - No Dashboard, clique em "Ver Aulas"
+   - OU acesse: /pages/aula.html
+
+3. VER OS ALERTAS DO SISTEMA:
+   - No Dashboard, role para baixo
+   - Veja o widget de Storage (81.7%)
+   - Alertas aparecem automaticamente
+
+═══════════════════════════════════════════════════════════════
+
+📁 ARQUIVOS IMPORTANTES:
+
+CORRIGIDOS:
+✅ frontend/js/auth.js (linhas 12, 106, 179, 283)
+✅ frontend/js/app.js (linhas 13, 236)
+
+NOVOS:
+🆕 frontend/pages/aula.html (página completa de aula)
+🆕 backend/routes/courses.js (rotas de cursos e alertas)
+🆕 .env.example (configurações de exemplo)
+
+MELHORADOS:
+✨ frontend/pages/dashboard.html (alertas + storage)
+✨ backend/server.js (rota de cursos adicionada)
+
+═══════════════════════════════════════════════════════════════
+
+🔧 CONFIGURAÇÃO MÍNIMA (.env):
+
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/nelson-pro-platform
+JWT_SECRET=sua-chave-super-secreta
+JWT_EXPIRE=7d
+NODE_ENV=development
+
+═══════════════════════════════════════════════════════════════
+
+🚨 SOLUCIONANDO PROBLEMAS:
+
+PROBLEMA: "Porta 3000 já em uso"
+SOLUÇÃO: Edite .env e mude PORT=3001
+
+PROBLEMA: "MongoDB connection error"
+SOLUÇÃO: Não tem problema! A plataforma funciona sem MongoDB
+
+PROBLEMA: "Token inválido" ao fazer login
+SOLUÇÃO: Limpe o cache do navegador (F12 > Console > localStorage.clear())
+
+═══════════════════════════════════════════════════════════════
+
+📞 SUPORTE:
+
+Se tiver dúvidas, consulte:
+- README-ATUALIZADO.md (documentação completa)
+- .env.example (configurações)
+
+═══════════════════════════════════════════════════════════════
+
+🎉 PRONTO PARA USAR!
+
+Desenvolvido com ❤️ por Nelson Pro
+Versão 2.0.0 - Março 2024
+
+═══════════════════════════════════════════════════════════════

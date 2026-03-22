@@ -1,0 +1,184 @@
+# ========================================
+# COMANDOS ÚTEIS - NELSON PRO PLATFORM
+# ========================================
+
+# ---- INSTALAÇÃO ----
+npm install
+
+# ---- INICIAR SERVIDOR ----
+node backend/server.js
+
+# ---- DESENVOLVIMENTO (auto-reload) ----
+npm run dev
+
+# ---- ACESSAR PLATAFORMA ----
+# Cadastro:
+http://localhost:3000/frontend/pages/register.html
+
+# Login:
+http://localhost:3000/frontend/pages/login.html
+
+# Dashboard:
+http://localhost:3000/frontend/pages/dashboard.html
+
+# Perfil:
+http://localhost:3000/frontend/pages/profile.html
+
+# Admin:
+http://localhost:3000/frontend/pages/admin.html
+
+# Ajuda:
+http://localhost:3000/frontend/pages/help.html
+
+
+# ---- MONGODB ----
+# Iniciar MongoDB
+sudo systemctl start mongod
+
+# Verificar status
+sudo systemctl status mongod
+
+# Acessar MongoDB shell
+mongo
+
+# Ver banco de dados
+use nelson_pro
+db.users.find().pretty()
+
+# Criar admin
+db.users.updateOne(
+  { email: "seu@email.com" },
+  { $set: { isAdmin: true } }
+)
+
+
+# ---- ESTRUTURA DE PASTAS ----
+backend/
+  models/User.js       # Schema MongoDB
+  routes/auth.js       # Login/Cadastro
+  routes/user.js       # Perfil/Usuários
+  middleware/auth.js   # Proteção JWT
+  server.js            # Servidor Express
+
+frontend/
+  css/
+    auth.css           # Login/Cadastro
+    dashboard.css      # Dashboard
+  js/
+    auth.js            # Lógica login
+    app.js             # Lógica dashboard
+  pages/
+    register.html      # Cadastro
+    login.html         # Login
+    dashboard.html     # Dashboard
+    profile.html       # Perfil
+    admin.html         # Admin
+    help.html          # Ajuda
+
+
+# ---- TECNOLOGIAS ----
+Backend:
+  - Node.js
+  - Express
+  - MongoDB + Mongoose
+  - JWT (jsonwebtoken)
+  - bcrypt (hash senhas)
+  - cors
+  - dotenv
+
+Frontend:
+  - HTML5
+  - CSS3
+  - JavaScript ES6+
+  - Fetch API
+  - LocalStorage
+
+
+# ---- VARIÁVEIS DE AMBIENTE (.env) ----
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/nelson_pro
+JWT_SECRET=nelson_pro_secret_key_2026_super_secure
+
+
+# ---- ENDPOINTS API ----
+
+POST /api/auth/register
+{
+  "name": "Seu Nome",
+  "email": "email@exemplo.com",
+  "password": "SuaSenha123"
+}
+
+POST /api/auth/login
+{
+  "email": "email@exemplo.com",
+  "password": "SuaSenha123"
+}
+
+GET /api/user/profile
+Headers: { Authorization: Bearer TOKEN }
+
+PUT /api/user/profile
+Headers: { Authorization: Bearer TOKEN }
+{
+  "name": "Novo Nome",
+  "email": "novo@email.com",
+  "themeColor": "#3498db"
+}
+
+GET /api/user/all
+Headers: { Authorization: Bearer TOKEN }
+
+
+# ---- PRODUÇÃO ----
+
+# Com PM2
+npm install -g pm2
+pm2 start backend/server.js --name nelson-pro
+pm2 save
+pm2 startup
+
+# Com Forever
+npm install -g forever
+forever start backend/server.js
+
+# Direto
+NODE_ENV=production node backend/server.js
+
+
+# ---- DEPLOY ----
+
+# Heroku
+heroku create nelson-pro
+heroku addons:create mongolab
+git push heroku main
+
+# Vercel (frontend) + MongoDB Atlas
+# 1. Criar cluster no MongoDB Atlas
+# 2. Copiar connection string
+# 3. Configurar MONGODB_URI
+# 4. Deploy no Vercel
+
+
+# ---- TROUBLESHOOTING ----
+
+# Porta em uso
+lsof -i :3000
+kill -9 PID
+
+# Limpar node_modules
+rm -rf node_modules
+npm install
+
+# Resetar banco
+mongo
+use nelson_pro
+db.dropDatabase()
+
+# Ver logs
+tail -f logs/app.log
+
+
+# ========================================
+# FIM DOS COMANDOS
+# ========================================
