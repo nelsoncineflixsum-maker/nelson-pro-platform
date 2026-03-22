@@ -1102,6 +1102,16 @@
     </div>
 
     <script>
+     // 🔒 TRAVA DE SEGURANÇA: Se não estiver logado, volta para o login
+if (!localStorage.getItem('user')) {
+    window.location.href = 'login.html';
+}
+
+// 🚪 FUNÇÃO PARA SAIR: Limpa o login e desloga
+function sair() {
+    localStorage.removeItem('user');
+    window.location.href = 'login.html';
+} 
         // DADOS DOS 8 PILARES
         const PILARES = [
             {
