@@ -44,23 +44,20 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 // 🔑 ROTA DE CADASTRO
-app.post('/api/auth/register', async (req, res) => {
-    const { name, email, password } = req.body;
-    try {
-        await pool.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, password]);
-        res.json({ success: true });
-    } catch (err) {
-        res.status(400).json({ success: false, message: 'Erro ou email já existe.' });
-    }
+// ✅ Rota que abre o Login primeiro
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/login.html'));
 });
 
-// ✅ CORREÇÃO DE CAMINHO: Abre o index.html corretamente
-app.get('*', (req, res) => {
+// ✅ Rota que permite abrir o simulador (index.html)
+app.get('/index.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend/index.html'));
 });
 
-// 🚀 PORTA DA RENDER (10000) OU LOCAL (3000)
-const PORT = process.env.PORT || 3000;
+// ✅ Rota para o cadastro
+app.get('/cadastro.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/cadastro.html'));
+});
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 NELSON PRO EM ORBITA NA PORTA ${PORT}`);
 });
