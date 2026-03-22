@@ -923,7 +923,13 @@ Como posso ajudar?
 <button onclick="sendBotMsg()">Enviar</button>
 </div>
 </div>
-
+// Verifica se o usuário está logado ao carregar a página
+window.onload = function() {
+    const user = localStorage.getItem('user');
+    if (!user) {
+        window.location.href = 'login.html'; // Manda para o login se não houver dados
+    }
+};
 <script>
 // ============================================
 // DATA STRUCTURES
@@ -1411,3 +1417,7 @@ document.getElementById('operatorName').textContent = user.name.toUpperCase();
 
 </body>
 </html>
+function sair() {
+    localStorage.removeItem('user'); // Apaga os dados salvos no navegador
+    window.location.href = 'login.html'; // Volta para o login
+}
