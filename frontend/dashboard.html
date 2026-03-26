@@ -3,279 +3,676 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cinema Pro Platform — Dashboard Nelson Jesus</title>
+  <title>Cine Sumaré - Sala 01 | TMS Nelson Pro v3.0 Digital Cinema Terminal</title>
   <style>
+    /* ==========================================================================
+       1. VARIÁVEIS E TEMAS (ULTRA DARK NEON)
+       ========================================================================== */
     :root {
-      --gold: #f5c518; --gold-dk: #c9a10e; --dark: #0a0a0f; --dark2: #111118;
-      --dark3: #1a1a24; --card: #16161f; --border: #2a2a3a; --text: #e8e8f0;
-      --muted: #8888aa; --red: #e74c3c; --green: #2ecc71; --cyan: #1abc9c; --yellow: #f39c12;
+      /* Cores de Fundo e Base (Rack Style) */
+      --bg-deep: #020203;       /* Preto Profundo */
+      --bg-rack: #08090a;       /* Fundo do Rack */
+      --bg-card: #101214;       /* Cartão Técnico */
+      --bg-input: #000000;      /* Input */
+      --border-tech: #1f2329;   /* Borda Técnica */
+
+      /* Cores de Status e Neon (Glow) */
+      --neon-blue: #00f2ff;     /* Cyan Ativo */
+      --neon-blue-glow: rgba(0, 242, 255, 0.3);
+      
+      --neon-green: #0fa;      /* OK / Playing */
+      --neon-green-glow: rgba(0, 255, 170, 0.3);
+      
+      --neon-amber: #ffb700;    /* Degraded / Standby */
+      --neon-amber-glow: rgba(255, 183, 0, 0.3);
+      
+      --neon-red: #ff003c;      /* Error / Critical */
+      --neon-red-glow: rgba(255, 0, 60, 0.4);
+
+      /* Texto */
+      --text-main: #e0e6ed;     /* Texto Técnico */
+      --text-muted: #6c7987;    /* Texto Apagado */
+      
+      /* Fontes */
+      --font-ui: 'Segoe UI', Roboto, Helvetica, sans-serif;
+      --font-tech: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; font-family: 'Segoe UI', sans-serif; background: var(--dark); color: var(--text); overflow: hidden; }
-    body { display: grid; grid-template-columns: 280px 1fr; grid-template-rows: 70px 1fr; height: 100vh; }
 
-    header { grid-column: 1 / -1; background: var(--dark); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-    .logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; }
-    .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--gold), #ffd84d); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-    .logo-text { font-weight: 800; color: var(--text); font-size: 1.2rem; } .logo-text span { color: var(--gold); }
-    .user-menu { display: flex; align-items: center; gap: .8rem; cursor: pointer; background: var(--dark2); padding: .5rem 1rem; border-radius: 10px; border: 1px solid var(--border); }
-    .user-avatar { width: 32px; height: 32px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #000; }
-
-    aside { background: var(--dark2); border-right: 1px solid var(--border); padding: 1.5rem 0; grid-row: 2; overflow-y: auto; }
-    .sidebar-menu { list-style: none; display: flex; flex-direction: column; gap: .3rem; padding: 0 0.8rem; }
-    .sidebar-item { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.2rem; border-radius: 10px; cursor: pointer; color: var(--muted); border: none; background: none; width: 100%; text-align: left; font-weight: 600; transition: 0.3s; }
-    .sidebar-item:hover, .sidebar-item.active { background: rgba(245,197,24,.1); color: var(--gold); border-left: 4px solid var(--gold); }
-
-    main { grid-column: 2; grid-row: 2; padding: 2rem; overflow-y: auto; background: var(--dark); }
-    .page { display: none; animation: fadeIn 0.3s; } .page.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.8rem; margin-bottom: 2rem; }
-    h2 { color: var(--gold); margin-bottom: 1.5rem; font-size: 1.4rem; display: flex; align-items: center; gap: 10px; }
+    /* ==========================================================================
+       2. RESET E LAYOUT ESTRUTURAL (GRID SYSTEM)
+       ========================================================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
     
-    .config-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-    .config-table th { background: var(--dark3); color: var(--gold); padding: 12px; text-align: left; font-size: 0.85rem; text-transform: uppercase; }
-    .config-table td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-    .config-table tr:hover { background: rgba(255,255,255,0.02); }
+    html, body { 
+      height: 100%; 
+      font-family: var(--font-ui); 
+      background: var(--bg-deep); 
+      color: var(--text-main); 
+      overflow: hidden; 
+      font-size: 14px; /* Base técnica menor */
+      letter-spacing: 0.02em;
+    }
 
-    .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; }
-    .bg-green { background: rgba(46,204,113,0.15); color: var(--green); }
-    .bg-gold { background: rgba(245,197,24,0.15); color: var(--gold); }
-    .bg-red { background: rgba(231,76,60,0.15); color: var(--red); }
+    /* Scrollbar Técnico */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-rack); }
+    ::-webkit-scrollbar-thumb { background: var(--border-tech); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-    .btn { padding: .8rem 1.8rem; background: var(--gold); color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-    .btn:hover { transform: scale(1.02); background: var(--gold-dk); }
+    /* Layout Principal */
+    #tms-app {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      grid-template-rows: 60px 1fr;
+      height: 100vh;
+      opacity: 0; /* Começa invisível para o boot effect */
+      transition: opacity 1s ease-in;
+    }
 
-    .input-group { margin-bottom: 1.2rem; }
-    .input-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: var(--muted); }
-    .input-group select, .input-group input { width: 100%; padding: 10px; background: var(--dark3); border: 1px solid var(--border); border-radius: 6px; color: #fff; }
+    /* ==========================================================================
+       3. COMPONENTES REUTILIZÁVEIS (UÍ)
+       ========================================================================== */
+    .tech-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: 4px; /* Cantos mais vivos, estilo rack */
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
 
-    /* CHATBOT */
-    .chatbot-container { position: fixed; bottom: 2rem; right: 2rem; z-index: 1000; }
-    .chatbot-button { width: 60px; height: 60px; background: var(--gold); border: none; border-radius: 50%; cursor: pointer; font-size: 1.8rem; box-shadow: 0 8px 25px rgba(245,197,24,0.4); }
-    .chatbot-window { position: absolute; bottom: 80px; right: 0; width: 350px; height: 480px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; display: none; flex-direction: column; box-shadow: 0 10px 50px #000; }
-    .chatbot-window.open { display: flex; }
-    .chatbot-header { background: var(--gold); color: #000; padding: 1rem; font-weight: 800; display: flex; justify-content: space-between; border-radius: 16px 16px 0 0; }
-    .chatbot-messages { flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8rem; }
-    .msg { padding: 0.8rem; border-radius: 10px; font-size: 0.85rem; line-height: 1.4; max-width: 85%; }
-    .bot-msg { background: var(--dark3); border: 1px solid var(--border); align-self: flex-start; }
-    .user-msg { background: var(--gold); color: #000; font-weight: 600; align-self: flex-end; }
-    .chatbot-input { padding: 1rem; display: flex; gap: 0.5rem; border-top: 1px solid var(--border); }
-    .chatbot-input input { flex: 1; background: var(--dark3); border: 1px solid var(--border); border-radius: 8px; color: #fff; padding: 10px; outline: none; }
+    .tech-card::before { /* Linha decorativa de rack no topo */
+      content: ''; display: block; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, #111, var(--border-tech), #111);
+    }
+
+    h2.card-title {
+      font-family: var(--font-tech);
+      font-size: 1.1rem;
+      color: var(--text-main);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* Botões Técnicos */
+    .btn-tech {
+      font-family: var(--font-tech);
+      font-weight: bold; font-size: 0.8rem; text-transform: uppercase;
+      padding: 10px 20px;
+      border-radius: 2px; border: 1px solid transparent;
+      cursor: pointer; transition: 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+
+    .btn-primary { 
+      background: rgba(0, 242, 255, 0.1); border-color: var(--neon-blue); color: var(--neon-blue); 
+      box-shadow: 0 0 10px var(--neon-blue-glow);
+    }
+    .btn-primary:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 20px var(--neon-blue); }
+
+    .btn-danger { 
+      background: rgba(255, 0, 60, 0.1); border-color: var(--neon-red); color: var(--neon-red); 
+    }
+    .btn-danger:hover { background: var(--neon-red); color: #fff; box-shadow: 0 0 15px var(--neon-red); }
+
+    /* Badges de Status com Glow */
+    .status-badge {
+      font-family: var(--font-tech); font-size: 0.7rem; font-weight: bold;
+      padding: 3px 8px; border-radius: 2px; text-transform: uppercase;
+    }
+    .status-ok { background: rgba(0, 255, 170, 0.1); color: var(--neon-green); border: 1px solid var(--neon-green); box-shadow: 0 0 5px var(--neon-green-glow); }
+    .status-warn { background: rgba(255, 183, 0, 0.1); color: var(--neon-amber); border: 1px solid var(--neon-amber); box-shadow: 0 0 5px var(--neon-amber-glow); }
+    .status-err { background: rgba(255, 0, 60, 0.1); color: var(--neon-red); border: 1px solid var(--neon-red); box-shadow: 0 0 5px var(--neon-red-glow); animation: ledBlink 1s infinite; }
+
+    /* Inputs Técnicos */
+    .input-group { margin-bottom: 1rem; }
+    .input-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
+    .tech-input, .tech-select {
+      width: 100%; padding: 10px; font-family: var(--font-tech); background: var(--bg-input);
+      border: 1px solid var(--border-tech); color: #fff; border-radius: 2px;
+    }
+    .tech-input:focus, .tech-select:focus { border-color: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue-glow); }
+
+    /* Tabelas Técnicas */
+    .tech-table { width: 100%; border-collapse: collapse; font-family: var(--font-tech); font-size: 0.85rem; }
+    .tech-table th { background: #0c0d0f; color: var(--text-muted); text-transform: uppercase; padding: 10px; text-align: left; border-bottom: 2px solid var(--border-tech); }
+    .tech-table td { padding: 10px; border-bottom: 1px solid var(--border-tech); color: var(--text-main); }
+    .tech-table tr:hover td { background: rgba(255,255,255,0.01); color: #fff; }
+
+    /* ==========================================================================
+       4. ANIMAÇÕES (GLOW, BLINK, BOOT)
+       ========================================================================== */
+    @keyframes ledBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    @keyframes textGlow { 0%, 100% { text-shadow: 0 0 5px #fff; } 50% { text-shadow: 0 0 15px var(--neon-blue); } }
+    @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+
+    /* ==========================================================================
+       5. HEADER (GLOBAL STATUS BAR)
+       ========================================================================== */
+    header#global-header {
+      grid-column: 1 / -1; background: var(--bg-rack);
+      border-bottom: 1px solid var(--border-tech);
+      padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between;
+      z-index: 100; box-shadow: 0 5px 15px #000;
+    }
+
+    .header-left { display: flex; align-items: center; gap: 2rem; }
+    .tms-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-box { width: 35px; height: 35px; background: #000; border: 2px solid var(--border-tech); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--neon-amber); font-size: 1.2rem; box-shadow: inset 0 0 10px rgba(255, 183, 0, 0.2); }
+    .logo-text { font-family: var(--font-tech); font-weight: bold; color: #fff; font-size: 1.1rem; letter-spacing: 0.1em; }
+    .logo-text span { color: var(--neon-amber); }
+
+    .cinema-id { font-family: var(--font-tech); color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue-glow); }
+
+    .header-right { display: flex; align-items: center; gap: 1.5rem; font-family: var(--font-tech); }
+    
+    #cabine-clock { font-size: 1.1rem; color: #fff; min-width: 90px; text-align: center; }
+    
+    .global-status { display: flex; align-items: center; gap: 8px; font-weight: bold; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); animation: ledBlink 1.5s infinite; }
+
+    #user-control { cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 5px 10px; background: rgba(255,255,255,0.02); border-radius: 2px; }
+    #user-control:hover { background: rgba(229, 9, 20, 0.1); border-color: var(--neon-red); }
+
+    /* ==========================================================================
+       6. SIDEBAR (RACK NAVIGATION)
+       ========================================================================== */
+    aside#rack-menu {
+      background: #040405; border-right: 1px solid var(--border-tech);
+      padding: 1.5rem 0; grid-row: 2; overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+
+    .menu-list { list-style: none; padding: 0 10px; }
+    .menu-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 15px; margin-bottom: 4px;
+      color: var(--text-muted); border: none; background: none;
+      width: 100%; text-align: left; cursor: pointer;
+      transition: all 0.2s ease; border-radius: 2px;
+    }
+
+    /* Ícones do Rack (Neon) */
+    .menu-icon { font-size: 1.2rem; color: var(--text-muted); transition: 0.2s; }
+
+    .menu-item:hover { background: rgba(255,255,255,0.02); color: #fff; }
+    .menu-item:hover .menu-icon { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); }
+
+    .menu-item.active { 
+      background: rgba(0, 242, 255, 0.05); color: #fff;
+      border-left: 3px solid var(--neon-blue);
+      box-shadow: inset 5px 0 15px rgba(0, 242, 255, 0.1);
+    }
+    .menu-item.active .menu-icon { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+
+    /* ==========================================================================
+       7. MAIN CONTENT (TERMINAL PAGES)
+       ========================================================================== */
+    main#terminal-screen {
+      grid-column: 2; grid-row: 2; padding: 2rem; overflow-y: auto;
+      background: linear-gradient(180deg, #020203 0%, #000 100%);
+      position: relative;
+    }
+
+    /* Efeito de scanline opcional */
+    main#terminal-screen::after {
+      content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.05), rgba(0,0,0,0.05) 1px, transparent 1px, transparent 2px);
+      pointer-events: none; z-index: 99;
+    }
+
+    .page { display: none; animation: pageLoad 0.4s ease-out; }
+    .page.active { display: block; }
+    @keyframes pageLoad { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ==========================================================================
+       8. DASHBOARD (CENTRAL DE OPERAÇÃO)
+       ========================================================================== */
+    #page-inicio .system-monitor {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;
+    }
+
+    .monitor-card {
+      background: var(--bg-card); border: 1px solid var(--border-tech);
+      padding: 1rem; text-align: center; border-radius: 2px;
+    }
+    .monitor-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; font-family: var(--font-tech); }
+    .monitor-value { font-size: 1.8rem; font-weight: bold; font-family: var(--font-tech); }
+    
+    /* Barras de Progresso Técnicas */
+    .tech-progress-container { background: #000; border: 1px solid var(--border-tech); height: 10px; border-radius: 2px; margin-top: 10px; overflow: hidden; position: relative; }
+    .tech-progress-bar { background: var(--neon-blue); height: 100%; width: 0%; transition: width 0.5s ease; box-shadow: 0 0 10px var(--neon-blue); }
+    .tech-progress-bar.warn { background: var(--neon-amber); box-shadow: 0 0 10px var(--neon-amber); }
+    .tech-progress-bar.crit { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); animation: ledBlink 0.5s infinite; }
+
+    /* Timeline da Sessão */
+    .session-timeline { margin-top: 2rem; position: relative; padding-bottom: 1rem; }
+    .timeline-track { background: #111; height: 6px; border-radius: 3px; position: relative; border: 1px solid var(--border-tech); }
+    .timeline-progress { background: var(--neon-green); height: 100%; width: 65%; border-radius: 3px; box-shadow: 0 0 10px var(--neon-green); position: relative; transition: width 1s linear; }
+    .timeline-marker { position: absolute; top: -10px; width: 2px; height: 26px; background: rgba(255,255,255,0.1); font-family: var(--font-tech); font-size: 0.7rem; color: var(--text-muted); padding-top: 30px; }
+
+    /* Real-time Log */
+    #realtime-log {
+      height: 150px; background: #040405; border: 1px solid var(--border-tech);
+      font-family: var(--font-tech); font-size: 0.8rem; color: #a0aec0;
+      padding: 10px; overflow-y: auto; border-radius: 2px;
+    }
+    .log-entry { margin-bottom: 4px; }
+    .log-time { color: var(--text-muted); }
+    .log-cmd { color: var(--neon-blue); }
+    .log-ok { color: var(--neon-green); }
+    .log-err { color: var(--neon-red); font-weight: bold; animation: ledBlink 1s infinite; }
+
+    /* ==========================================================================
+       9. SHOWS / INGEST / KDM / AUTOMAÇÃO (DETALHES PROFISSIONAIS)
+       ========================================================================== */
+    
+    /* Ingest Progress REAL */
+    .ingest-item { background: rgba(255,255,255,0.01); border: 1px solid var(--border-tech); padding: 1rem; margin-bottom: 10px; border-radius: 2px; }
+    .ingest-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-family: var(--font-tech); font-size: 0.9rem; }
+    
+    /* KDM Countdown */
+    .kdm-critical { color: var(--neon-red); animation: ledBlink 0.8s infinite; font-weight: bold; }
+
+    /* Sliders de Automação com Glow */
+    .slider-group { margin-bottom: 1.5rem; }
+    .slider-group label { font-family: var(--font-tech); font-size: 0.85rem; color: var(--text-muted); display: flex; justify-content: space-between; margin-bottom: 5px; }
+    .tech-slider {
+      -webkit-appearance: none; width: 100%; height: 6px; background: #111;
+      border: 1px solid var(--border-tech); border-radius: 3px; outline: none;
+    }
+    .tech-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 16px; height: 16px; background: var(--neon-blue);
+      border-radius: 50%; cursor: pointer;
+      box-shadow: 0 0 10px var(--neon-blue);
+    }
+    .tech-slider::-webkit-slider-thumb:hover { background: #fff; box-shadow: 0 0 15px #fff; }
+
+    /* ==========================================================================
+       10. CHATBOT (OPERATIONAL ASSISTANT)
+       ========================================================================== */
+    #page-shows .playlist-editor { display: flex; gap: 1rem; margin-top: 1rem; border: 1px dashed var(--border-tech); padding: 1rem; min-height: 100px; }
+    .spl-block { padding: 10px; border-radius: 2px; font-family: var(--font-tech); font-size: 0.8rem; cursor: grab; text-align: center; color: #000; font-weight: bold; }
+    .block-black { background: #333; color: #fff; }
+    .block-trailer { background: var(--neon-amber); }
+    .block-feature { background: var(--neon-blue); }
+
+    /* ==========================================================================
+       11. SISTEMA DE BOOT E LOADING
+       ========================================================================== */
+    #boot-screen {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #000; z-index: 9999;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      font-family: var(--font-tech); color: var(--neon-green);
+    }
+    #boot-log { width: 400px; height: 200px; overflow: hidden; font-size: 0.8rem; }
+    .cursor { display: inline-block; width: 8px; height: 15px; background: var(--neon-green); animation: ledBlink 0.5s infinite; }
+
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="header-left">
-      <div class="logo">
-        <div class="logo-icon">🎬</div>
-        <span class="logo-text">NELSON<span>PRO</span></span>
-      </div>
-    </div>
-    <div class="header-right">
-      <div class="user-menu" onclick="handleLogout()">
-        <div class="user-avatar" id="avatar-letra">N</div>
-        <div class="user-info">
-          <div class="user-name" id="display-nome">Nelson Jesus</div>
-          <div class="user-role" style="font-size: 0.7rem; color: var(--muted);">Encerrar Sessão</div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <aside>
-    <ul class="sidebar-menu">
-      <li><button class="sidebar-item active" onclick="switchPage('inicio', this)">📊 Painel de Controle</button></li>
-      <li><button class="sidebar-item" onclick="switchPage('shows', this)">🎬 Estrutura de Shows</button></li>
-      <li><button class="sidebar-item" onclick="switchPage('ingest', this)">📥 Central de Ingest</button></li>
-      <li><button class="sidebar-item" onclick="switchPage('kdm', this)">🔐 Gestão de KDMs</button></li>
-      <li><button class="sidebar-item" onclick="switchPage('automacao', this)">🤖 Macros & Automação</button></li>
-      <li><button class="sidebar-item" onclick="switchPage('trouble', this)">🔧 Troubleshooting</button></li>
-    </ul>
-  </aside>
-
-  <main>
-    <div id="page-inicio" class="page active">
-      <h2>📊 Status Operacional Grupo Cine</h2>
-      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-        <div class="card" style="margin:0; padding: 1rem; text-align: center;">
-          <small color="var(--muted)">SESSÕES HOJE</small>
-          <h1 style="color:var(--gold)">28</h1>
-        </div>
-        <div class="card" style="margin:0; padding: 1rem; text-align: center;">
-          <small color="var(--muted)">KDMs ATIVOS</small>
-          <h1 style="color:var(--green)">25</h1>
-        </div>
-        <div class="card" style="margin:0; padding: 1rem; text-align: center;">
-          <small color="var(--muted)">ALERTAS</small>
-          <h1 style="color:var(--red)">02</h1>
-        </div>
-      </div>
-      <div class="card">
-        <h3>Grade de Salas</h3>
-        <table class="config-table">
-          <tr><th>Sala</th><th>Servidor</th><th>Filme Atual</th><th>Status</th></tr>
-          <tr><td>SALA 01</td><td>GDC SX-4000</td><td>DUNE: PART TWO</td><td><span class="status-badge bg-green">PROJETANDO</span></td></tr>
-          <tr><td>SALA 02</td><td>DOLBY IMS3000</td><td>KUNG FU PANDA 4</td><td><span class="status-badge bg-gold">AGUARDANDO</span></td></tr>
-          <tr><td>SALA 03</td><td>CHRISTIE</td><td>OPPENHEIMER</td><td><span class="status-badge bg-red">ERRO KDM</span></td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div id="page-shows" class="page">
-      <h2>🎬 Montagem de Playlist (SPL)</h2>
-      <div class="card">
-        <h3>Fluxo Padrão Nelson Pro</h3>
-        <table class="config-table">
-          <tr><th>Ordem</th><th>Elemento</th><th>Configuração</th><th>Duração</th></tr>
-          <tr><td>1</td><td>BLACK INICIAL</td><td>Lamp ON • Vol 41 • Luz 50%</td><td>30s</td></tr>
-          <tr><td>2</td><td>TRAILERS</td><td>Flat 2D • Vol 41</td><td>Variável</td></tr>
-          <tr><td>3</td><td>BLACK TRANSIÇÃO</td><td>Ajuste Scope • Vol 6.5</td><td>5s</td></tr>
-          <tr><td>4</td><td>FILME PRINCIPAL</td><td>Scope/Flat • Vol 6.5</td><td>DCP</td></tr>
-          <tr><td>5</td><td>BLACK FINAL</td><td>Lamp OFF • Vol 23 • Luz 100%</td><td>30s</td></tr>
-        </table>
-        <br>
-        <button class="btn">Criar Novo Show no TMS</button>
-      </div>
-    </div>
-
-    <div id="page-ingest" class="page">
-      <h2>📥 Gerenciador de Conteúdo (DCP)</h2>
-      <div class="card">
-        <div class="input-group">
-          <label>Selecione a Origem do Conteúdo</label>
-          <select>
-            <option>HD EXTERNO (CRU DRIVE)</option>
-            <option>REDE / SATÉLITE (TMS)</option>
-          </select>
-        </div>
-        <table class="config-table">
-          <tr><th>Filme</th><th>Tamanho</th><th>Progresso</th><th>Status</th></tr>
-          <tr><td>AVATAR 3</td><td>450GB</td><td>85%</td><td><span class="status-badge bg-gold">COPIANDO...</span></td></tr>
-          <tr><td>DUNE 2</td><td>312GB</td><td>100%</td><td><span class="status-badge bg-green">VALIDADO</span></td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div id="page-kdm" class="page">
-      <h2>🔐 Chaves de Segurança (KDM)</h2>
-      <div class="card">
-        <div class="bg-red" style="padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.9rem;">
-          ⚠️ <strong>ATENÇÃO:</strong> Oppenheimer (Sala 03) expira em 24h. Solicitar renovação.
-        </div>
-        <table class="config-table">
-          <tr><th>Filme</th><th>Início</th><th>Fim</th><th>Status</th></tr>
-          <tr><td>DUNE 2</td><td>20/03/2026</td><td>30/03/2026</td><td><span class="status-badge bg-green">VÁLIDO</span></td></tr>
-          <tr><td>KUNG FU PANDA</td><td>15/03/2026</td><td>25/03/2026</td><td><span class="status-badge bg-red">VENCIDO</span></td></tr>
-        </table>
-        <br>
-        <button class="btn">Importar .xml de KDM</button>
-      </div>
-    </div>
-
-    <div id="page-automacao" class="page">
-      <h2>🤖 Macros e Automação</h2>
-      <div class="card">
-        <h3>Configuração de Dimmer e Áudio</h3>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-          <div class="input-group">
-            <label>Nível de Luz (Sessão)</label>
-            <input type="range" min="0" max="100" value="0">
-          </div>
-          <div class="input-group">
-            <label>Volume do Filme (Fader)</label>
-            <input type="number" step="0.5" value="6.5">
-          </div>
-        </div>
-        <button class="btn">Testar Automação da Sala</button>
-      </div>
-    </div>
-
-    <div id="page-trouble" class="page">
-      <h2>🔧 Central de Diagnóstico</h2>
-      <div class="card">
-        <h3>Problemas Comuns - Guia Rápido</h3>
-        <div style="display:flex; flex-direction: column; gap: 10px;">
-          <details style="background:var(--dark3); padding:10px; border-radius:5px; cursor:pointer;">
-            <summary>❌ Filme Não Abre (KDM Locked)</summary>
-            <p style="padding: 10px; font-size: 0.85rem; color:var(--muted)">Verifique se o CertId do servidor bate com o KDM e se a data do projetor está correta.</p>
-          </details>
-          <details style="background:var(--dark3); padding:10px; border-radius:5px; cursor:pointer;">
-            <summary>❌ Tela Preta / Sem Imagem</summary>
-            <p style="padding: 10px; font-size: 0.85rem; color:var(--muted)">Checar se o Dowser está aberto e se a lâmpada (Xenon/Laser) está em ignição.</p>
-          </details>
-          <details style="background:var(--dark3); padding:10px; border-radius:5px; cursor:pointer;">
-            <summary>❌ Sem Áudio (Volume 0)</summary>
-            <p style="padding: 10px; font-size: 0.85rem; color:var(--muted)">Verificar se o processador de som (CP850/CP950) recebeu o comando da macro via rede.</p>
-          </details>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <div class="chatbot-container">
-    <button class="chatbot-button" onclick="toggleChatbot()">🤖</button>
-    <div class="chatbot-window" id="chatbotWindow">
-      <div class="chatbot-header"><span>Assistente Operacional</span><button onclick="toggleChatbot()" style="background:none; border:none; cursor:pointer; color: #000; font-weight: 900;">X</button></div>
-      <div class="chatbot-messages" id="chatbotMessages">
-        <div class="msg bot-msg">Olá Nelson! Sou seu assistente técnico. Pergunte sobre <b>KDM, Ingest ou Volume 41</b>.</div>
-      </div>
-      <div class="chatbot-input">
-        <input type="text" id="chatbotInput" placeholder="Ex: Erro de KDM..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-        <button onclick="sendChatMessage()" style="background:var(--gold); border:none; padding:8px; border-radius:5px; cursor:pointer;">▶</button>
-      </div>
+  <div id="boot-screen">
+    <div class="logo-box" style="width:60px; height:60px; font-size: 2rem; border-color:var(--neon-green); color:var(--neon-green); box-shadow: 0 0 20px var(--neon-green-glow); margin-bottom: 20px;">🎬</div>
+    <div id="boot-log">
+      <div>> GRUPO CINE Sumaré - Sala 01</div>
+      <div>> TMS Nelson Pro [Version 3.0.12]</div>
+      <div>> Inicializando Nucleo... <span class="log-ok">[OK]</span></div>
+      <div>> Carregando Driver GDC SX-4000... <span class="log-ok">[OK]</span></div>
+      <div>> Conectando Processador CP950... <span class="log-ok">[OK]</span></div>
+      <div>> Verificando Storage (1.4TB Free)... <span class="log-ok">[OK]</span></div>
+      <div>> Autenticando Operador Nelson... <span class="log-ok">[OK]</span></div>
+      <div>> <span class="cursor"></span></div>
     </div>
   </div>
 
+  <div id="tms-app">
+
+    <header id="global-header">
+      <div class="header-left">
+        <a href="#" class="tms-logo">
+          <div class="logo-box">🎬</div>
+          <span class="logo-text">NELSON<span>PRO</span></span>
+        </a>
+        <div class="cinema-id">GRUPO CINE Sumaré — <span id="current-sala-header">Sala 01</span></div>
+      </div>
+      <div class="header-right">
+        <div id="cabine-clock">00:00:00</div>
+        <div class="global-status">
+          <span class="status-dot"></span>
+          <span>SYSTEM ONLINE</span>
+        </div>
+        <div id="user-control" onclick="handleLogout()">
+          <div class="user-avatar">N</div>
+          <span id="display-nome" style="text-transform: uppercase;">Nelson</span>
+        </div>
+      </div>
+    </header>
+
+    <aside id="rack-menu">
+      <nav>
+        <ul class="menu-list">
+          <li><button class="menu-item active" onclick="switchPage('inicio', this)"><span class="menu-icon">📊</span>CENTRAL DE OPERAÇÃO</button></li>
+          <li><button class="menu-item" onclick="switchPage('shows', this)"><span class="menu-icon">🎬</span>EDITOR DE PLAYLIST</button></li>
+          <li><button class="menu-item" onclick="switchPage('schedule', this)"><span class="menu-icon">📅</span>GRADE DE HORÁRIOS</button></li>
+          <li><button class="menu-item" onclick="switchPage('ingest', this)"><span class="menu-icon">📥</span>BIBLIOTECA & INGEST</button></li>
+          <li><button class="menu-item" onclick="switchPage('kdm', this)"><span class="menu-icon">🔐</span>GERENTE DE KDM</button></li>
+          <li><button class="menu-item" onclick="switchPage('automacao', this)"><span class="menu-icon">🤖</span>AUTOMAÇÃO (MACROS)</button></li>
+          <li><button class="menu-item" onclick="switchPage('trouble', this)">🔧DIAGNÓSTICO</button></li>
+        </ul>
+      </nav>
+      <div style="margin-top:auto; padding: 10px; text-align:center; font-family:var(--font-tech); font-size:0.7rem; color:var(--text-muted);">
+        TMS IP: 192.168.10.50
+      </div>
+    </aside>
+
+    <main id="terminal-screen">
+
+      <div id="page-inicio" class="page active">
+        <h2 class="card-title">🖥️ Sala 01 — Status em Tempo Real</h2>
+        
+        <div class="system-monitor">
+          <div class="monitor-card">
+            <div class="monitor-label">STATUS PROJETOR</div>
+            <div class="monitor-value" style="color:var(--neon-green);">PLAYING</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Xenon: 3400W</div>
+          </div>
+          <div class="monitor-card">
+            <div class="monitor-label">ÁUDIO ATUAL</div>
+            <div class="monitor-value" style="color:var(--neon-blue);">Fader 6.5</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Format: Dolby 7.1</div>
+          </div>
+          <div class="monitor-card">
+            <div class="monitor-label">STORAGE SERVER</div>
+            <div class="monitor-value">72<span style="font-size:1rem">%</span></div>
+            <div class="tech-progress-container"><div class="tech-progress-bar warn" style="width: 72%"></div></div>
+          </div>
+          <div class="monitor-card">
+            <div class="monitor-label">TEMPERATURA</div>
+            <div class="monitor-value">42<span style="font-size:1rem">°C</span></div>
+            <div style="font-size:0.8rem; color:var(--green);">[ESTÁVEL]</div>
+          </div>
+        </div>
+
+        <div class="tech-card">
+          <h2 class="card-title">▶️ Sessão Atual: Dune: Part Two (Scope)</h2>
+          <div class="session-timeline">
+            <div class="timeline-track">
+              <div class="timeline-progress" id="session-progress"></div>
+              <div class="timeline-marker" style="left: 0%">0:00</div>
+              <div class="timeline-marker" style="left: 15%">Trailers</div>
+              <div class="timeline-marker" style="left: 20%; color:var(--neon-green)">DCP <span class="status-badge status-ok">FLAT</span></div>
+              <div class="timeline-marker" style="left: 100%">Fim</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:10px; font-family:var(--font-tech); font-size:0.8rem;">
+              <span>Tempo Restante: <b style="color:var(--neon-green);" id="time-remaining">01:12:45</b></span>
+              <span>CPL: DunePartTwo_FTR-1_S_PT-BR_51_2K_GDC_20240215</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tech-card">
+          <h2 class="card-title">⌨️ Log do Sistema (Real-time)</h2>
+          <div id="realtime-log">
+            </div>
+        </div>
+
+        <button class="btn-tech btn-primary" onclick="iniciarModoSimulacao()"><span style="font-size:1.2rem;">▶️</span> INICIAR SESSÃO (MODO SIMULAÇÃO)</button>
+      </div>
+
+      <div id="page-ingest" class="page">
+        <h2 class="card-title">Ingest & Biblioteca de Conteúdo</h2>
+        <div class="tech-card">
+          <div class="input-group">
+            <label>Origem</label>
+            <select class="tech-select"><option>Drive CRU (SATA)</option><option>Network (TMS)</option></select>
+          </div>
+          <div class="ingest-item">
+            <div class="ingest-header">
+              <span style="color:#fff;">Godzilla x Kong: The New Empire</span>
+              <span class="status-badge status-ok">Validando... 92%</span>
+            </div>
+            <div class="tech-progress-container"><div class="tech-progress-bar" style="width: 92%"></div></div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:5px; font-family:var(--font-tech);">Speed: 110 MB/s | ETA: 2min</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="page-kdm" class="page">
+        <h2 class="card-title">Gerente de Certificados & KDM</h2>
+        <div class="tech-card">
+          <table class="tech-table">
+            <thead><tr><th>Título do Filme</th><th>CPL/Uuid</th><th>Início</th><th>Fim</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Dune: Part Two</td><td>...6a78-41</td><td>20 MAR</td><td>05 ABR</td><td><span class="status-badge status-ok">Válido</span></td></tr>
+              <tr><td>Oppenheimer</td><td>...c432-11</td><td>15 MAR</td><td><span class="kdm-critical">25 MAR</span></td><td><span class="status-badge status-err">Critical</span></td></tr>
+            </tbody>
+          </table>
+          <br>
+          <button class="btn-tech btn-danger">Solicitar Novo KDM</button>
+        </div>
+      </div>
+
+      <div id="page-automacao" class="page">
+        <h2 class="card-title">Controle de Macros & Automação de Cabine</h2>
+        <div class="tech-card">
+          <div class="slider-group">
+            <label><span>💡 Dimmers (Iluminação de Sala)</span><span id="val-dimmer">0%</span></label>
+            <input type="range" class="tech-slider" id="slide-dimmer" min="0" max="100" value="0" oninput="updateSlider('dimmer', this.value)">
+          </div>
+          <div class="slider-group">
+            <label><span>🔊 Fader de Áudio (CP950)</span><span id="val-audio">6.5</span></label>
+            <input type="range" class="tech-slider" id="slide-audio" min="0" max="10" step="0.5" value="6.5" oninput="updateSlider('audio', this.value)">
+          </div>
+          <button class="btn-tech btn-primary" onclick="testarMacro('Lamp ON')">Testar Macro [Lamp ON]</button>
+          <button class="btn-tech btn-primary" onclick="testarMacro('Luz Saída')">Testar Macro [Luz Saída]</button>
+        </div>
+      </div>
+
+      <div id="page-shows" class="page"><div class="tech-card"><h2 class="card-title">Playlist Editor</h2></div></div>
+      <div id="page-schedule" class="page"><div class="tech-card"><h2 class="card-title">Grade</h2></div></div>
+      <div id="page-trouble" class="page"><div class="tech-card"><h2 class="card-title">Diagnóstico</h2></div></div>
+
+    </main>
+  </div>
+
   <script>
-    const botRespostas = {
-      'kdm': 'O KDM é a chave de segurança. Se o filme não abre, verifique a validade na aba Gestão de KDMs ou peça nova chave à distribuidora.',
-      'volume': 'No padrão Nelson Pro, usamos Vol 41 para Trailers e Vol 6.5 para o Filme Principal (Fader Dolby).',
-      'ingest': 'O Ingest pode ser feito via HD ou Rede. No GDC, acompanhe a aba Central de Ingest para ver se a validação deu 100%.',
-      'black': 'O Show deve começar com Black de 30s (Luz 50%) e ter Black de 5s entre Trailers e Filme para ajuste de lente Scope/Flat.',
-      'erro': 'Se a tela estiver preta, verifique se a macro "Lamp ON" foi disparada no log do servidor.',
-      'default': 'Desculpe Nelson, não entendi. Tente perguntar sobre KDMs, Ingest, Automação ou Shows.'
-    };
+    /* ==========================================================================
+       12. JAVASCRIPT (TMS LOGIC & SIMULATION)
+       ========================================================================= */
+    
+    // Configurações
+    const SALA_NOME = "SALA 01";
+    
+    // Inicialização (Boot Effect)
+    window.addEventListener('load', () => {
+      // Toca um bipe curto de sistema (opcional)
+      // playSound(440, 100); 
 
-    window.onload = () => {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (!user) { window.location.href = 'index.html'; }
-      else { document.getElementById('display-nome').innerText = user.name.toUpperCase(); }
-    };
+      // Simula tempo de carregamento dos logs de boot
+      const lines = document.querySelectorAll('#boot-log div');
+      lines.forEach((line, index) => {
+        setTimeout(() => { line.style.display = 'block'; }, index * 150);
+      });
 
-    function switchPage(pageId, btn) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      const target = document.getElementById('page-' + pageId);
-      if(target) target.classList.add('active');
-      document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    }
-
-    function toggleChatbot() { document.getElementById('chatbotWindow').classList.toggle('open'); }
-
-    function sendChatMessage() {
-      const input = document.getElementById('chatbotInput');
-      const val = input.value.toLowerCase().trim();
-      if (!val) return;
-      
-      const box = document.getElementById('chatbotMessages');
-      box.innerHTML += `<div class="msg user-msg">${input.value}</div>`;
-      input.value = '';
-      
-      let resposta = botRespostas.default;
-      for (let key in botRespostas) {
-        if (val.includes(key)) resposta = botRespostas[key];
-      }
-
+      // Esconde boot e mostra app
       setTimeout(() => {
-        box.innerHTML += `<div class="msg bot-msg">${resposta}</div>`;
-        box.scrollTop = box.scrollHeight;
-      }, 600);
+        document.getElementById('boot-screen').style.display = 'none';
+        document.getElementById('tms-app').style.opacity = '1';
+        
+        // Verifica Login
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) { window.location.href = 'index.html'; } // Trava de segurança
+        else { document.getElementById('display-nome').innerText = user.name.toUpperCase(); }
+        
+        inicializarSistema();
+      }, lines.length * 150 + 500);
+    });
+
+    // Inicialização de Loops (Relógio, Logs, Timeline)
+    function inicializarSistema() {
+      iniciarRelogio();
+      startLogSimulation();
+      // timelineSimulation(); // Ativada apenas no modo simulação
     }
 
-    function handleLogout() { if(confirm("Nelson, deseja sair do sistema?")) { localStorage.removeItem('user'); window.location.href = 'index.html'; } }
+    // Relógio Técnico (Hora da Cabine)
+    function iniciarRelogio() {
+      const clockEl = document.getElementById('cabine-clock');
+      setInterval(() => {
+        const now = new Date();
+        clockEl.innerText = now.toLocaleTimeString('pt-BR', { hour12: false });
+      }, 1000);
+    }
+
+    // Navegação entre Terminais (Páginas)
+    function switchPage(pageId, btnElement) {
+      // playSound(600, 30); // Clique curto
+      
+      // Esconde páginas
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      // Mostra alvo
+      document.getElementById('page-' + pageId).classList.add('active');
+      
+      // Atualiza Menu
+      document.querySelectorAll('.menu-item').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+    }
+
+    // Atualização Visual de Sliders (Neon Feedback)
+    function updateSlider(type, val) {
+      const display = document.getElementById('val-'+type);
+      display.innerText = (type === 'dimmer') ? val + '%' : val;
+      if (type === 'audio') { display.style.color = (val > 7) ? 'var(--neon-red)' : 'var(--neon-blue)'; }
+    }
+
+    // Simulação de Macros
+    function testarMacro(nome) {
+      addLogEntry(`Executing Macro: [${nome}]`, 'cmd');
+      setTimeout(() => addLogEntry(`Macro [${nome}] Executed successfully.`, 'ok'), 800);
+    }
+
+    // Gerenciador de Log em Tempo Real
+    const logBox = document.getElementById('realtime-log');
+    function addLogEntry(text, type = '') {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('pt-BR', { hour12: false });
+      
+      let typeClass = '';
+      if (type === 'ok') typeClass = 'log-ok';
+      if (type === 'cmd') typeClass = 'log-cmd';
+      if (type === 'err') typeClass = 'log-err';
+
+      const entry = `<div class="log-entry"><span class="log-time">[${timeStr}]</span> <span class="${typeClass}">> ${text}</span></div>`;
+      logBox.innerHTML += entry;
+      logBox.scrollTop = logBox.scrollHeight; // Auto-scroll
+    }
+
+    // Simulação de Logs de Fundo
+    function startLogSimulation() {
+      const logs = [
+        "Temperaturas estáveis nos blocos de processamento.",
+        "Verificando integridade da playlist Sala 01...",
+        "SPL Sala 01 validada [OK].",
+        "Conexão com KDM Server estável.",
+        "Dowser Projetor Sala 01: Aberto."
+      ];
+      setInterval(() => {
+        const randomLog = logs[Math.floor(Math.random() * logs.length)];
+        addLogEntry(randomLog);
+      }, 15000); // A cada 15 segundos
+    }
+
+    // ==========================================================================
+    // 💥 O DIFERENCIAL ABSURDO: MODO SIMULAÇÃO DE SESSÃO
+    // ==========================================================================
+    let simulacaoAtiva = false;
+    let tempoRestanteSegundos = 4365; // 01:12:45
+
+    function iniciarModoSimulacao() {
+      if(simulacaoAtiva) return;
+      simulacaoAtiva = true;
+      // playSound(800, 200);
+
+      alert("💥 Iniciando Modo Simulação Total na Sala 01. Acompanhe os Logs e a Timeline.");
+      
+      // Sequência de Logs e Ações ao vivo
+      addLogEntry("MODO SIMULAÇÃO ATIVADO.", 'cmd');
+      
+      // T=0: SPL Iniciada
+      setTimeout(() => addLogEntry("SPL [Dune 2 Scope] Iniciada manualmente.", 'ok'), 1000);
+      
+      // T=2s: Macro Lamp ON
+      setTimeout(() => {
+        addLogEntry("Executando Macro automação: [LAMP ON]", 'cmd');
+        document.getElementById('current-sala-header').style.color = 'var(--neon-amber)';
+      }, 3000);
+
+      setTimeout(() => addLogEntry("Ignitor Projetor disparado. Lâmpada Xenon OK.", 'ok'), 4500);
+
+      // T=5s: Áudio Trailers
+      setTimeout(() => {
+        addLogEntry("Comando de Áudio enviado: [SET FADER 4.1]", 'cmd');
+        updateSlider('audio', 4.1);
+        document.getElementById('slide-audio').value = 4.1;
+      }, 6000);
+
+      // T=10s: Começa a mover timeline
+      setTimeout(() => {
+        iniciarTimelineProgress();
+        document.querySelector('.status-dot').style.background = 'var(--neon-blue)';
+        addLogEntry("Reprodutor GDC: Estado mudado para PLAYING.", 'ok');
+      }, 10000);
+    }
+
+    // Move a barra de progresso e o cronômetro
+    function iniciarTimelineProgress() {
+      const progressBar = document.getElementById('session-progress');
+      const timeRemainingEl = document.getElementById('time-remaining');
+      let porcentagem = 65; // Começa onde configuramos no HTML
+
+      const loop = setInterval(() => {
+        porcentagem += 0.1;
+        progressBar.style.width = porcentagem + '%';
+        tempoRestanteSegundos -= 1;
+
+        if(tempoRestanteSegundos <= 0) {
+          clearInterval(loop);
+          addLogEntry("Sessão finalizada.", 'ok');
+        } else {
+          // Converte segundos de volta para formato 00:00:00
+          const hours = Math.floor(tempoRestanteSegundos / 3600);
+          const minutes = Math.floor((tempoRestanteSegundos % 3600) / 60);
+          const seconds = tempoRestanteSegundos % 60;
+          timeRemainingEl.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+      }, 1000); // Atualiza a cada segundo
+    }
+
+    // Utilitários
+    function handleLogout() {
+      if(confirm("Deseja encerrar a sessão técnica técnica no TMS?")) {
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+      }
+    }
+
+    // Gerador de Som Técnico (Beep)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSound(frequency, duration) {
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      oscillator.type = 'sine'; oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+      gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime); // Volume bem baixo
+      oscillator.connect(gainNode); gainNode.connect(audioCtx.destination);
+      oscillator.start(); oscillator.stop(audioCtx.currentTime + (duration / 1000));
+    }
+
   </script>
 </body>
 </html>
