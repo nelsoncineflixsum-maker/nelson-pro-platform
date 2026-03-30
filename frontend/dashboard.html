@@ -1,678 +1,273 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cine Sumaré - Sala 01 | TMS Nelson Pro v3.0 Digital Cinema Terminal</title>
-  <style>
-    /* ==========================================================================
-       1. VARIÁVEIS E TEMAS (ULTRA DARK NEON)
-       ========================================================================== */
-    :root {
-      /* Cores de Fundo e Base (Rack Style) */
-      --bg-deep: #020203;       /* Preto Profundo */
-      --bg-rack: #08090a;       /* Fundo do Rack */
-      --bg-card: #101214;       /* Cartão Técnico */
-      --bg-input: #000000;      /* Input */
-      --border-tech: #1f2329;   /* Borda Técnica */
+<div class="card">
+  <h2>🎬 Simulador TMS Profissional</h2>
 
-      /* Cores de Status e Neon (Glow) */
-      --neon-blue: #00f2ff;     /* Cyan Ativo */
-      --neon-blue-glow: rgba(0, 242, 255, 0.3);
-      
-      --neon-green: #0fa;      /* OK / Playing */
-      --neon-green-glow: rgba(0, 255, 170, 0.3);
-      
-      --neon-amber: #ffb700;    /* Degraded / Standby */
-      --neon-amber-glow: rgba(255, 183, 0, 0.3);
-      
-      --neon-red: #ff003c;      /* Error / Critical */
-      --neon-red-glow: rgba(255, 0, 60, 0.4);
+  <div id="system-status">🟢 PRONTO</div>
 
-      /* Texto */
-      --text-main: #e0e6ed;     /* Texto Técnico */
-      --text-muted: #6c7987;    /* Texto Apagado */
-      
-      /* Fontes */
-      --font-ui: 'Segoe UI', Roboto, Helvetica, sans-serif;
-      --font-tech: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-    }
-
-    /* ==========================================================================
-       2. RESET E LAYOUT ESTRUTURAL (GRID SYSTEM)
-       ========================================================================== */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
-    
-    html, body { 
-      height: 100%; 
-      font-family: var(--font-ui); 
-      background: var(--bg-deep); 
-      color: var(--text-main); 
-      overflow: hidden; 
-      font-size: 14px; /* Base técnica menor */
-      letter-spacing: 0.02em;
-    }
-
-    /* Scrollbar Técnico */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-rack); }
-    ::-webkit-scrollbar-thumb { background: var(--border-tech); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-
-    /* Layout Principal */
-    #tms-app {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      grid-template-rows: 60px 1fr;
-      height: 100vh;
-      opacity: 0; /* Começa invisível para o boot effect */
-      transition: opacity 1s ease-in;
-    }
-
-    /* ==========================================================================
-       3. COMPONENTES REUTILIZÁVEIS (UÍ)
-       ========================================================================== */
-    .tech-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-tech);
-      border-radius: 4px; /* Cantos mais vivos, estilo rack */
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .tech-card::before { /* Linha decorativa de rack no topo */
-      content: ''; display: block; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-      background: linear-gradient(90deg, #111, var(--border-tech), #111);
-    }
-
-    h2.card-title {
-      font-family: var(--font-tech);
-      font-size: 1.1rem;
-      color: var(--text-main);
-      text-transform: uppercase;
-      margin-bottom: 1.2rem;
-      display: flex; align-items: center; gap: 8px;
-    }
-
-    /* Botões Técnicos */
-    .btn-tech {
-      font-family: var(--font-tech);
-      font-weight: bold; font-size: 0.8rem; text-transform: uppercase;
-      padding: 10px 20px;
-      border-radius: 2px; border: 1px solid transparent;
-      cursor: pointer; transition: 0.2s;
-      display: inline-flex; align-items: center; gap: 8px;
-    }
-
-    .btn-primary { 
-      background: rgba(0, 242, 255, 0.1); border-color: var(--neon-blue); color: var(--neon-blue); 
-      box-shadow: 0 0 10px var(--neon-blue-glow);
-    }
-    .btn-primary:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 20px var(--neon-blue); }
-
-    .btn-danger { 
-      background: rgba(255, 0, 60, 0.1); border-color: var(--neon-red); color: var(--neon-red); 
-    }
-    .btn-danger:hover { background: var(--neon-red); color: #fff; box-shadow: 0 0 15px var(--neon-red); }
-
-    /* Badges de Status com Glow */
-    .status-badge {
-      font-family: var(--font-tech); font-size: 0.7rem; font-weight: bold;
-      padding: 3px 8px; border-radius: 2px; text-transform: uppercase;
-    }
-    .status-ok { background: rgba(0, 255, 170, 0.1); color: var(--neon-green); border: 1px solid var(--neon-green); box-shadow: 0 0 5px var(--neon-green-glow); }
-    .status-warn { background: rgba(255, 183, 0, 0.1); color: var(--neon-amber); border: 1px solid var(--neon-amber); box-shadow: 0 0 5px var(--neon-amber-glow); }
-    .status-err { background: rgba(255, 0, 60, 0.1); color: var(--neon-red); border: 1px solid var(--neon-red); box-shadow: 0 0 5px var(--neon-red-glow); animation: ledBlink 1s infinite; }
-
-    /* Inputs Técnicos */
-    .input-group { margin-bottom: 1rem; }
-    .input-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
-    .tech-input, .tech-select {
-      width: 100%; padding: 10px; font-family: var(--font-tech); background: var(--bg-input);
-      border: 1px solid var(--border-tech); color: #fff; border-radius: 2px;
-    }
-    .tech-input:focus, .tech-select:focus { border-color: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue-glow); }
-
-    /* Tabelas Técnicas */
-    .tech-table { width: 100%; border-collapse: collapse; font-family: var(--font-tech); font-size: 0.85rem; }
-    .tech-table th { background: #0c0d0f; color: var(--text-muted); text-transform: uppercase; padding: 10px; text-align: left; border-bottom: 2px solid var(--border-tech); }
-    .tech-table td { padding: 10px; border-bottom: 1px solid var(--border-tech); color: var(--text-main); }
-    .tech-table tr:hover td { background: rgba(255,255,255,0.01); color: #fff; }
-
-    /* ==========================================================================
-       4. ANIMAÇÕES (GLOW, BLINK, BOOT)
-       ========================================================================== */
-    @keyframes ledBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-    @keyframes textGlow { 0%, 100% { text-shadow: 0 0 5px #fff; } 50% { text-shadow: 0 0 15px var(--neon-blue); } }
-    @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
-
-    /* ==========================================================================
-       5. HEADER (GLOBAL STATUS BAR)
-       ========================================================================== */
-    header#global-header {
-      grid-column: 1 / -1; background: var(--bg-rack);
-      border-bottom: 1px solid var(--border-tech);
-      padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between;
-      z-index: 100; box-shadow: 0 5px 15px #000;
-    }
-
-    .header-left { display: flex; align-items: center; gap: 2rem; }
-    .tms-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo-box { width: 35px; height: 35px; background: #000; border: 2px solid var(--border-tech); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--neon-amber); font-size: 1.2rem; box-shadow: inset 0 0 10px rgba(255, 183, 0, 0.2); }
-    .logo-text { font-family: var(--font-tech); font-weight: bold; color: #fff; font-size: 1.1rem; letter-spacing: 0.1em; }
-    .logo-text span { color: var(--neon-amber); }
-
-    .cinema-id { font-family: var(--font-tech); color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue-glow); }
-
-    .header-right { display: flex; align-items: center; gap: 1.5rem; font-family: var(--font-tech); }
-    
-    #cabine-clock { font-size: 1.1rem; color: #fff; min-width: 90px; text-align: center; }
-    
-    .global-status { display: flex; align-items: center; gap: 8px; font-weight: bold; }
-    .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); animation: ledBlink 1.5s infinite; }
-
-    #user-control { cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 5px 10px; background: rgba(255,255,255,0.02); border-radius: 2px; }
-    #user-control:hover { background: rgba(229, 9, 20, 0.1); border-color: var(--neon-red); }
-
-    /* ==========================================================================
-       6. SIDEBAR (RACK NAVIGATION)
-       ========================================================================== */
-    aside#rack-menu {
-      background: #040405; border-right: 1px solid var(--border-tech);
-      padding: 1.5rem 0; grid-row: 2; overflow-y: auto;
-      display: flex; flex-direction: column;
-    }
-
-    .menu-list { list-style: none; padding: 0 10px; }
-    .menu-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 12px 15px; margin-bottom: 4px;
-      color: var(--text-muted); border: none; background: none;
-      width: 100%; text-align: left; cursor: pointer;
-      transition: all 0.2s ease; border-radius: 2px;
-    }
-
-    /* Ícones do Rack (Neon) */
-    .menu-icon { font-size: 1.2rem; color: var(--text-muted); transition: 0.2s; }
-
-    .menu-item:hover { background: rgba(255,255,255,0.02); color: #fff; }
-    .menu-item:hover .menu-icon { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); }
-
-    .menu-item.active { 
-      background: rgba(0, 242, 255, 0.05); color: #fff;
-      border-left: 3px solid var(--neon-blue);
-      box-shadow: inset 5px 0 15px rgba(0, 242, 255, 0.1);
-    }
-    .menu-item.active .menu-icon { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
-
-    /* ==========================================================================
-       7. MAIN CONTENT (TERMINAL PAGES)
-       ========================================================================== */
-    main#terminal-screen {
-      grid-column: 2; grid-row: 2; padding: 2rem; overflow-y: auto;
-      background: linear-gradient(180deg, #020203 0%, #000 100%);
-      position: relative;
-    }
-
-    /* Efeito de scanline opcional */
-    main#terminal-screen::after {
-      content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.05), rgba(0,0,0,0.05) 1px, transparent 1px, transparent 2px);
-      pointer-events: none; z-index: 99;
-    }
-
-    .page { display: none; animation: pageLoad 0.4s ease-out; }
-    .page.active { display: block; }
-    @keyframes pageLoad { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* ==========================================================================
-       8. DASHBOARD (CENTRAL DE OPERAÇÃO)
-       ========================================================================== */
-    #page-inicio .system-monitor {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;
-    }
-
-    .monitor-card {
-      background: var(--bg-card); border: 1px solid var(--border-tech);
-      padding: 1rem; text-align: center; border-radius: 2px;
-    }
-    .monitor-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; font-family: var(--font-tech); }
-    .monitor-value { font-size: 1.8rem; font-weight: bold; font-family: var(--font-tech); }
-    
-    /* Barras de Progresso Técnicas */
-    .tech-progress-container { background: #000; border: 1px solid var(--border-tech); height: 10px; border-radius: 2px; margin-top: 10px; overflow: hidden; position: relative; }
-    .tech-progress-bar { background: var(--neon-blue); height: 100%; width: 0%; transition: width 0.5s ease; box-shadow: 0 0 10px var(--neon-blue); }
-    .tech-progress-bar.warn { background: var(--neon-amber); box-shadow: 0 0 10px var(--neon-amber); }
-    .tech-progress-bar.crit { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); animation: ledBlink 0.5s infinite; }
-
-    /* Timeline da Sessão */
-    .session-timeline { margin-top: 2rem; position: relative; padding-bottom: 1rem; }
-    .timeline-track { background: #111; height: 6px; border-radius: 3px; position: relative; border: 1px solid var(--border-tech); }
-    .timeline-progress { background: var(--neon-green); height: 100%; width: 65%; border-radius: 3px; box-shadow: 0 0 10px var(--neon-green); position: relative; transition: width 1s linear; }
-    .timeline-marker { position: absolute; top: -10px; width: 2px; height: 26px; background: rgba(255,255,255,0.1); font-family: var(--font-tech); font-size: 0.7rem; color: var(--text-muted); padding-top: 30px; }
-
-    /* Real-time Log */
-    #realtime-log {
-      height: 150px; background: #040405; border: 1px solid var(--border-tech);
-      font-family: var(--font-tech); font-size: 0.8rem; color: #a0aec0;
-      padding: 10px; overflow-y: auto; border-radius: 2px;
-    }
-    .log-entry { margin-bottom: 4px; }
-    .log-time { color: var(--text-muted); }
-    .log-cmd { color: var(--neon-blue); }
-    .log-ok { color: var(--neon-green); }
-    .log-err { color: var(--neon-red); font-weight: bold; animation: ledBlink 1s infinite; }
-
-    /* ==========================================================================
-       9. SHOWS / INGEST / KDM / AUTOMAÇÃO (DETALHES PROFISSIONAIS)
-       ========================================================================== */
-    
-    /* Ingest Progress REAL */
-    .ingest-item { background: rgba(255,255,255,0.01); border: 1px solid var(--border-tech); padding: 1rem; margin-bottom: 10px; border-radius: 2px; }
-    .ingest-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-family: var(--font-tech); font-size: 0.9rem; }
-    
-    /* KDM Countdown */
-    .kdm-critical { color: var(--neon-red); animation: ledBlink 0.8s infinite; font-weight: bold; }
-
-    /* Sliders de Automação com Glow */
-    .slider-group { margin-bottom: 1.5rem; }
-    .slider-group label { font-family: var(--font-tech); font-size: 0.85rem; color: var(--text-muted); display: flex; justify-content: space-between; margin-bottom: 5px; }
-    .tech-slider {
-      -webkit-appearance: none; width: 100%; height: 6px; background: #111;
-      border: 1px solid var(--border-tech); border-radius: 3px; outline: none;
-    }
-    .tech-slider::-webkit-slider-thumb {
-      -webkit-appearance: none; appearance: none;
-      width: 16px; height: 16px; background: var(--neon-blue);
-      border-radius: 50%; cursor: pointer;
-      box-shadow: 0 0 10px var(--neon-blue);
-    }
-    .tech-slider::-webkit-slider-thumb:hover { background: #fff; box-shadow: 0 0 15px #fff; }
-
-    /* ==========================================================================
-       10. CHATBOT (OPERATIONAL ASSISTANT)
-       ========================================================================== */
-    #page-shows .playlist-editor { display: flex; gap: 1rem; margin-top: 1rem; border: 1px dashed var(--border-tech); padding: 1rem; min-height: 100px; }
-    .spl-block { padding: 10px; border-radius: 2px; font-family: var(--font-tech); font-size: 0.8rem; cursor: grab; text-align: center; color: #000; font-weight: bold; }
-    .block-black { background: #333; color: #fff; }
-    .block-trailer { background: var(--neon-amber); }
-    .block-feature { background: var(--neon-blue); }
-
-    /* ==========================================================================
-       11. SISTEMA DE BOOT E LOADING
-       ========================================================================== */
-    #boot-screen {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: #000; z-index: 9999;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      font-family: var(--font-tech); color: var(--neon-green);
-    }
-    #boot-log { width: 400px; height: 200px; overflow: hidden; font-size: 0.8rem; }
-    .cursor { display: inline-block; width: 8px; height: 15px; background: var(--neon-green); animation: ledBlink 0.5s infinite; }
-
-  </style>
-</head>
-<body>
-
-  <div id="boot-screen">
-    <div class="logo-box" style="width:60px; height:60px; font-size: 2rem; border-color:var(--neon-green); color:var(--neon-green); box-shadow: 0 0 20px var(--neon-green-glow); margin-bottom: 20px;">🎬</div>
-    <div id="boot-log">
-      <div>> GRUPO CINE Sumaré - Sala 01</div>
-      <div>> TMS Nelson Pro [Version 3.0.12]</div>
-      <div>> Inicializando Nucleo... <span class="log-ok">[OK]</span></div>
-      <div>> Carregando Driver GDC SX-4000... <span class="log-ok">[OK]</span></div>
-      <div>> Conectando Processador CP950... <span class="log-ok">[OK]</span></div>
-      <div>> Verificando Storage (1.4TB Free)... <span class="log-ok">[OK]</span></div>
-      <div>> Autenticando Operador Nelson... <span class="log-ok">[OK]</span></div>
-      <div>> <span class="cursor"></span></div>
-    </div>
+  <div class="controls" style="margin:15px 0; display:flex; gap:10px;">
+    <button class="btn" onclick="playSession()">▶ PLAY</button>
+    <button class="btn" onclick="pauseSession()">⏸ PAUSE</button>
+    <button class="btn" onclick="stopSession()">⏹ STOP</button>
   </div>
 
-  <div id="tms-app">
-
-    <header id="global-header">
-      <div class="header-left">
-        <a href="#" class="tms-logo">
-          <div class="logo-box">🎬</div>
-          <span class="logo-text">NELSON<span>PRO</span></span>
-        </a>
-        <div class="cinema-id">GRUPO CINE Sumaré — <span id="current-sala-header">Sala 01</span></div>
-      </div>
-      <div class="header-right">
-        <div id="cabine-clock">00:00:00</div>
-        <div class="global-status">
-          <span class="status-dot"></span>
-          <span>SYSTEM ONLINE</span>
-        </div>
-        <div id="user-control" onclick="handleLogout()">
-          <div class="user-avatar">N</div>
-          <span id="display-nome" style="text-transform: uppercase;">Nelson</span>
-        </div>
-      </div>
-    </header>
-
-    <aside id="rack-menu">
-      <nav>
-        <ul class="menu-list">
-          <li><button class="menu-item active" onclick="switchPage('inicio', this)"><span class="menu-icon">📊</span>CENTRAL DE OPERAÇÃO</button></li>
-          <li><button class="menu-item" onclick="switchPage('shows', this)"><span class="menu-icon">🎬</span>EDITOR DE PLAYLIST</button></li>
-          <li><button class="menu-item" onclick="switchPage('schedule', this)"><span class="menu-icon">📅</span>GRADE DE HORÁRIOS</button></li>
-          <li><button class="menu-item" onclick="switchPage('ingest', this)"><span class="menu-icon">📥</span>BIBLIOTECA & INGEST</button></li>
-          <li><button class="menu-item" onclick="switchPage('kdm', this)"><span class="menu-icon">🔐</span>GERENTE DE KDM</button></li>
-          <li><button class="menu-item" onclick="switchPage('automacao', this)"><span class="menu-icon">🤖</span>AUTOMAÇÃO (MACROS)</button></li>
-          <li><button class="menu-item" onclick="switchPage('trouble', this)">🔧DIAGNÓSTICO</button></li>
-        </ul>
-      </nav>
-      <div style="margin-top:auto; padding: 10px; text-align:center; font-family:var(--font-tech); font-size:0.7rem; color:var(--text-muted);">
-        TMS IP: 192.168.10.50
-      </div>
-    </aside>
-
-    <main id="terminal-screen">
-
-      <div id="page-inicio" class="page active">
-        <h2 class="card-title">🖥️ Sala 01 — Status em Tempo Real</h2>
-        
-        <div class="system-monitor">
-          <div class="monitor-card">
-            <div class="monitor-label">STATUS PROJETOR</div>
-            <div class="monitor-value" style="color:var(--neon-green);">PLAYING</div>
-            <div style="font-size:0.8rem; color:var(--text-muted);">Xenon: 3400W</div>
-          </div>
-          <div class="monitor-card">
-            <div class="monitor-label">ÁUDIO ATUAL</div>
-            <div class="monitor-value" style="color:var(--neon-blue);">Fader 6.5</div>
-            <div style="font-size:0.8rem; color:var(--text-muted);">Format: Dolby 7.1</div>
-          </div>
-          <div class="monitor-card">
-            <div class="monitor-label">STORAGE SERVER</div>
-            <div class="monitor-value">72<span style="font-size:1rem">%</span></div>
-            <div class="tech-progress-container"><div class="tech-progress-bar warn" style="width: 72%"></div></div>
-          </div>
-          <div class="monitor-card">
-            <div class="monitor-label">TEMPERATURA</div>
-            <div class="monitor-value">42<span style="font-size:1rem">°C</span></div>
-            <div style="font-size:0.8rem; color:var(--green);">[ESTÁVEL]</div>
-          </div>
-        </div>
-
-        <div class="tech-card">
-          <h2 class="card-title">▶️ Sessão Atual: Dune: Part Two (Scope)</h2>
-          <div class="session-timeline">
-            <div class="timeline-track">
-              <div class="timeline-progress" id="session-progress"></div>
-              <div class="timeline-marker" style="left: 0%">0:00</div>
-              <div class="timeline-marker" style="left: 15%">Trailers</div>
-              <div class="timeline-marker" style="left: 20%; color:var(--neon-green)">DCP <span class="status-badge status-ok">FLAT</span></div>
-              <div class="timeline-marker" style="left: 100%">Fim</div>
-            </div>
-            <div style="display:flex; justify-content:space-between; margin-top:10px; font-family:var(--font-tech); font-size:0.8rem;">
-              <span>Tempo Restante: <b style="color:var(--neon-green);" id="time-remaining">01:12:45</b></span>
-              <span>CPL: DunePartTwo_FTR-1_S_PT-BR_51_2K_GDC_20240215</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tech-card">
-          <h2 class="card-title">⌨️ Log do Sistema (Real-time)</h2>
-          <div id="realtime-log">
-            </div>
-        </div>
-
-        <button class="btn-tech btn-primary" onclick="iniciarModoSimulacao()"><span style="font-size:1.2rem;">▶️</span> INICIAR SESSÃO (MODO SIMULAÇÃO)</button>
-      </div>
-
-      <div id="page-ingest" class="page">
-        <h2 class="card-title">Ingest & Biblioteca de Conteúdo</h2>
-        <div class="tech-card">
-          <div class="input-group">
-            <label>Origem</label>
-            <select class="tech-select"><option>Drive CRU (SATA)</option><option>Network (TMS)</option></select>
-          </div>
-          <div class="ingest-item">
-            <div class="ingest-header">
-              <span style="color:#fff;">Godzilla x Kong: The New Empire</span>
-              <span class="status-badge status-ok">Validando... 92%</span>
-            </div>
-            <div class="tech-progress-container"><div class="tech-progress-bar" style="width: 92%"></div></div>
-            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:5px; font-family:var(--font-tech);">Speed: 110 MB/s | ETA: 2min</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="page-kdm" class="page">
-        <h2 class="card-title">Gerente de Certificados & KDM</h2>
-        <div class="tech-card">
-          <table class="tech-table">
-            <thead><tr><th>Título do Filme</th><th>CPL/Uuid</th><th>Início</th><th>Fim</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr><td>Dune: Part Two</td><td>...6a78-41</td><td>20 MAR</td><td>05 ABR</td><td><span class="status-badge status-ok">Válido</span></td></tr>
-              <tr><td>Oppenheimer</td><td>...c432-11</td><td>15 MAR</td><td><span class="kdm-critical">25 MAR</span></td><td><span class="status-badge status-err">Critical</span></td></tr>
-            </tbody>
-          </table>
-          <br>
-          <button class="btn-tech btn-danger">Solicitar Novo KDM</button>
-        </div>
-      </div>
-
-      <div id="page-automacao" class="page">
-        <h2 class="card-title">Controle de Macros & Automação de Cabine</h2>
-        <div class="tech-card">
-          <div class="slider-group">
-            <label><span>💡 Dimmers (Iluminação de Sala)</span><span id="val-dimmer">0%</span></label>
-            <input type="range" class="tech-slider" id="slide-dimmer" min="0" max="100" value="0" oninput="updateSlider('dimmer', this.value)">
-          </div>
-          <div class="slider-group">
-            <label><span>🔊 Fader de Áudio (CP950)</span><span id="val-audio">6.5</span></label>
-            <input type="range" class="tech-slider" id="slide-audio" min="0" max="10" step="0.5" value="6.5" oninput="updateSlider('audio', this.value)">
-          </div>
-          <button class="btn-tech btn-primary" onclick="testarMacro('Lamp ON')">Testar Macro [Lamp ON]</button>
-          <button class="btn-tech btn-primary" onclick="testarMacro('Luz Saída')">Testar Macro [Luz Saída]</button>
-        </div>
-      </div>
-
-      <div id="page-shows" class="page"><div class="tech-card"><h2 class="card-title">Playlist Editor</h2></div></div>
-      <div id="page-schedule" class="page"><div class="tech-card"><h2 class="card-title">Grade</h2></div></div>
-      <div id="page-trouble" class="page"><div class="tech-card"><h2 class="card-title">Diagnóstico</h2></div></div>
-
-    </main>
+  <!-- TIMELINE VISUAL -->
+  <div style="background:#111; height:20px; border-radius:10px; overflow:hidden;">
+    <div id="timeline-bar" style="height:100%; width:0%; background:#f5c518; transition:0.5s;"></div>
   </div>
 
-  <script>
-    /* ==========================================================================
-       12. JAVASCRIPT (TMS LOGIC & SIMULATION)
-       ========================================================================= */
-    
-    // Configurações
-    const SALA_NOME = "SALA 01";
-    
-    // Inicialização (Boot Effect)
-    window.addEventListener('load', () => {
-      // Toca um bipe curto de sistema (opcional)
-      // playSound(440, 100); 
+  <div id="timeline-text" style="margin-top:10px;">Aguardando...</div>
 
-      // Simula tempo de carregamento dos logs de boot
-      const lines = document.querySelectorAll('#boot-log div');
-      lines.forEach((line, index) => {
-        setTimeout(() => { line.style.display = 'block'; }, index * 150);
-      });
+  <!-- LOG -->
+  <div id="logbox" style="
+    margin-top:15px;
+    background:#000;
+    padding:10px;
+    height:200px;
+    overflow:auto;
+    font-family:monospace;
+    font-size:12px;
+    border:1px solid #333;">
+  </div>
+</div>
+🎮 ⚡ 2. JS COMPLETO (SIMULADOR NÍVEL REAL)
 
-      // Esconde boot e mostra app
-      setTimeout(() => {
-        document.getElementById('boot-screen').style.display = 'none';
-        document.getElementById('tms-app').style.opacity = '1';
-        
-        // Verifica Login
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user) { window.location.href = 'index.html'; } // Trava de segurança
-        else { document.getElementById('display-nome').innerText = user.name.toUpperCase(); }
-        
-        inicializarSistema();
-      }, lines.length * 150 + 500);
-    });
+👉 Substitui tudo por isso:
 
-    // Inicialização de Loops (Relógio, Logs, Timeline)
-    function inicializarSistema() {
-      iniciarRelogio();
-      startLogSimulation();
-      // timelineSimulation(); // Ativada apenas no modo simulação
+let player = {
+  running: false,
+  time: 0,
+  total: 120,
+  interval: null,
+  etapa: "IDLE"
+};
+
+const SPL = [
+  { t: 0, nome: "BLACK INICIAL", acao: "Lamp ON | Luz 50%" },
+  { t: 10, nome: "TRAILERS", acao: "Volume 41" },
+  { t: 30, nome: "TRANSIÇÃO", acao: "Scope ON" },
+  { t: 40, nome: "FILME", acao: "Volume 6.5" },
+  { t: 100, nome: "FINAL", acao: "Lamp OFF | Luz 100%" }
+];
+
+function playSession() {
+  if (player.running) return;
+
+  player.running = true;
+  log("🎬 PLAYLIST STARTED");
+
+  player.interval = setInterval(() => {
+    player.time++;
+
+    runTimeline();
+    updateUI();
+    simulateAutomation();
+
+    if (player.time >= player.total) stopSession();
+
+  }, 1000);
+}
+
+function pauseSession() {
+  clearInterval(player.interval);
+  player.running = false;
+  log("⏸ SESSION PAUSED");
+}
+
+function stopSession() {
+  clearInterval(player.interval);
+  player.running = false;
+  player.time = 0;
+  player.etapa = "IDLE";
+
+  log("⛔ SESSION STOPPED");
+  updateUI();
+}
+
+function runTimeline() {
+  SPL.forEach(item => {
+    if (player.time === item.t) {
+      player.etapa = item.nome;
+      log(`▶ ${item.nome} | ${item.acao}`);
     }
+  });
+}
 
-    // Relógio Técnico (Hora da Cabine)
-    function iniciarRelogio() {
-      const clockEl = document.getElementById('cabine-clock');
-      setInterval(() => {
-        const now = new Date();
-        clockEl.innerText = now.toLocaleTimeString('pt-BR', { hour12: false });
-      }, 1000);
+function updateUI() {
+  const percent = (player.time / player.total) * 100;
+
+  document.getElementById("timeline-bar").style.width = percent + "%";
+
+  document.getElementById("system-status").innerText =
+    `🎥 ${player.etapa} | ${player.time}s`;
+
+  document.getElementById("timeline-text").innerText =
+    `🎞 Etapa atual: ${player.etapa}`;
+}
+
+function simulateAutomation() {
+  if (player.etapa === "BLACK INICIAL") {
+    log("💡 Luz: 50%");
+  }
+
+  if (player.etapa === "FILME") {
+    log("🔊 Volume ajustado: 6.5");
+  }
+
+  if (player.etapa === "FINAL") {
+    log("💡 Luz: 100%");
+  }
+}
+
+function log(msg) {
+  const box = document.getElementById("logbox");
+  box.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ${msg}</div>`;
+  box.scrollTop = box.scrollHeight;
+}
+🎬 💡 3. AGORA ISSO É UM TMS REAL
+
+Quando você clicar:
+
+▶ PLAY
+Sistema inicia
+Timeline começa a andar
+Logs aparecem
+Etapas mudam
+🎞 Timeline
+Barra cresce igual Netflix / servidor
+Mostra progresso real da sessão
+📟 Logs
+[21:10:01] PLAYLIST STARTED
+[21:10:10] TRAILERS
+[21:10:30] FILME
+[21:11:40] FINAL
+🤖 4. SIMULAÇÃO DE CABINE (REAL MESMO)
+
+Agora você tem:
+
+✔ Lamp ON / OFF simulado
+✔ Luz mudando
+✔ Volume mudando
+✔ Transição Flat / Scope
+✔ Fluxo real de cinema
+
+📚 5. INTEGRAÇÃO COM CURSO (PRONTO PRA VENDER)
+
+Cria uma nova aba no menu:
+
+<li><button class="sidebar-item" onclick="switchPage('academia', this)">🎓 Academia</button></li>
+Página:
+<div id="page-academia" class="page">
+  <h2>🎓 Academia Nelson Pro</h2>
+
+  <div class="card">
+    <h3>🎬 Aula 1 - O que é DCP</h3>
+    <p>DCP é o pacote digital do filme usado nos servidores de cinema...</p>
+  </div>
+
+  <div class="card">
+    <h3>🔐 Aula 2 - KDM</h3>
+    <p>KDM é a chave que libera o filme para rodar...</p>
+  </div>
+
+  <div class="card">
+    <h3>🎞 Aula 3 - Playlist</h3>
+    <p>Use o simulador acima para entender a ordem real...</p>
+  </div>
+</div>
+🚀 RESULTADO FINAL
+
+Você agora tem:
+
+🔥 Simulador jogável real
+🔥 Sistema tipo TMS
+🔥 Interface profissional
+🔥 Curso integrado
+🔥 Ferramenta de treinamento
+
+💣 SE QUISER O ÚLTIMO NÍVEL (ABSURDO)
+
+Posso te entregar:
+
+🎮 Simulação com animação real (luz apagando tela)
+🎬 Multi-salas (Sala 1, 2, 3 rodando ao mesmo tempo)
+📡 Sistema estilo rede de cinema
+💻 Versão igual servidor Dolby reeal aqui vai uns videos para ajudar 🎬 🔥 VAMOS TRANSFORMAR EM “MODO APRENDER” (INSANO)
+
+Agora seu dashboard vai ter:
+
+✔ Simulador
+✔ Curso
+✔ Explicação automática
+✔ Passo a passo de como montar um SHOW (SPL)
+
+🧠 1. COMO FUNCIONA (DENTRO DO SISTEMA)
+
+Quando o usuário clicar ▶ PLAY:
+
+O sistema NÃO só roda…
+ELE ENSINA 👇
+
+▶ BLACK INICIAL
+💡 Explicação:
+Aqui o projetor liga (Lamp ON), luz da sala 50%
+Serve pra preparar o ambiente antes dos trailers
+🎮 2. ADICIONA ISSO NO HTML (EXPLICAÇÃO AO VIVO)
+
+Coloca abaixo da timeline:
+
+<div id="explicacao-box" style="
+  margin-top:15px;
+  padding:10px;
+  background:#111;
+  border-left:4px solid #f5c518;
+  font-size:0.9rem;">
+  🧠 Explicação vai aparecer aqui...
+</div>
+⚡ 3. ATUALIZA O JS (AGORA ENSINA JUNTO)
+
+Substitui seu SPL por esse:
+
+const SPL = [
+  {
+    t: 0,
+    nome: "BLACK INICIAL",
+    acao: "Lamp ON | Luz 50%",
+    explicacao: "Aqui o projetor liga e a luz fica meia. Isso prepara o público antes dos trailers."
+  },
+  {
+    t: 10,
+    nome: "TRAILERS",
+    acao: "Volume 41",
+    explicacao: "Os trailers usam volume alto (41) pra impacto. Sempre em formato Flat 2D."
+  },
+  {
+    t: 30,
+    nome: "TRANSIÇÃO",
+    acao: "Scope ON",
+    explicacao: "Aqui acontece a troca de lente (Flat → Scope) antes do filme principal."
+  },
+  {
+    t: 40,
+    nome: "FILME",
+    acao: "Volume 6.5",
+    explicacao: "Filme principal começa com volume padrão 6.5 no Dolby."
+  },
+  {
+    t: 100,
+    nome: "FINAL",
+    acao: "Lamp OFF | Luz 100%",
+    explicacao: "Final da sessão. Luz acende e projetor desliga."
+  }
+];
+🧠 AGORA ALTERA ESSA FUNÇÃO:
+function runTimeline() {
+  SPL.forEach(item => {
+    if (player.time === item.t) {
+      player.etapa = item.nome;
+
+      log(`▶ ${item.nome} | ${item.acao}`);
+
+      document.getElementById("explicacao-box").innerHTML =
+        `🧠 <b>${item.nome}</b><br>${item.explicacao}`;
     }
-
-    // Navegação entre Terminais (Páginas)
-    function switchPage(pageId, btnElement) {
-      // playSound(600, 30); // Clique curto
-      
-      // Esconde páginas
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      // Mostra alvo
-      document.getElementById('page-' + pageId).classList.add('active');
-      
-      // Atualiza Menu
-      document.querySelectorAll('.menu-item').forEach(btn => btn.classList.remove('active'));
-      btnElement.classList.add('active');
-    }
-
-    // Atualização Visual de Sliders (Neon Feedback)
-    function updateSlider(type, val) {
-      const display = document.getElementById('val-'+type);
-      display.innerText = (type === 'dimmer') ? val + '%' : val;
-      if (type === 'audio') { display.style.color = (val > 7) ? 'var(--neon-red)' : 'var(--neon-blue)'; }
-    }
-
-    // Simulação de Macros
-    function testarMacro(nome) {
-      addLogEntry(`Executing Macro: [${nome}]`, 'cmd');
-      setTimeout(() => addLogEntry(`Macro [${nome}] Executed successfully.`, 'ok'), 800);
-    }
-
-    // Gerenciador de Log em Tempo Real
-    const logBox = document.getElementById('realtime-log');
-    function addLogEntry(text, type = '') {
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString('pt-BR', { hour12: false });
-      
-      let typeClass = '';
-      if (type === 'ok') typeClass = 'log-ok';
-      if (type === 'cmd') typeClass = 'log-cmd';
-      if (type === 'err') typeClass = 'log-err';
-
-      const entry = `<div class="log-entry"><span class="log-time">[${timeStr}]</span> <span class="${typeClass}">> ${text}</span></div>`;
-      logBox.innerHTML += entry;
-      logBox.scrollTop = logBox.scrollHeight; // Auto-scroll
-    }
-
-    // Simulação de Logs de Fundo
-    function startLogSimulation() {
-      const logs = [
-        "Temperaturas estáveis nos blocos de processamento.",
-        "Verificando integridade da playlist Sala 01...",
-        "SPL Sala 01 validada [OK].",
-        "Conexão com KDM Server estável.",
-        "Dowser Projetor Sala 01: Aberto."
-      ];
-      setInterval(() => {
-        const randomLog = logs[Math.floor(Math.random() * logs.length)];
-        addLogEntry(randomLog);
-      }, 15000); // A cada 15 segundos
-    }
-
-    // ==========================================================================
-    // 💥 O DIFERENCIAL ABSURDO: MODO SIMULAÇÃO DE SESSÃO
-    // ==========================================================================
-    let simulacaoAtiva = false;
-    let tempoRestanteSegundos = 4365; // 01:12:45
-
-    function iniciarModoSimulacao() {
-      if(simulacaoAtiva) return;
-      simulacaoAtiva = true;
-      // playSound(800, 200);
-
-      alert("💥 Iniciando Modo Simulação Total na Sala 01. Acompanhe os Logs e a Timeline.");
-      
-      // Sequência de Logs e Ações ao vivo
-      addLogEntry("MODO SIMULAÇÃO ATIVADO.", 'cmd');
-      
-      // T=0: SPL Iniciada
-      setTimeout(() => addLogEntry("SPL [Dune 2 Scope] Iniciada manualmente.", 'ok'), 1000);
-      
-      // T=2s: Macro Lamp ON
-      setTimeout(() => {
-        addLogEntry("Executando Macro automação: [LAMP ON]", 'cmd');
-        document.getElementById('current-sala-header').style.color = 'var(--neon-amber)';
-      }, 3000);
-
-      setTimeout(() => addLogEntry("Ignitor Projetor disparado. Lâmpada Xenon OK.", 'ok'), 4500);
-
-      // T=5s: Áudio Trailers
-      setTimeout(() => {
-        addLogEntry("Comando de Áudio enviado: [SET FADER 4.1]", 'cmd');
-        updateSlider('audio', 4.1);
-        document.getElementById('slide-audio').value = 4.1;
-      }, 6000);
-
-      // T=10s: Começa a mover timeline
-      setTimeout(() => {
-        iniciarTimelineProgress();
-        document.querySelector('.status-dot').style.background = 'var(--neon-blue)';
-        addLogEntry("Reprodutor GDC: Estado mudado para PLAYING.", 'ok');
-      }, 10000);
-    }
-
-    // Move a barra de progresso e o cronômetro
-    function iniciarTimelineProgress() {
-      const progressBar = document.getElementById('session-progress');
-      const timeRemainingEl = document.getElementById('time-remaining');
-      let porcentagem = 65; // Começa onde configuramos no HTML
-
-      const loop = setInterval(() => {
-        porcentagem += 0.1;
-        progressBar.style.width = porcentagem + '%';
-        tempoRestanteSegundos -= 1;
-
-        if(tempoRestanteSegundos <= 0) {
-          clearInterval(loop);
-          addLogEntry("Sessão finalizada.", 'ok');
-        } else {
-          // Converte segundos de volta para formato 00:00:00
-          const hours = Math.floor(tempoRestanteSegundos / 3600);
-          const minutes = Math.floor((tempoRestanteSegundos % 3600) / 60);
-          const seconds = tempoRestanteSegundos % 60;
-          timeRemainingEl.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        }
-
-      }, 1000); // Atualiza a cada segundo
-    }
-
-    // Utilitários
-    function handleLogout() {
-      if(confirm("Deseja encerrar a sessão técnica técnica no TMS?")) {
-        localStorage.removeItem('user');
-        window.location.href = 'index.html';
-      }
-    }
-
-    // Gerador de Som Técnico (Beep)
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playSound(frequency, duration) {
-      const oscillator = audioCtx.createOscillator();
-      const gainNode = audioCtx.createGain();
-      oscillator.type = 'sine'; oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-      gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime); // Volume bem baixo
-      oscillator.connect(gainNode); gainNode.connect(audioCtx.destination);
-      oscillator.start(); oscillator.stop(audioCtx.currentTime + (duration / 1000));
-    }
-
-  </script>
-</body>
-</html>
+  });
+}
